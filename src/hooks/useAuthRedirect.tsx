@@ -31,12 +31,12 @@ export const useAuthRedirect = () => {
       setProfileLoading(true)
       try {
         const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('onboarding_complete')
+          .from('profiles')
+          .select('profile_complete')
           .eq('id', user.id)
           .single()
 
-        const isOnboardingComplete = profile?.onboarding_complete || false
+        const isOnboardingComplete = profile?.profile_complete || false
 
         // Redirect based on profile completion status
         if (!isOnboardingComplete && currentPath !== '/onboarding') {
