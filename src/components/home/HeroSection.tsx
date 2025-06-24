@@ -27,14 +27,14 @@ export const HeroSection: React.FC = () => {
     <section className="py-20 px-6">
       <div className="max-w-4xl mx-auto text-center">
         <div className="mb-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-text-primary leading-tight">
+          <h1 className="text-6xl md:text-7xl font-bold text-text-primary leading-tight">
             Find your perfect
           </h1>
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mt-2 leading-tight">
+          <h1 className="text-6xl md:text-7xl font-bold text-primary mt-2 leading-tight">
             place to call home.
           </h1>
         </div>
-        <p className="text-xl text-text-muted mb-12 max-w-2xl mx-auto">
+        <p className="text-2xl text-text-muted mb-12 max-w-2xl mx-auto">
           Discover amazing rental properties and connect with trusted landlords. 
           Your next home is just a search away.
         </p>
