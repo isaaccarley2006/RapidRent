@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layouts/AppLayout'
 import { PropertyCard } from '@/components/listings/PropertyCard'
 import { SearchFilters } from '@/components/listings/SearchFilters'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { useAuth } from '@/contexts/AuthContext'
 import { useQuery } from '@tanstack/react-query'
 
 interface Property {
@@ -28,9 +30,13 @@ interface Filters {
 }
 
 const Listings: React.FC = () => {
-  const { user } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const initialLocation = searchParams.get('location') || ''
+
   const [filters, setFilters] = useState<Filters>({
-    location: '',
+    location: initialLocation,
     minPrice: '',
     maxPrice: '',
     status: 'listed'
@@ -72,8 +78,7 @@ const Listings: React.FC = () => {
 
   const { data: properties, isLoading, error, refetch } = useQuery({
     queryKey: ['properties', filters, searchQuery],
-    queryFn: fetchProperties,
-    enabled: !!user
+    queryFn: fetchProperties
   })
 
   const handleFiltersChange = (newFilters: Filters) => {
@@ -84,13 +89,52 @@ const Listings: React.FC = () => {
     setSearchQuery(query)
   }
 
+  const handleBackToHome = () => {
+    navigate('/')
+  }
+
   if (isLoading) {
     return <LoadingSpinner />
   }
 
   return (
-    <AppLayout>
-      <div className="px-6 py-8">
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button 
+                variant="ghost" 
+                onClick={handleBackToHome}
+                className="p-2"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+              <div className="text-2xl font-bold text-gray-900">
+                Rent<span className="text-[#FA6404]">View</span>
+              </div>
+            </div>
+            <nav className="hidden md:flex items-center space-x-8">
+              <Button 
+                onClick={() => navigate('/auth')}
+                variant="ghost"
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Sign In
+              </Button>
+              <Button 
+                onClick={() => navigate('/auth')}
+                className="bg-[#FA6404] hover:bg-[#e55a04] text-white"
+              >
+                Get Started
+              </Button>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-gray-900 mb-2">
             Property Listings
@@ -114,7 +158,7 @@ const Listings: React.FC = () => {
             </p>
             <button
               onClick={() => refetch()}
-              className="mt-2 text-primary hover:text-primary-dark font-medium"
+              className="mt-2 text-[#FA6404] hover:text-[#e55a04] font-medium"
             >
               Retry
             </button>
@@ -145,7 +189,7 @@ const Listings: React.FC = () => {
           </div>
         )}
       </div>
-    </AppLayout>
+    </div>
   )
 }
 
