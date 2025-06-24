@@ -1,10 +1,10 @@
 
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { useAuth } from '@/contexts/AuthContext'
+import { MapPin, DollarSign, Calendar } from 'lucide-react'
+import { StatusBadge } from '@/components/property/StatusBadge'
 
 interface Property {
   id: string
@@ -24,86 +24,60 @@ interface PropertyCardProps {
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const navigate = useNavigate()
-  const { user } = useAuth()
 
-  const handleMakeOffer = () => {
-    if (!user) {
-      navigate('/auth')
-      return
-    }
-    // TODO: Implement make offer modal/page
-    console.log('Make offer for property:', property.id)
-  }
-
-  const formatPrice = (price: number | null) => {
-    if (!price) return 'Price on request'
-    return `£${price.toLocaleString()}/month`
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'listed':
-        return 'bg-green-100 text-green-800'
-      case 'rented':
-        return 'bg-red-100 text-red-800'
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
+  const handleViewDetails = () => {
+    navigate(`/properties/${property.id}`)
   }
 
   return (
-    <Card className="bg-card rounded-xl shadow-sm border border-muted hover:shadow-md transition-shadow duration-200">
-      <div className="aspect-video bg-surface rounded-t-xl flex items-center justify-center">
-        <div className="text-text-muted text-sm">Photo Coming Soon</div>
-      </div>
-      
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="font-semibold text-text-primary text-lg leading-tight">
+    <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-card">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <CardTitle className="text-xl font-semibold text-text-primary line-clamp-2">
             {property.title}
-          </h3>
-          <Badge className={`ml-2 ${getStatusColor(property.status)} capitalize`}>
-            {property.status}
-          </Badge>
+          </CardTitle>
+          <StatusBadge status={property.status} />
         </div>
-        
-        {property.location && (
-          <p className="text-text-muted text-sm mb-3">
-            {property.location}
-          </p>
-        )}
-        
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        {/* Location */}
+        <div className="flex items-center text-text-muted">
+          <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+          <span className="truncate">
+            {property.location || 'Location not specified'}
+          </span>
+        </div>
+
+        {/* Price */}
+        <div className="flex items-center">
+          <DollarSign className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
+          <span className="text-lg font-semibold text-text-primary">
+            {property.price ? `$${property.price.toLocaleString()}/month` : 'Price on request'}
+          </span>
+        </div>
+
+        {/* Description */}
         {property.description && (
-          <p className="text-text-muted text-sm mb-4 line-clamp-2">
+          <p className="text-text-muted text-sm line-clamp-3">
             {property.description}
           </p>
         )}
-        
-        <div className="text-2xl font-bold text-primary mb-4">
-          {formatPrice(property.price)}
+
+        {/* Listed Date */}
+        <div className="flex items-center text-sm text-text-muted">
+          <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
+          <span>Listed {new Date(property.created_at).toLocaleDateString()}</span>
         </div>
+
+        {/* View Details Button */}
+        <Button 
+          onClick={handleViewDetails}
+          className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl"
+        >
+          View Details
+        </Button>
       </CardContent>
-      
-      <CardFooter className="p-6 pt-0">
-        <div className="flex gap-2 w-full">
-          <Button 
-            variant="outline" 
-            className="flex-1 rounded-xl border-muted hover:border-primary hover:text-primary"
-          >
-            View Details
-          </Button>
-          {property.status === 'listed' && (
-            <Button 
-              onClick={handleMakeOffer}
-              className="flex-1 bg-primary hover:bg-primary-dark text-white rounded-xl"
-            >
-              Make Offer
-            </Button>
-          )}
-        </div>
-      </CardFooter>
     </Card>
   )
 }

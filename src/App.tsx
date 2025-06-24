@@ -12,6 +12,8 @@ import Onboarding from './pages/Onboarding'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Listings from './pages/Listings'
+import PropertyDetails from './pages/PropertyDetails'
+import MakeOffer from './pages/MakeOffer'
 import NotFound from './pages/NotFound'
 
 const queryClient = new QueryClient()
@@ -25,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/listings" element={<Listings />} />
+            <Route path="/properties/:id" element={<PropertyDetails />} />
             <Route path="/auth" element={<Auth />} />
             <Route 
               path="/onboarding" 
@@ -47,6 +50,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/offers/new/:propertyId" 
+              element={
+                <ProtectedRoute>
+                  <MakeOffer />
                 </ProtectedRoute>
               } 
             />
