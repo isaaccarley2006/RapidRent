@@ -6,6 +6,7 @@ import { PropertyCard } from '@/components/listings/PropertyCard'
 import { SearchFilters } from '@/components/listings/SearchFilters'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { Button } from '@/components/ui/button'
+import { Heading } from '@/components/ui/heading'
 import { ArrowLeft } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useQuery } from '@tanstack/react-query'
@@ -98,34 +99,34 @@ const Listings: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background font-sans">
       {/* Header */}
-      <header className="border-b border-gray-200">
+      <header className="border-b border-muted bg-card">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button 
                 variant="ghost" 
                 onClick={handleBackToHome}
-                className="p-2"
+                className="p-2 text-text-muted hover:text-text-primary"
               >
                 <ArrowLeft className="w-5 h-5" />
               </Button>
-              <div className="text-2xl font-bold text-gray-900">
-                Rent<span className="text-[#FA6404]">View</span>
+              <div className="text-2xl font-bold text-text-primary">
+                Rent<span className="text-primary">View</span>
               </div>
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <Button 
                 onClick={() => navigate('/auth')}
                 variant="ghost"
-                className="text-gray-600 hover:text-gray-900"
+                className="text-text-muted hover:text-text-primary"
               >
                 Sign In
               </Button>
               <Button 
                 onClick={() => navigate('/auth')}
-                className="bg-[#FA6404] hover:bg-[#e55a04] text-white"
+                className="bg-primary hover:bg-primary-dark text-white rounded-xl"
               >
                 Get Started
               </Button>
@@ -136,10 +137,10 @@ const Listings: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">
+          <Heading level={1} className="text-text-primary mb-2">
             Property Listings
-          </h1>
-          <p className="text-gray-600">
+          </Heading>
+          <p className="text-text-muted">
             Find your perfect rental property
           </p>
         </div>
@@ -158,7 +159,7 @@ const Listings: React.FC = () => {
             </p>
             <button
               onClick={() => refetch()}
-              className="mt-2 text-[#FA6404] hover:text-[#e55a04] font-medium"
+              className="mt-2 text-primary hover:text-primary-dark font-medium"
             >
               Retry
             </button>
@@ -166,16 +167,16 @@ const Listings: React.FC = () => {
         )}
 
         {properties && properties.length === 0 && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-            <div className="text-gray-400 mb-4">
+          <div className="bg-card rounded-xl shadow-sm border border-muted p-12 text-center">
+            <div className="text-text-muted mb-4">
               <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0v-3.586a1 1 0 01.293-.707l6.414-6.414a1 1 0 011.414 0l6.414 6.414a1 1 0 01.293.707V21M9 12l2 2 4-4" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-xl font-semibold text-text-primary mb-2">
               No properties found
             </h3>
-            <p className="text-gray-600">
+            <p className="text-text-muted">
               Try adjusting your filters or search criteria
             </p>
           </div>

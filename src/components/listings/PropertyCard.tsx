@@ -54,14 +54,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   }
 
   return (
-    <Card className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <div className="aspect-video bg-gray-100 rounded-t-xl flex items-center justify-center">
-        <div className="text-gray-400 text-sm">Photo Coming Soon</div>
+    <Card className="bg-card rounded-xl shadow-sm border border-muted hover:shadow-md transition-shadow duration-200">
+      <div className="aspect-video bg-surface rounded-t-xl flex items-center justify-center">
+        <div className="text-text-muted text-sm">Photo Coming Soon</div>
       </div>
       
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="font-semibold text-gray-900 text-lg leading-tight">
+          <h3 className="font-semibold text-text-primary text-lg leading-tight">
             {property.title}
           </h3>
           <Badge className={`ml-2 ${getStatusColor(property.status)} capitalize`}>
@@ -70,18 +70,18 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         </div>
         
         {property.location && (
-          <p className="text-gray-600 text-sm mb-3">
+          <p className="text-text-muted text-sm mb-3">
             {property.location}
           </p>
         )}
         
         {property.description && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+          <p className="text-text-muted text-sm mb-4 line-clamp-2">
             {property.description}
           </p>
         )}
         
-        <div className="text-2xl font-bold text-[#FA6404] mb-4">
+        <div className="text-2xl font-bold text-primary mb-4">
           {formatPrice(property.price)}
         </div>
       </CardContent>
@@ -90,14 +90,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         <div className="flex gap-2 w-full">
           <Button 
             variant="outline" 
-            className="flex-1 rounded-xl border-gray-300 hover:border-[#FA6404] hover:text-[#FA6404]"
+            className="flex-1 rounded-xl border-muted hover:border-primary hover:text-primary"
           >
             View Details
           </Button>
           {property.status === 'listed' && (
             <Button 
               onClick={handleMakeOffer}
-              className="flex-1 bg-[#FA6404] hover:bg-[#e55a04] text-white rounded-xl"
+              className="flex-1 bg-primary hover:bg-primary-dark text-white rounded-xl"
             >
               Make Offer
             </Button>

@@ -23,27 +23,29 @@ export default {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: '#FFFFFF',
-				foreground: 'hsl(var(--foreground))',
+				background: '#FDF6D7',
+				foreground: '#1F2937',
 				primary: {
 					DEFAULT: '#1AA5A5',
 					dark: '#014D4E',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: '#FFFFFF'
 				},
 				secondary: {
 					DEFAULT: '#92B5A5',
-					foreground: 'hsl(var(--secondary-foreground))'
+					foreground: '#1F2937'
 				},
 				accent: {
 					DEFAULT: '#D5692D',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: '#FFFFFF'
 				},
-				surface: '#FFFFFF',
+				surface: '#F2E5B1',
 				muted: {
-					DEFAULT: '#6B7280',
+					DEFAULT: '#C8D6B9',
 					light: '#F3F4F6',
-					foreground: 'hsl(var(--muted-foreground))'
+					foreground: '#6B7280'
 				},
+				'text-primary': '#1F2937',
+				'text-muted': '#6B7280',
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
@@ -53,8 +55,8 @@ export default {
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					DEFAULT: '#FFFFFF',
+					foreground: '#1F2937'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -66,6 +68,9 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			fontFamily: {
+				sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

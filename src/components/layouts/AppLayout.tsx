@@ -7,7 +7,7 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background font-sans">
       <div className="mx-auto max-w-7xl">
         {children}
       </div>
