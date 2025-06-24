@@ -67,7 +67,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
   return (
     <div className="w-full max-w-md">
-      <div className="bg-white rounded-2xl shadow-md border border-muted/20 px-8 py-8">
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 px-8 py-8">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-primary mb-2">
             {mode === 'signin' ? 'Welcome back' : 'Create account'}
@@ -91,7 +91,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="bg-surface border-muted rounded-xl h-11"
+                className="bg-white border-gray-300 rounded-xl h-11"
                 placeholder="Enter your full name"
                 required
               />
@@ -107,7 +107,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-surface border-muted rounded-xl h-11"
+              className="bg-white border-gray-300 rounded-xl h-11"
               placeholder="Enter your email"
               required
             />
@@ -122,7 +122,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-surface border-muted rounded-xl h-11"
+              className="bg-white border-gray-300 rounded-xl h-11"
               placeholder="Enter your password"
               required
             />

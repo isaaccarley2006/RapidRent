@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Quick Stats
             </h3>
@@ -28,7 +28,7 @@ const Dashboard: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Recent Activity
             </h3>
@@ -37,7 +37,7 @@ const Dashboard: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               Actions
             </h3>

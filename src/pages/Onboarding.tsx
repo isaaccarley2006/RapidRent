@@ -58,9 +58,9 @@ const Onboarding: React.FC = () => {
 
   return (
     <AppLayout>
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="w-full max-w-lg mx-auto px-6">
-          <div className="bg-white rounded-2xl shadow-md border border-muted/20 px-8 py-8">
+          <div className="bg-white rounded-2xl shadow-md border border-gray-200 px-8 py-8">
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-primary mb-2">
                 Complete your profile 🎯
@@ -80,7 +80,7 @@ const Onboarding: React.FC = () => {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="bg-surface border-muted rounded-xl h-11"
+                  className="bg-white border-gray-300 rounded-xl h-11"
                   placeholder="Enter your full name"
                   required
                 />
@@ -94,7 +94,7 @@ const Onboarding: React.FC = () => {
                   id="email"
                   type="email"
                   value={user?.email || ''}
-                  className="bg-surface border-muted rounded-xl h-11 text-muted"
+                  className="bg-gray-50 border-gray-300 rounded-xl h-11 text-muted"
                   disabled
                   readOnly
                 />
@@ -109,7 +109,7 @@ const Onboarding: React.FC = () => {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="bg-surface border-muted rounded-xl h-11"
+                  className="bg-white border-gray-300 rounded-xl h-11"
                   placeholder="Enter your phone number"
                   required
                 />
@@ -126,7 +126,7 @@ const Onboarding: React.FC = () => {
                     className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
                       userType === 'tenant'
                         ? 'border-primary bg-primary/5 text-primary'
-                        : 'border-muted bg-surface text-muted hover:border-primary/50'
+                        : 'border-gray-300 bg-white text-muted hover:border-primary/50'
                     }`}
                   >
                     <div className="text-center">
@@ -142,7 +142,7 @@ const Onboarding: React.FC = () => {
                     className={`flex-1 p-4 rounded-xl border-2 transition-colors ${
                       userType === 'landlord'
                         ? 'border-primary bg-primary/5 text-primary'
-                        : 'border-muted bg-surface text-muted hover:border-primary/50'
+                        : 'border-gray-300 bg-white text-muted hover:border-primary/50'
                     }`}
                   >
                     <div className="text-center">

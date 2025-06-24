@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
@@ -37,7 +37,7 @@ const Profile: React.FC = () => {
                 </div>
               </div>
               
-              <div className="pt-6 border-t border-gray-100">
+              <div className="pt-6 border-t border-gray-200">
                 <button
                   onClick={signOut}
                   className="px-4 py-2 text-sm text-red-600 hover:text-red-700 transition-colors"

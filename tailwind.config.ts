@@ -23,7 +23,7 @@ export default {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: '#FDF6D7',
+				background: '#FFFFFF',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: '#1AA5A5',
@@ -38,10 +38,10 @@ export default {
 					DEFAULT: '#D5692D',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
-				surface: '#F2E5B1',
+				surface: '#FFFFFF',
 				muted: {
 					DEFAULT: '#6B7280',
-					light: '#C8D6B9',
+					light: '#F3F4F6',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				destructive: {
