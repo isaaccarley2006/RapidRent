@@ -1,10 +1,43 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppLayout } from '@/components/layouts/AppLayout'
+import { TenantDashboard } from '@/components/dashboard/TenantDashboard'
+import { LandlordDashboard } from '@/components/dashboard/LandlordDashboard'
 import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
+import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth()
+  const [userType, setUserType] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return
+      
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('user_type, full_name')
+          .eq('id', user.id)
+          .single()
+
+        if (error) throw error
+        setUserType(data?.user_type || null)
+      } catch (error) {
+        console.error('Error fetching user profile:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUserProfile()
+  }, [user])
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <AppLayout>
@@ -18,34 +51,7 @@ const Dashboard: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Quick Stats
-            </h3>
-            <p className="text-gray-500">
-              Dashboard content will be implemented here
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Recent Activity
-            </h3>
-            <p className="text-gray-500">
-              Activity feed will be shown here
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Actions
-            </h3>
-            <p className="text-gray-500">
-              Quick actions will be available here
-            </p>
-          </div>
-        </div>
+        {userType === 'landlord' ? <LandlordDashboard /> : <TenantDashboard />}
       </div>
     </AppLayout>
   )
