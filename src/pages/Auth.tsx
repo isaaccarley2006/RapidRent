@@ -1,8 +1,16 @@
 
 import React from 'react'
 import { AuthLayout } from '@/components/layouts/AuthLayout'
+import { useAuthRedirect } from '@/hooks/useAuthRedirect'
+import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 
 const Auth: React.FC = () => {
+  const { loading } = useAuthRedirect()
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
+
   return (
     <AuthLayout>
       <div className="text-center">
