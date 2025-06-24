@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Heading } from '@/components/ui/heading'
 import { Search } from 'lucide-react'
 
 export const HeroSection: React.FC = () => {
@@ -27,9 +26,14 @@ export const HeroSection: React.FC = () => {
   return (
     <section className="py-20 px-6">
       <div className="max-w-4xl mx-auto text-center">
-        <Heading level={1} highlight="place to call home." className="mb-6 leading-tight">
-          Find your perfect place to call home.
-        </Heading>
+        <div className="mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-text-primary leading-tight">
+            Find your perfect
+          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mt-2 leading-tight">
+            place to call home.
+          </h1>
+        </div>
         <p className="text-xl text-text-muted mb-12 max-w-2xl mx-auto">
           Discover amazing rental properties and connect with trusted landlords. 
           Your next home is just a search away.
