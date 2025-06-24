@@ -24,11 +24,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
     try {
       if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({
+        // Sign up without email confirmation
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
             data: {
               full_name: fullName
             }
@@ -37,10 +37,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
         
         if (error) throw error
         
-        toast({
-          title: "Account created! ✅",
-          description: "Please check your email to verify your account.",
-        })
+        if (data.user && !data.session) {
+          toast({
+            title: "Account created! ✅",
+            description: "Please check your email to verify your account.",
+          })
+        } else {
+          toast({
+            title: "Welcome to RentView! 🎉",
+            description: "Your account has been created successfully.",
+          })
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -55,6 +62,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
         })
       }
     } catch (error: any) {
+      console.error('Auth error:', error)
       toast({
         title: "Something went wrong",
         description: error.message,

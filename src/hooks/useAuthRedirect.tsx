@@ -30,13 +30,40 @@ export const useAuthRedirect = () => {
       // If logged in, check profile completion
       setProfileLoading(true)
       try {
-        const { data: profile } = await supabase
+        const { data: profile, error } = await supabase
           .from('profiles')
-          .select('profile_complete')
+          .select('profile_complete, user_type')
           .eq('id', user.id)
-          .single()
+          .maybeSingle()
+
+        console.log('Profile data:', profile)
+        console.log('Profile error:', error)
+
+        // If profile doesn't exist, create one and redirect to onboarding
+        if (!profile && !error) {
+          console.log('No profile found, creating one...')
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({
+              id: user.id,
+              email: user.email,
+              profile_complete: false
+            })
+          
+          if (insertError) {
+            console.error('Error creating profile:', insertError)
+          }
+          
+          if (currentPath !== '/onboarding') {
+            navigate('/onboarding', { replace: true })
+          }
+          setProfileLoading(false)
+          setRedirecting(false)
+          return
+        }
 
         const isOnboardingComplete = profile?.profile_complete || false
+        console.log('Profile complete:', isOnboardingComplete)
 
         // Redirect based on profile completion status
         if (!isOnboardingComplete && currentPath !== '/onboarding') {
@@ -46,7 +73,7 @@ export const useAuthRedirect = () => {
         }
       } catch (error) {
         console.error('Error checking profile:', error)
-        // If profile doesn't exist, redirect to onboarding
+        // If any error occurs, redirect to onboarding to be safe
         if (currentPath !== '/onboarding') {
           navigate('/onboarding', { replace: true })
         }

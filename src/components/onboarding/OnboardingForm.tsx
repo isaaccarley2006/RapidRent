@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase'
 import { useToast } from '@/hooks/use-toast'
 import { useAuth } from '@/contexts/AuthContext'
 import { Loader2 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 interface FormData {
   fullName: string
@@ -24,6 +25,7 @@ interface FormErrors {
 export const OnboardingForm: React.FC = () => {
   const { user } = useAuth()
   const { toast } = useToast()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     phone: '',
@@ -61,29 +63,57 @@ export const OnboardingForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user) return
+    if (!user || isSubmitting) return
     
     if (!validateForm()) return
     
     setIsSubmitting(true)
     
     try {
-      const { error } = await supabase
+      console.log('Submitting onboarding form for user:', user.id)
+      console.log('Form data:', formData)
+
+      // First try to update, if it fails, try to insert
+      const { error: updateError } = await supabase
         .from('profiles')
         .update({
           full_name: formData.fullName.trim(),
           phone: formData.phone.trim(),
           user_type: formData.userType,
-          profile_complete: true
+          profile_complete: true,
+          email: user.email
         })
         .eq('id', user.id)
       
-      if (error) throw error
+      if (updateError) {
+        console.error('Update failed, trying insert:', updateError)
+        // If update fails, try insert
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email,
+            full_name: formData.fullName.trim(),
+            phone: formData.phone.trim(),
+            user_type: formData.userType,
+            profile_complete: true
+          })
+        
+        if (insertError) throw insertError
+      }
+      
+      console.log('Profile updated successfully')
       
       toast({
         title: "Welcome to RentView! 🎉",
         description: "Your profile has been completed successfully."
       })
+
+      // Navigate directly to dashboard
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true })
+      }, 1000)
+      
     } catch (error: any) {
       console.error('Profile update error:', error)
       toast({
