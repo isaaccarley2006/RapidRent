@@ -31,6 +31,16 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
     return userType ? `/dashboard/${userType}` : '/dashboard'
   }
 
+  const handleLogoClick = () => {
+    if (user) {
+      // For authenticated users, logo takes them to dashboard
+      navigate(getDashboardPath())
+    } else {
+      // For unauthenticated users, logo takes them to home
+      navigate('/')
+    }
+  }
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
@@ -42,39 +52,16 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
           {/* Logo */}
           <div 
             className="text-2xl font-bold text-text-primary cursor-pointer"
-            onClick={() => navigate('/')}
+            onClick={handleLogoClick}
           >
             Rent<span className="text-primary">View</span>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {/* Public Links */}
-            <button 
-              onClick={() => navigate('/')}
-              className={`px-3 py-2 text-sm font-medium transition-colors ${
-                isActivePath('/') 
-                  ? 'text-primary font-semibold' 
-                  : 'text-text-primary hover:text-primary'
-              }`}
-            >
-              Home
-            </button>
-
-            <button 
-              onClick={() => navigate('/listings')}
-              className={`px-3 py-2 text-sm font-medium transition-colors ${
-                isActivePath('/listings') 
-                  ? 'text-primary font-semibold' 
-                  : 'text-text-primary hover:text-primary'
-              }`}
-            >
-              Listings
-            </button>
-
             {user ? (
               <>
-                {/* Authenticated User Links */}
+                {/* Authenticated User Links - No Home button */}
                 <button 
                   onClick={() => navigate(getDashboardPath())}
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
@@ -84,6 +71,17 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
                   }`}
                 >
                   Dashboard
+                </button>
+
+                <button 
+                  onClick={() => navigate('/listings')}
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    isActivePath('/listings') 
+                      ? 'text-primary font-semibold' 
+                      : 'text-text-primary hover:text-primary'
+                  }`}
+                >
+                  Listings
                 </button>
 
                 {userType === 'landlord' && (
@@ -110,6 +108,28 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
             ) : (
               <>
                 {/* Public User Links */}
+                <button 
+                  onClick={() => navigate('/')}
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    isActivePath('/') 
+                      ? 'text-primary font-semibold' 
+                      : 'text-text-primary hover:text-primary'
+                  }`}
+                >
+                  Home
+                </button>
+
+                <button 
+                  onClick={() => navigate('/listings')}
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    isActivePath('/listings') 
+                      ? 'text-primary font-semibold' 
+                      : 'text-text-primary hover:text-primary'
+                  }`}
+                >
+                  Listings
+                </button>
+
                 <button 
                   onClick={() => navigate('/auth')}
                   className="px-3 py-2 text-sm font-medium text-text-primary hover:text-primary transition-colors"
@@ -140,36 +160,9 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
             <div className="flex flex-col space-y-3">
-              <button 
-                onClick={() => {
-                  navigate('/')
-                  setIsMobileMenuOpen(false)
-                }}
-                className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
-                  isActivePath('/') 
-                    ? 'text-primary font-semibold' 
-                    : 'text-text-primary hover:text-primary'
-                }`}
-              >
-                Home
-              </button>
-
-              <button 
-                onClick={() => {
-                  navigate('/listings')
-                  setIsMobileMenuOpen(false)
-                }}
-                className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
-                  isActivePath('/listings') 
-                    ? 'text-primary font-semibold' 
-                    : 'text-text-primary hover:text-primary'
-                }`}
-              >
-                Listings
-              </button>
-
               {user ? (
                 <>
+                  {/* Authenticated Mobile Links - No Home button */}
                   <button 
                     onClick={() => {
                       navigate(getDashboardPath())
@@ -182,6 +175,20 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
                     }`}
                   >
                     Dashboard
+                  </button>
+
+                  <button 
+                    onClick={() => {
+                      navigate('/listings')
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
+                      isActivePath('/listings') 
+                        ? 'text-primary font-semibold' 
+                        : 'text-text-primary hover:text-primary'
+                    }`}
+                  >
+                    Listings
                   </button>
 
                   {userType === 'landlord' && (
@@ -212,6 +219,35 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
                 </>
               ) : (
                 <>
+                  {/* Public Mobile Links */}
+                  <button 
+                    onClick={() => {
+                      navigate('/')
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
+                      isActivePath('/') 
+                        ? 'text-primary font-semibold' 
+                        : 'text-text-primary hover:text-primary'
+                    }`}
+                  >
+                    Home
+                  </button>
+
+                  <button 
+                    onClick={() => {
+                      navigate('/listings')
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
+                      isActivePath('/listings') 
+                        ? 'text-primary font-semibold' 
+                        : 'text-text-primary hover:text-primary'
+                    }`}
+                  >
+                    Listings
+                  </button>
+
                   <button 
                     onClick={() => {
                       navigate('/auth')

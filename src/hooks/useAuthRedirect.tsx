@@ -98,12 +98,9 @@ export const useAuthRedirect = () => {
           const dashboardPath = userType === 'tenant' ? '/dashboard/tenant' : '/dashboard/landlord'
           
           // Redirect completed profiles away from auth/onboarding to appropriate dashboard
-          if (currentPath === '/auth' || currentPath === '/onboarding') {
+          // Also redirect from home page to dashboard for authenticated users
+          if (currentPath === '/auth' || currentPath === '/onboarding' || currentPath === '/') {
             console.log('Redirecting to dashboard:', dashboardPath)
-            navigate(dashboardPath, { replace: true })
-          } else if (currentPath === '/') {
-            // Also redirect from home page if profile is complete
-            console.log('Redirecting from home to dashboard:', dashboardPath)
             navigate(dashboardPath, { replace: true })
           } else if (currentPath === '/dashboard' && userType) {
             // Redirect generic /dashboard to specific dashboard
