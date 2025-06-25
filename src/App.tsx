@@ -25,63 +25,61 @@ const App = () => (
       <AuthProvider>
         <Toaster />
         <BrowserRouter>
-          <AppLayout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/listings" element={<Listings />} />
-              <Route path="/properties/:id" element={<PropertyDetails />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route 
-                path="/onboarding" 
-                element={
-                  <ProtectedRoute>
-                    <Onboarding />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/dashboard/tenant" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/dashboard/landlord" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/offers/new/:propertyId" 
-                element={
-                  <ProtectedRoute>
-                    <MakeOffer />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AppLayout>
+          <Routes>
+            <Route path="/" element={<AppLayout><Home /></AppLayout>} />
+            <Route path="/listings" element={<AppLayout><Listings /></AppLayout>} />
+            <Route path="/properties/:id" element={<AppLayout><PropertyDetails /></AppLayout>} />
+            <Route path="/auth" element={<Auth />} />
+            <Route 
+              path="/onboarding" 
+              element={
+                <ProtectedRoute>
+                  <Onboarding />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/tenant" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/landlord" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout><Profile /></AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/offers/new/:propertyId" 
+              element={
+                <ProtectedRoute>
+                  <AppLayout><MakeOffer /></AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
+          </Routes>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
