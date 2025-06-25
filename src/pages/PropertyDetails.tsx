@@ -142,7 +142,7 @@ const PropertyDetails: React.FC = () => {
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Property Image Placeholder */}
         <div className="mb-8">
-          <div className="w-full h-96 bg-muted rounded-xl flex items-center justify-center">
+          <div className="w-full h-96 bg-surface rounded-xl flex items-center justify-center">
             <div className="text-center">
               <Home className="w-16 h-16 text-text-muted mx-auto mb-4" />
               <p className="text-text-muted">Property Image</p>

@@ -26,21 +26,21 @@ export default {
 				background: '#FFFFFF',
 				foreground: '#1F2937',
 				primary: {
-					DEFAULT: '#1AA5A5',
-					dark: '#014D4E',
+					DEFAULT: '#FA6400',
+					dark: '#C14E00',
 					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: '#92B5A5',
+					DEFAULT: '#FFE1CC',
 					foreground: '#1F2937'
 				},
 				accent: {
-					DEFAULT: '#D5692D',
+					DEFAULT: '#006F94',
 					foreground: '#FFFFFF'
 				},
-				surface: '#F2E5B1',
+				surface: '#F9F9F9',
 				muted: {
-					DEFAULT: '#C8D6B9',
+					DEFAULT: '#E0E0E0',
 					light: '#F3F4F6',
 					foreground: '#6B7280'
 				},

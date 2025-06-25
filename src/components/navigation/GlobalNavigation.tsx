@@ -46,7 +46,7 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <header className="bg-white border-b border-muted shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -100,7 +100,7 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
-                  className="border-text-muted text-text-primary hover:bg-gray-50 rounded-xl"
+                  className="border-muted text-text-primary hover:bg-surface rounded-xl"
                 >
                   Sign Out
                 </Button>
@@ -158,7 +158,7 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
+          <div className="md:hidden border-t border-muted py-4">
             <div className="flex flex-col space-y-3">
               {user ? (
                 <>

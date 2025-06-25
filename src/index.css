@@ -16,24 +16,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 210 14% 20%;
 
-    --primary: 180 69% 39%;
+    --primary: 21 100% 49%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 155 25% 63%;
+    --secondary: 21 100% 90%;
     --secondary-foreground: 210 14% 20%;
 
-    --muted: 98 27% 74%;
+    --muted: 0 0% 88%;
     --muted-foreground: 215 8% 50%;
 
-    --accent: 23 75% 51%;
+    --accent: 200 100% 29%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 98 27% 74%;
-    --input: 98 27% 74%;
-    --ring: 180 69% 39%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 21 100% 49%;
 
     --radius: 0.5rem;
 
@@ -45,6 +45,17 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Brand palette CSS variables */
+    --primary-hex: #FA6400;
+    --primary-dark-hex: #C14E00;
+    --secondary-hex: #FFE1CC;
+    --accent-hex: #006F94;
+    --background-hex: #FFFFFF;
+    --surface-hex: #F9F9F9;
+    --muted-hex: #E0E0E0;
+    --text-primary-hex: #1F2937;
+    --text-muted-hex: #6B7280;
   }
 
   .dark {
