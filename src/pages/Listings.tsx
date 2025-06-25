@@ -1,13 +1,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { AppLayout } from '@/components/layouts/AppLayout'
 import { PropertyCard } from '@/components/listings/PropertyCard'
 import { SearchFilters } from '@/components/listings/SearchFilters'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { Heading } from '@/components/ui/heading'
-import { ArrowLeft } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useQuery } from '@tanstack/react-query'
 
@@ -90,106 +88,65 @@ const Listings: React.FC = () => {
     setSearchQuery(query)
   }
 
-  const handleBackToHome = () => {
-    navigate('/')
-  }
-
   if (isLoading) {
     return <LoadingSpinner />
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      {/* Header */}
-      <header className="border-b border-muted bg-white">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button 
-                variant="ghost" 
-                onClick={handleBackToHome}
-                className="p-2 text-text-muted hover:text-text-primary"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-              <div className="text-2xl font-bold text-text-primary">
-                Rent<span className="text-primary">View</span>
-              </div>
-            </div>
-            <nav className="hidden md:flex items-center space-x-8">
-              <Button 
-                onClick={() => navigate('/auth')}
-                variant="ghost"
-                className="text-text-muted hover:text-text-primary"
-              >
-                Sign In
-              </Button>
-              <Button 
-                onClick={() => navigate('/auth')}
-                className="bg-primary hover:bg-primary-dark text-white rounded-xl"
-              >
-                Get Started
-              </Button>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="px-6 py-8">
+      <div className="mb-8">
+        <Heading level={1} className="text-text-primary mb-2">
+          Property Listings
+        </Heading>
+        <p className="text-text-muted">
+          Find your perfect rental property
+        </p>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8">
-          <Heading level={1} className="text-text-primary mb-2">
-            Property Listings
-          </Heading>
+      <SearchFilters
+        filters={filters}
+        searchQuery={searchQuery}
+        onFiltersChange={handleFiltersChange}
+        onSearchChange={handleSearchChange}
+      />
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+          <p className="text-red-800">
+            Error loading properties. Please try again.
+          </p>
+          <button
+            onClick={() => refetch()}
+            className="mt-2 text-primary hover:text-primary-dark font-medium"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {properties && properties.length === 0 && (
+        <div className="bg-white rounded-xl shadow-sm border border-muted p-12 text-center">
+          <div className="text-text-muted mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0v-3.586a1 1 0 01.293-.707l6.414-6.414a1 1 0 011.414 0l6.414 6.414a1 1 0 01.293.707V21M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold text-text-primary mb-2">
+            No properties found
+          </h3>
           <p className="text-text-muted">
-            Find your perfect rental property
+            Try adjusting your filters or search criteria
           </p>
         </div>
+      )}
 
-        <SearchFilters
-          filters={filters}
-          searchQuery={searchQuery}
-          onFiltersChange={handleFiltersChange}
-          onSearchChange={handleSearchChange}
-        />
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-            <p className="text-red-800">
-              Error loading properties. Please try again.
-            </p>
-            <button
-              onClick={() => refetch()}
-              className="mt-2 text-primary hover:text-primary-dark font-medium"
-            >
-              Retry
-            </button>
-          </div>
-        )}
-
-        {properties && properties.length === 0 && (
-          <div className="bg-white rounded-xl shadow-sm border border-muted p-12 text-center">
-            <div className="text-text-muted mb-4">
-              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0v-3.586a1 1 0 01.293-.707l6.414-6.414a1 1 0 011.414 0l6.414 6.414a1 1 0 01.293.707V21M9 12l2 2 4-4" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-text-primary mb-2">
-              No properties found
-            </h3>
-            <p className="text-text-muted">
-              Try adjusting your filters or search criteria
-            </p>
-          </div>
-        )}
-
-        {properties && properties.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
-        )}
-      </div>
+      {properties && properties.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {properties.map((property) => (
+            <PropertyCard key={property.id} property={property} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
