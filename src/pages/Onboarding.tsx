@@ -13,9 +13,11 @@ const Onboarding: React.FC = () => {
   }
 
   return (
-    <AuthLayout>
-      <OnboardingForm />
-    </AuthLayout>
+    <div className="min-h-screen bg-white font-sans">
+      <AuthLayout>
+        <OnboardingForm />
+      </AuthLayout>
+    </div>
   )
 }
 

@@ -42,7 +42,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   }
 
   return (
-    <div className="bg-card rounded-xl shadow-sm border border-muted p-6 mb-8">
+    <div className="bg-white rounded-xl shadow-sm border border-muted p-6 mb-8">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Search Input */}
         <div className="flex-1">
@@ -53,7 +53,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               placeholder="Search properties..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 bg-card border-muted focus:border-primary focus:ring-primary"
+              className="pl-10 bg-white border-muted focus:border-primary focus:ring-primary"
             />
           </div>
         </div>
@@ -65,7 +65,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             placeholder="Location"
             value={filters.location}
             onChange={(e) => handleFilterChange('location', e.target.value)}
-            className="bg-card border-muted focus:border-primary focus:ring-primary"
+            className="bg-white border-muted focus:border-primary focus:ring-primary"
           />
         </div>
 
@@ -76,14 +76,14 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             placeholder="Min price"
             value={filters.minPrice}
             onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-            className="bg-card border-muted focus:border-primary focus:ring-primary"
+            className="bg-white border-muted focus:border-primary focus:ring-primary"
           />
           <Input
             type="number"
             placeholder="Max price"
             value={filters.maxPrice}
             onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-            className="bg-card border-muted focus:border-primary focus:ring-primary"
+            className="bg-white border-muted focus:border-primary focus:ring-primary"
           />
         </div>
 
@@ -92,7 +92,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           <select
             value={filters.status}
             onChange={(e) => handleFilterChange('status', e.target.value)}
-            className="w-full h-10 px-3 py-2 text-sm bg-card border border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-text-primary"
+            className="w-full h-10 px-3 py-2 text-sm bg-white border border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-text-primary"
           >
             <option value="listed">Listed</option>
             <option value="rented">Rented</option>

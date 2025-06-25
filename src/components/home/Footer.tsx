@@ -6,7 +6,7 @@ export const Footer: React.FC = () => {
   const navigate = useNavigate()
 
   return (
-    <footer className="bg-card border-t border-muted py-16 px-6">
+    <footer className="bg-white border-t border-muted py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>

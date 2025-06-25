@@ -30,7 +30,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   }
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-card">
+    <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <CardTitle className="text-xl font-semibold text-text-primary line-clamp-2">

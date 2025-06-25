@@ -12,7 +12,7 @@ export const FeaturesSection: React.FC = () => {
           Everything you need in one place
         </Heading>
         <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-card rounded-xl shadow-sm border border-muted p-8 text-center">
+          <Card className="bg-white rounded-xl shadow-sm border border-muted p-8 text-center">
             <CardContent className="pt-0">
               <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
                 <HomeIcon className="w-8 h-8 text-white" />
@@ -24,7 +24,7 @@ export const FeaturesSection: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-card rounded-xl shadow-sm border border-muted p-8 text-center">
+          <Card className="bg-white rounded-xl shadow-sm border border-muted p-8 text-center">
             <CardContent className="pt-0">
               <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
                 <Users className="w-8 h-8 text-white" />
@@ -36,7 +36,7 @@ export const FeaturesSection: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="bg-card rounded-xl shadow-sm border border-muted p-8 text-center">
+          <Card className="bg-white rounded-xl shadow-sm border border-muted p-8 text-center">
             <CardContent className="pt-0">
               <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
                 <Shield className="w-8 h-8 text-white" />

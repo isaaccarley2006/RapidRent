@@ -18,9 +18,11 @@ const Auth: React.FC = () => {
   }
 
   return (
-    <AuthLayout>
-      <AuthForm mode={authMode} onToggleMode={toggleAuthMode} />
-    </AuthLayout>
+    <div className="min-h-screen bg-white font-sans">
+      <AuthLayout>
+        <AuthForm mode={authMode} onToggleMode={toggleAuthMode} />
+      </AuthLayout>
+    </div>
   )
 }
 

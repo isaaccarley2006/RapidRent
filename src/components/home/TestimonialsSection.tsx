@@ -6,13 +6,13 @@ import { Star } from 'lucide-react'
 
 export const TestimonialsSection: React.FC = () => {
   return (
-    <section className="py-20 px-6 bg-background">
+    <section className="py-20 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
         <Heading level={2} className="text-center text-text-primary mb-16">
           What our users say
         </Heading>
         <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-card rounded-xl shadow-sm border border-muted p-6">
+          <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -34,7 +34,7 @@ export const TestimonialsSection: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-xl shadow-sm border border-muted p-6">
+          <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -56,7 +56,7 @@ export const TestimonialsSection: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-xl shadow-sm border border-muted p-6">
+          <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (

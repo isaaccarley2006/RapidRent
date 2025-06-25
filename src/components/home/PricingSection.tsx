@@ -16,7 +16,7 @@ export const PricingSection: React.FC = () => {
           Simple, transparent pricing
         </Heading>
         <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-card rounded-xl shadow-sm border-2 border-muted p-8 text-center">
+          <Card className="bg-white rounded-xl shadow-sm border-2 border-muted p-8 text-center">
             <CardContent className="pt-0">
               <h3 className="text-2xl font-bold text-text-primary mb-2">Free Forever</h3>
               <div className="text-4xl font-bold text-text-primary mb-6">£0</div>
@@ -44,7 +44,7 @@ export const PricingSection: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-xl shadow-lg border-2 border-primary p-8 text-center relative">
+          <Card className="bg-white rounded-xl shadow-lg border-2 border-primary p-8 text-center relative">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <span className="bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold">
                 Most Popular
@@ -76,7 +76,7 @@ export const PricingSection: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-xl shadow-sm border-2 border-muted p-8 text-center">
+          <Card className="bg-white rounded-xl shadow-sm border-2 border-muted p-8 text-center">
             <CardContent className="pt-0">
               <h3 className="text-2xl font-bold text-text-primary mb-2">Premium Insights</h3>
               <div className="text-4xl font-bold text-text-primary mb-6">

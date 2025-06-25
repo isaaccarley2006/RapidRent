@@ -7,7 +7,7 @@ export const Navigation: React.FC = () => {
   const navigate = useNavigate()
 
   return (
-    <header className="border-b border-muted bg-card">
+    <header className="border-b border-muted bg-white">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold text-text-primary">

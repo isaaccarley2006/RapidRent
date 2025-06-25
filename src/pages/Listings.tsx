@@ -99,9 +99,9 @@ const Listings: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="min-h-screen bg-white font-sans">
       {/* Header */}
-      <header className="border-b border-muted bg-card">
+      <header className="border-b border-muted bg-white">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -167,7 +167,7 @@ const Listings: React.FC = () => {
         )}
 
         {properties && properties.length === 0 && (
-          <div className="bg-card rounded-xl shadow-sm border border-muted p-12 text-center">
+          <div className="bg-white rounded-xl shadow-sm border border-muted p-12 text-center">
             <div className="text-text-muted mb-4">
               <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0v-3.586a1 1 0 01.293-.707l6.414-6.414a1 1 0 011.414 0l6.414 6.414a1 1 0 01.293.707V21M9 12l2 2 4-4" />

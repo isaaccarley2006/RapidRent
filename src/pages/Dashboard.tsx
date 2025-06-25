@@ -43,10 +43,10 @@ const Dashboard: React.FC = () => {
     <AppLayout>
       <div className="px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-gray-900">
+          <h1 className="text-3xl font-semibold text-text-primary">
             Dashboard
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-text-muted mt-2">
             Welcome back, {user?.email}
           </p>
         </div>

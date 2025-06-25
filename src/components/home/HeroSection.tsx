@@ -24,7 +24,7 @@ export const HeroSection: React.FC = () => {
   }
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-20 px-6 bg-white">
       <div className="max-w-4xl mx-auto text-center">
         <div className="mb-6">
           <h1 className="text-6xl md:text-7xl font-bold text-text-primary leading-tight">
@@ -49,7 +49,7 @@ export const HeroSection: React.FC = () => {
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-muted focus:border-primary focus:ring-primary bg-card"
+              className="pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-muted focus:border-primary focus:ring-primary bg-white"
             />
           </div>
         </div>

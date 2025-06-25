@@ -11,7 +11,7 @@ import {
 
 const Home: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="min-h-screen bg-white font-sans">
       <Navigation />
       <HeroSection />
       <FeaturesSection />
