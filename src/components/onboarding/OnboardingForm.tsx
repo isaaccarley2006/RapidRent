@@ -70,52 +70,48 @@ export const OnboardingForm: React.FC = () => {
     setIsSubmitting(true)
     
     try {
-      console.log('Submitting onboarding form for user:', user.id)
+      console.log('=== ONBOARDING FORM SUBMISSION ===')
+      console.log('User ID:', user.id)
       console.log('Form data:', formData)
 
-      // First try to update, if it fails, try to insert
-      const { error: updateError } = await supabase
+      // Use upsert to handle both insert and update cases
+      const { error } = await supabase
         .from('profiles')
-        .update({
+        .upsert({
+          id: user.id,
+          email: user.email,
           full_name: formData.fullName.trim(),
           phone: formData.phone.trim(),
           user_type: formData.userType,
           profile_complete: true,
-          email: user.email
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'id'
         })
-        .eq('id', user.id)
       
-      if (updateError) {
-        console.error('Update failed, trying insert:', updateError)
-        // If update fails, try insert
-        const { error: insertError } = await supabase
-          .from('profiles')
-          .insert({
-            id: user.id,
-            email: user.email,
-            full_name: formData.fullName.trim(),
-            phone: formData.phone.trim(),
-            user_type: formData.userType,
-            profile_complete: true
-          })
-        
-        if (insertError) throw insertError
+      if (error) {
+        console.error('Profile upsert error:', error)
+        throw error
       }
       
       console.log('Profile updated successfully')
       
       toast({
         title: "Welcome to RentView! 🎉",
-        description: "Your profile has been completed successfully."
+        description: `Your ${formData.userType} profile has been completed successfully.`
       })
 
-      // Navigate directly to dashboard
+      // Navigate to appropriate dashboard based on user type
+      const dashboardPath = formData.userType === 'tenant' ? '/dashboard/tenant' : '/dashboard/landlord'
+      console.log('Redirecting to:', dashboardPath)
+      
+      // Small delay to let the toast show, then redirect
       setTimeout(() => {
-        navigate('/dashboard', { replace: true })
-      }, 1000)
+        navigate(dashboardPath, { replace: true })
+      }, 1500)
       
     } catch (error: any) {
-      console.error('Profile update error:', error)
+      console.error('Profile completion error:', error)
       toast({
         title: "Something went wrong",
         description: error.message || "Failed to complete profile. Please try again.",

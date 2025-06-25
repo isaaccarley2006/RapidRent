@@ -24,14 +24,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
     try {
       if (mode === 'signup') {
-        // Sign up without email confirmation
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
               full_name: fullName
-            }
+            },
+            emailRedirectTo: `${window.location.origin}/`
           }
         })
         
@@ -39,8 +39,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
         
         if (data.user && !data.session) {
           toast({
-            title: "Account created! ✅",
-            description: "Please check your email to verify your account.",
+            title: "Check your email! 📧",
+            description: "We've sent you a confirmation link to complete your registration.",
           })
         } else {
           toast({
@@ -57,15 +57,26 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
         if (error) throw error
         
         toast({
-          title: "Welcome back! 🎉",
+          title: "Welcome back! 👋",
           description: "You've been signed in successfully.",
         })
       }
     } catch (error: any) {
       console.error('Auth error:', error)
+      let errorMessage = error.message
+      
+      // Provide user-friendly error messages
+      if (error.message.includes('Invalid login credentials')) {
+        errorMessage = 'Invalid email or password. Please check your credentials and try again.'
+      } else if (error.message.includes('User already registered')) {
+        errorMessage = 'An account with this email already exists. Please sign in instead.'
+      } else if (error.message.includes('Password should be at least 6 characters')) {
+        errorMessage = 'Password must be at least 6 characters long.'
+      }
+      
       toast({
-        title: "Something went wrong",
-        description: error.message,
+        title: "Authentication Error",
+        description: errorMessage,
         variant: "destructive"
       })
     } finally {
@@ -133,7 +144,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
               className="bg-white border-gray-300 rounded-xl h-11"
               placeholder="Enter your password"
               required
+              minLength={6}
             />
+            {mode === 'signup' && (
+              <p className="text-xs text-gray-500">Password must be at least 6 characters</p>
+            )}
           </div>
 
           <Button

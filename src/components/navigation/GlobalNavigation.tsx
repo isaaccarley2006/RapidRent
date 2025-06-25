@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
-import { supabase } from '@/lib/supabase'
 import { Menu, X } from 'lucide-react'
 
 interface NavigationProps {
@@ -21,7 +20,16 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
     navigate('/auth')
   }
 
-  const isActivePath = (path: string) => location.pathname === path
+  const isActivePath = (path: string) => {
+    if (path === '/dashboard' && userType) {
+      return location.pathname === `/dashboard/${userType}`
+    }
+    return location.pathname === path
+  }
+
+  const getDashboardPath = () => {
+    return userType ? `/dashboard/${userType}` : '/dashboard'
+  }
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -43,6 +51,17 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
           <nav className="hidden md:flex items-center space-x-6">
             {/* Public Links */}
             <button 
+              onClick={() => navigate('/')}
+              className={`px-3 py-2 text-sm font-medium transition-colors ${
+                isActivePath('/') 
+                  ? 'text-primary font-semibold' 
+                  : 'text-text-primary hover:text-primary'
+              }`}
+            >
+              Home
+            </button>
+
+            <button 
               onClick={() => navigate('/listings')}
               className={`px-3 py-2 text-sm font-medium transition-colors ${
                 isActivePath('/listings') 
@@ -50,14 +69,14 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
                   : 'text-text-primary hover:text-primary'
               }`}
             >
-              Browse
+              Listings
             </button>
 
             {user ? (
               <>
                 {/* Authenticated User Links */}
                 <button 
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => navigate(getDashboardPath())}
                   className={`px-3 py-2 text-sm font-medium transition-colors ${
                     isActivePath('/dashboard') 
                       ? 'text-primary font-semibold' 
@@ -123,6 +142,20 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
             <div className="flex flex-col space-y-3">
               <button 
                 onClick={() => {
+                  navigate('/')
+                  setIsMobileMenuOpen(false)
+                }}
+                className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
+                  isActivePath('/') 
+                    ? 'text-primary font-semibold' 
+                    : 'text-text-primary hover:text-primary'
+                }`}
+              >
+                Home
+              </button>
+
+              <button 
+                onClick={() => {
                   navigate('/listings')
                   setIsMobileMenuOpen(false)
                 }}
@@ -132,14 +165,14 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
                     : 'text-text-primary hover:text-primary'
                 }`}
               >
-                Browse
+                Listings
               </button>
 
               {user ? (
                 <>
                   <button 
                     onClick={() => {
-                      navigate('/dashboard')
+                      navigate(getDashboardPath())
                       setIsMobileMenuOpen(false)
                     }}
                     className={`px-3 py-2 text-left text-sm font-medium transition-colors ${

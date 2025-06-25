@@ -6,10 +6,15 @@ import { LandlordDashboard } from '@/components/dashboard/LandlordDashboard'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
+import { useToast } from '@/hooks/use-toast'
+import { useLocation } from 'react-router-dom'
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth()
+  const { toast } = useToast()
+  const location = useLocation()
   const [userType, setUserType] = useState<string | null>(null)
+  const [userProfile, setUserProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -19,39 +24,65 @@ const Dashboard: React.FC = () => {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('user_type, full_name')
+          .select('user_type, full_name, email, profile_complete')
           .eq('id', user.id)
           .single()
 
         if (error) throw error
+        
         setUserType(data?.user_type || null)
+        setUserProfile(data)
+
+        // Show welcome toast for new users (only once per session)
+        if (data?.profile_complete && !sessionStorage.getItem('welcomed')) {
+          const userTypeLabel = data.user_type === 'tenant' ? 'Tenant' : 'Landlord'
+          toast({
+            title: `Welcome back, ${data.full_name?.split(' ')[0] || 'User'}! 👋`,
+            description: `Your ${userTypeLabel} dashboard is ready to use.`,
+          })
+          sessionStorage.setItem('welcomed', 'true')
+        }
       } catch (error) {
         console.error('Error fetching user profile:', error)
+        toast({
+          title: "Error loading profile",
+          description: "Please try refreshing the page.",
+          variant: "destructive"
+        })
       } finally {
         setLoading(false)
       }
     }
 
     fetchUserProfile()
-  }, [user])
+  }, [user, toast])
 
   if (loading) {
     return <LoadingSpinner />
   }
+
+  // Determine if we're on a specific dashboard route
+  const isSpecificRoute = location.pathname.includes('/tenant') || location.pathname.includes('/landlord')
+  const routeUserType = location.pathname.includes('/tenant') ? 'tenant' : 
+                       location.pathname.includes('/landlord') ? 'landlord' : null
+
+  // Use route-specific user type if available, otherwise fall back to profile user type
+  const displayUserType = routeUserType || userType
 
   return (
     <AppLayout>
       <div className="px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-text-primary">
-            Dashboard
+            {displayUserType === 'tenant' ? 'Tenant Dashboard' : 
+             displayUserType === 'landlord' ? 'Landlord Dashboard' : 'Dashboard'}
           </h1>
           <p className="text-text-muted mt-2">
-            Welcome back, {user?.email}
+            Welcome back, {userProfile?.full_name || user?.email}
           </p>
         </div>
         
-        {userType === 'landlord' ? <LandlordDashboard /> : <TenantDashboard />}
+        {displayUserType === 'landlord' ? <LandlordDashboard /> : <TenantDashboard />}
       </div>
     </AppLayout>
   )

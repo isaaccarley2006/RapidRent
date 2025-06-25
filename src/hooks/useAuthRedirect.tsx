@@ -22,7 +22,6 @@ export const useAuthRedirect = () => {
       console.log('Current path:', currentPath)
       console.log('User:', user?.id)
       console.log('Session exists:', !!session)
-      console.log('Session access token exists:', !!session?.access_token)
 
       // If not logged in, redirect to auth (except if already on auth page)
       if (!user || !session) {
@@ -94,16 +93,23 @@ export const useAuthRedirect = () => {
         if (!isOnboardingComplete && currentPath !== '/onboarding') {
           console.log('Redirecting to onboarding (incomplete profile)')
           navigate('/onboarding', { replace: true })
-        } else if (isOnboardingComplete && (currentPath === '/auth' || currentPath === '/onboarding')) {
-          // Redirect completed profiles away from auth/onboarding
-          const dashboardPath = userType === 'tenant' ? '/dashboard' : '/dashboard'
-          console.log('Redirecting to dashboard:', dashboardPath)
-          navigate(dashboardPath, { replace: true })
-        } else if (isOnboardingComplete && currentPath === '/') {
-          // Also redirect from home page if profile is complete
-          const dashboardPath = userType === 'tenant' ? '/dashboard' : '/dashboard'
-          console.log('Redirecting from home to dashboard:', dashboardPath)
-          navigate(dashboardPath, { replace: true })
+        } else if (isOnboardingComplete) {
+          // Determine the correct dashboard path
+          const dashboardPath = userType === 'tenant' ? '/dashboard/tenant' : '/dashboard/landlord'
+          
+          // Redirect completed profiles away from auth/onboarding to appropriate dashboard
+          if (currentPath === '/auth' || currentPath === '/onboarding') {
+            console.log('Redirecting to dashboard:', dashboardPath)
+            navigate(dashboardPath, { replace: true })
+          } else if (currentPath === '/') {
+            // Also redirect from home page if profile is complete
+            console.log('Redirecting from home to dashboard:', dashboardPath)
+            navigate(dashboardPath, { replace: true })
+          } else if (currentPath === '/dashboard' && userType) {
+            // Redirect generic /dashboard to specific dashboard
+            console.log('Redirecting generic dashboard to specific:', dashboardPath)
+            navigate(dashboardPath, { replace: true })
+          }
         }
         
         console.log('=== REDIRECT COMPLETE ===')
