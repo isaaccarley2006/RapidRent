@@ -9,6 +9,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { AppLayout } from '@/components/layouts/AppLayout'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
+import EmailConfirmed from './pages/EmailConfirmed'
 import Onboarding from './pages/Onboarding'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/listings" element={<AppLayout><Listings /></AppLayout>} />
             <Route path="/properties/:id" element={<AppLayout><PropertyDetails /></AppLayout>} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/confirmed" element={<EmailConfirmed />} />
             <Route 
               path="/onboarding" 
               element={
