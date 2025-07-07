@@ -271,8 +271,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <AppLayout>
-      <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-text-primary">Tenant Profile</h1>
           <p className="text-text-muted mt-2">
@@ -725,8 +724,7 @@ const Profile: React.FC = () => {
             {saving ? <LoadingSpinner /> : 'Save Profile'}
           </Button>
         </div>
-      </div>
-    </AppLayout>
+    </div>
   )
 }
 
