@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/integrations/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -26,6 +26,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
     try {
       if (mode === 'signup') {
+        console.log('📧 Requesting OTP for signup:', email)
+        
         // For signup, use OTP instead of password - explicitly request email OTP
         const { error } = await supabase.auth.signInWithOtp({
           email,
@@ -37,8 +39,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
           }
         })
         
+        console.log('📧 OTP request response:', { error: error?.message })
+        
         if (error) throw error
         
+        console.log('✅ OTP sent successfully')
         toast({
           title: "Code sent! 📧",
           description: "We've sent a 6-digit verification code to your email.",

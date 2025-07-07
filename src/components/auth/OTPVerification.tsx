@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/integrations/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
@@ -42,6 +42,9 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
     }
 
     setLoading(true)
+    console.log('🔍 Attempting OTP verification for:', email)
+    console.log('🔍 OTP token:', otp)
+    
     try {
       const { data, error } = await supabase.auth.verifyOtp({
         email,
@@ -49,9 +52,12 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
         type: 'email'
       })
 
+      console.log('🔍 OTP verification response:', { data: !!data, error: error?.message })
+
       if (error) throw error
 
       if (data.session) {
+        console.log('✅ OTP verification successful - session created')
         toast({
           title: "Welcome to RentView! 🎉",
           description: "Your account has been created successfully.",
@@ -82,6 +88,8 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
     if (resendCooldown > 0) return
     
     setResendLoading(true)
+    console.log('🔄 Resending OTP for:', email)
+    
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
@@ -93,8 +101,11 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
         }
       })
 
+      console.log('🔄 Resend OTP response:', { error: error?.message })
+
       if (error) throw error
 
+      console.log('✅ OTP resent successfully')
       toast({
         title: "Code Sent! 📧",
         description: "A new verification code has been sent to your email.",
