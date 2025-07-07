@@ -127,30 +127,38 @@ export const PersonalInformationTab: React.FC<PersonalInformationTabProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Input
+                    type="text"
                     placeholder="Address Line 1"
                     value={addressComponents.line1}
                     onChange={(e) => updateAddressComponent('line1', e.target.value)}
+                    autoComplete="address-line1"
                   />
                 </div>
                 <div>
                   <Input
+                    type="text"
                     placeholder="Address Line 2 (optional)"
                     value={addressComponents.line2}
                     onChange={(e) => updateAddressComponent('line2', e.target.value)}
+                    autoComplete="address-line2"
                   />
                 </div>
                 <div>
                   <Input
+                    type="text"
                     placeholder="City"
                     value={addressComponents.city}
                     onChange={(e) => updateAddressComponent('city', e.target.value)}
+                    autoComplete="address-level2"
                   />
                 </div>
                 <div>
                   <Input
+                    type="text"
                     placeholder="Postcode"
                     value={addressComponents.postcode}
                     onChange={(e) => updateAddressComponent('postcode', e.target.value)}
+                    autoComplete="postal-code"
                   />
                 </div>
               </div>
