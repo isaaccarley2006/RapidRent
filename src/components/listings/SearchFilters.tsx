@@ -53,7 +53,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               placeholder="Search properties..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 bg-white border-muted focus:border-primary focus:ring-primary"
+              className="pl-10"
             />
           </div>
         </div>
@@ -65,7 +65,6 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             placeholder="Location"
             value={filters.location}
             onChange={(e) => handleFilterChange('location', e.target.value)}
-            className="bg-white border-muted focus:border-primary focus:ring-primary"
           />
         </div>
 
@@ -76,14 +75,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             placeholder="Min price"
             value={filters.minPrice}
             onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-            className="bg-white border-muted focus:border-primary focus:ring-primary"
           />
           <Input
             type="number"
             placeholder="Max price"
             value={filters.maxPrice}
             onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-            className="bg-white border-muted focus:border-primary focus:ring-primary"
           />
         </div>
 
