@@ -16,6 +16,7 @@ import Profile from './pages/Profile'
 import Listings from './pages/Listings'
 import PropertyDetails from './pages/PropertyDetails'
 import MakeOffer from './pages/MakeOffer'
+import CreateListing from './pages/CreateListing'
 import NotFound from './pages/NotFound'
 
 const queryClient = new QueryClient()
@@ -77,6 +78,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <AppLayout><MakeOffer /></AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/listings/new" 
+              element={
+                <ProtectedRoute>
+                  <CreateListing />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-listing" 
+              element={
+                <ProtectedRoute>
+                  <CreateListing />
                 </ProtectedRoute>
               } 
             />
