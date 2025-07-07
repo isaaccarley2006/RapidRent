@@ -68,7 +68,18 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                   : 'text-text-primary hover:text-primary'
               }`}
             >
-              Listings
+              {userType === 'landlord' ? 'Listings' : 'Properties'}
+            </button>
+
+            <button 
+              onClick={() => handleNavigation('/profile')}
+              className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
+                isActivePath('/profile') 
+                  ? 'text-primary font-semibold' 
+                  : 'text-text-primary hover:text-primary'
+              }`}
+            >
+              Profile
             </button>
 
             {userType === 'landlord' && (
