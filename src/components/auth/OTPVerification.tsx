@@ -46,7 +46,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
       const { data, error } = await supabase.auth.verifyOtp({
         email,
         token: otp,
-        type: 'signup'
+        type: 'email'
       })
 
       if (error) throw error
@@ -86,6 +86,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
+          shouldCreateUser: true,
           data: {
             full_name: fullName
           }

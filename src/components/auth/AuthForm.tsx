@@ -26,10 +26,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
     try {
       if (mode === 'signup') {
-        // For signup, use OTP instead of password
+        // For signup, use OTP instead of password - explicitly request email OTP
         const { error } = await supabase.auth.signInWithOtp({
           email,
           options: {
+            shouldCreateUser: true,
             data: {
               full_name: fullName
             }
