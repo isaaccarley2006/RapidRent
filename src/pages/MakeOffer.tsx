@@ -227,7 +227,7 @@ const MakeOffer: React.FC = () => {
 
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text-primary">Make an Offer</h1>
+          <h1 className="text-3xl font-semibold text-text-primary">Make an Offer</h1>
           <p className="text-text-muted mt-2">Submit your application for {property.title}</p>
         </div>
 

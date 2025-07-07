@@ -95,9 +95,9 @@ const Listings: React.FC = () => {
   return (
     <div className="px-6 py-8">
       <div className="mb-8">
-        <Heading level={1} className="text-text-primary mb-2">
+        <h1 className="text-3xl font-semibold text-text-primary">
           Property Listings
-        </Heading>
+        </h1>
         <p className="text-text-muted">
           Find your perfect rental property
         </p>
