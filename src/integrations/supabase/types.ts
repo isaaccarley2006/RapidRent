@@ -20,9 +20,11 @@ export type Database = {
           id: string
           message: string | null
           offer_price: number
+          preferred_move_in_date: string | null
           property_id: string
           status: string
           tenant_id: string
+          tenant_message: string | null
           updated_at: string
         }
         Insert: {
@@ -30,9 +32,11 @@ export type Database = {
           id?: string
           message?: string | null
           offer_price: number
+          preferred_move_in_date?: string | null
           property_id: string
           status?: string
           tenant_id: string
+          tenant_message?: string | null
           updated_at?: string
         }
         Update: {
@@ -40,9 +44,11 @@ export type Database = {
           id?: string
           message?: string | null
           offer_price?: number
+          preferred_move_in_date?: string | null
           property_id?: string
           status?: string
           tenant_id?: string
+          tenant_message?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -64,32 +70,59 @@ export type Database = {
       }
       profiles: {
         Row: {
+          additional_notes: string | null
+          annual_income: number | null
           created_at: string
+          current_rental_situation: string | null
           email: string | null
+          employment_status: string | null
           full_name: string | null
+          has_pets: boolean | null
           id: string
+          is_smoker: boolean | null
+          move_in_date: string | null
+          pet_details: string | null
           phone: string | null
           profile_complete: boolean
+          tenant_references: string | null
           updated_at: string
           user_type: string | null
         }
         Insert: {
+          additional_notes?: string | null
+          annual_income?: number | null
           created_at?: string
+          current_rental_situation?: string | null
           email?: string | null
+          employment_status?: string | null
           full_name?: string | null
+          has_pets?: boolean | null
           id: string
+          is_smoker?: boolean | null
+          move_in_date?: string | null
+          pet_details?: string | null
           phone?: string | null
           profile_complete?: boolean
+          tenant_references?: string | null
           updated_at?: string
           user_type?: string | null
         }
         Update: {
+          additional_notes?: string | null
+          annual_income?: number | null
           created_at?: string
+          current_rental_situation?: string | null
           email?: string | null
+          employment_status?: string | null
           full_name?: string | null
+          has_pets?: boolean | null
           id?: string
+          is_smoker?: boolean | null
+          move_in_date?: string | null
+          pet_details?: string | null
           phone?: string | null
           profile_complete?: boolean
+          tenant_references?: string | null
           updated_at?: string
           user_type?: string | null
         }

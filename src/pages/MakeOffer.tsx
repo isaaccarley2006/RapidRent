@@ -1,16 +1,196 @@
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Home, User, Calendar, DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
+import { useToast } from '@/hooks/use-toast'
+import { LoadingSpinner } from '@/components/common/LoadingSpinner'
+
+interface Property {
+  id: string
+  title: string
+  price: number | null
+  location: string | null
+}
+
+interface TenantProfile {
+  employment_status: string | null
+  annual_income: number | null
+  current_rental_situation: string | null
+  has_pets: boolean
+  pet_details: string | null
+  is_smoker: boolean
+  tenant_references: string | null
+  additional_notes: string | null
+}
 
 const MakeOffer: React.FC = () => {
   const { propertyId } = useParams<{ propertyId: string }>()
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const { toast } = useToast()
+  
+  const [property, setProperty] = useState<Property | null>(null)
+  const [profile, setProfile] = useState<TenantProfile | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  
+  // Form state
+  const [offerPrice, setOfferPrice] = useState('')
+  const [moveInDate, setMoveInDate] = useState('')
+  const [message, setMessage] = useState('')
+  
+  // Profile form state
+  const [employmentStatus, setEmploymentStatus] = useState('')
+  const [annualIncome, setAnnualIncome] = useState('')
+  const [currentSituation, setCurrentSituation] = useState('')
+  const [hasPets, setHasPets] = useState(false)
+  const [petDetails, setPetDetails] = useState('')
+  const [isSmoker, setIsSmoker] = useState(false)
+  const [references, setReferences] = useState('')
+  const [additionalNotes, setAdditionalNotes] = useState('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!propertyId || !user) return
+
+      try {
+        // Fetch property details
+        const { data: propertyData, error: propertyError } = await supabase
+          .from('properties')
+          .select('id, title, price, location')
+          .eq('id', propertyId)
+          .single()
+
+        if (propertyError) throw propertyError
+        setProperty(propertyData)
+
+        // Fetch tenant profile
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select(`
+            employment_status,
+            annual_income,
+            current_rental_situation,
+            has_pets,
+            pet_details,
+            is_smoker,
+            tenant_references,
+            additional_notes
+          `)
+          .eq('id', user.id)
+          .single()
+
+        if (profileError && profileError.code !== 'PGRST116') throw profileError
+        
+        if (profileData) {
+          setProfile(profileData)
+          setEmploymentStatus(profileData.employment_status || '')
+          setAnnualIncome(profileData.annual_income?.toString() || '')
+          setCurrentSituation(profileData.current_rental_situation || '')
+          setHasPets(profileData.has_pets || false)
+          setPetDetails(profileData.pet_details || '')
+          setIsSmoker(profileData.is_smoker || false)
+          setReferences(profileData.tenant_references || '')
+          setAdditionalNotes(profileData.additional_notes || '')
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        toast({
+          title: "Error loading data",
+          description: "Please try refreshing the page.",
+          variant: "destructive"
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [propertyId, user, toast])
+
+  const handleSubmitOffer = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!user || !propertyId) return
+
+    setSubmitting(true)
+
+    try {
+      // First update tenant profile
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          employment_status: employmentStatus,
+          annual_income: annualIncome ? parseFloat(annualIncome) : null,
+          current_rental_situation: currentSituation,
+          has_pets: hasPets,
+          pet_details: hasPets ? petDetails : null,
+          is_smoker: isSmoker,
+          tenant_references: references,
+          additional_notes: additionalNotes,
+          user_type: 'tenant'
+        })
+
+      if (profileError) throw profileError
+
+      // Submit the offer
+      const { error: offerError } = await supabase
+        .from('offers')
+        .insert({
+          property_id: propertyId,
+          tenant_id: user.id,
+          offer_price: parseFloat(offerPrice),
+          preferred_move_in_date: moveInDate,
+          tenant_message: message,
+          status: 'pending'
+        })
+
+      if (offerError) throw offerError
+
+      toast({
+        title: "Offer submitted successfully!",
+        description: "The landlord will review your offer and get back to you."
+      })
+
+      navigate(`/properties/${propertyId}`)
+    } catch (error) {
+      console.error('Error submitting offer:', error)
+      toast({
+        title: "Error submitting offer",
+        description: "Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   const handleBackToProperty = () => {
     navigate(`/properties/${propertyId}`)
+  }
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
+
+  if (!property) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-text-primary mb-4">Property not found</h2>
+          <Button onClick={() => navigate('/listings')}>Back to Listings</Button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -35,34 +215,186 @@ const MakeOffer: React.FC = () => {
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-text-primary">
-              Make an Offer
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-12">
-              <h2 className="text-xl font-semibold text-text-primary mb-4">
-                Coming Soon
-              </h2>
-              <p className="text-text-muted mb-6">
-                The offer submission feature is currently under development. 
-                You'll be able to make offers on properties soon!
-              </p>
-              <p className="text-sm text-text-muted mb-6">
-                Property ID: {propertyId}
-              </p>
-              <Button 
-                onClick={handleBackToProperty}
-                className="bg-primary hover:bg-primary-dark text-white rounded-xl"
-              >
-                Back to Property Details
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-text-primary">Make an Offer</h1>
+          <p className="text-text-muted mt-2">Submit your application for {property.title}</p>
+        </div>
+
+        <form onSubmit={handleSubmitOffer} className="space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Offer Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-primary" />
+                  Offer Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <Label htmlFor="offerPrice">Offer Price (£/month)</Label>
+                  <Input
+                    id="offerPrice"
+                    type="number"
+                    value={offerPrice}
+                    onChange={(e) => setOfferPrice(e.target.value)}
+                    placeholder={property.price ? `Listed at £${property.price.toLocaleString()}` : 'Enter your offer'}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="moveInDate">Preferred Move-in Date</Label>
+                  <Input
+                    id="moveInDate"
+                    type="date"
+                    value={moveInDate}
+                    onChange={(e) => setMoveInDate(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="message">Message to Landlord</Label>
+                  <Textarea
+                    id="message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Tell the landlord why you're interested in this property..."
+                    rows={4}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tenant Profile */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5 text-primary" />
+                  Your Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <Label htmlFor="employmentStatus">Employment Status</Label>
+                  <Select value={employmentStatus} onValueChange={setEmploymentStatus}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select employment status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="employed">Employed Full-time</SelectItem>
+                      <SelectItem value="self-employed">Self-employed</SelectItem>
+                      <SelectItem value="contract">Contract Worker</SelectItem>
+                      <SelectItem value="student">Student</SelectItem>
+                      <SelectItem value="retired">Retired</SelectItem>
+                      <SelectItem value="unemployed">Unemployed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="annualIncome">Annual Income (£)</Label>
+                  <Input
+                    id="annualIncome"
+                    type="number"
+                    value={annualIncome}
+                    onChange={(e) => setAnnualIncome(e.target.value)}
+                    placeholder="e.g. 35000"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="currentSituation">Current Rental Situation</Label>
+                  <Select value={currentSituation} onValueChange={setCurrentSituation}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select current situation" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="first-time">First-time renter</SelectItem>
+                      <SelectItem value="living-with-parents">Living with family</SelectItem>
+                      <SelectItem value="current-tenant">Current tenant</SelectItem>
+                      <SelectItem value="homeowner">Homeowner looking to rent</SelectItem>
+                      <SelectItem value="student-accommodation">Student accommodation</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="hasPets">Do you have pets?</Label>
+                  <Switch
+                    id="hasPets"
+                    checked={hasPets}
+                    onCheckedChange={setHasPets}
+                  />
+                </div>
+
+                {hasPets && (
+                  <div>
+                    <Label htmlFor="petDetails">Pet Details</Label>
+                    <Textarea
+                      id="petDetails"
+                      value={petDetails}
+                      onChange={(e) => setPetDetails(e.target.value)}
+                      placeholder="Describe your pets (type, breed, age, etc.)"
+                      rows={2}
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="isSmoker">Do you smoke?</Label>
+                  <Switch
+                    id="isSmoker"
+                    checked={isSmoker}
+                    onCheckedChange={setIsSmoker}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* References and Additional Info */}
+          <Card>
+            <CardHeader>
+              <CardTitle>References & Additional Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <Label htmlFor="references">References</Label>
+                <Textarea
+                  id="references"
+                  value={references}
+                  onChange={(e) => setReferences(e.target.value)}
+                  placeholder="Provide contact details for previous landlords, employers, or character references..."
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="additionalNotes">Additional Notes</Label>
+                <Textarea
+                  id="additionalNotes"
+                  value={additionalNotes}
+                  onChange={(e) => setAdditionalNotes(e.target.value)}
+                  placeholder="Any additional information you'd like the landlord to know..."
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Submit Button */}
+          <div className="flex justify-end space-x-4">
+            <Button type="button" variant="outline" onClick={handleBackToProperty}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={submitting}>
+              {submitting ? <LoadingSpinner /> : 'Submit Offer'}
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   )
