@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,6 +19,49 @@ export const PersonalInformationTab: React.FC<PersonalInformationTabProps> = ({
   setFormData,
   userEmail
 }) => {
+  // Parse current address into components
+  const parseAddress = (address: string) => {
+    if (!address) return { line1: '', line2: '', city: '', postcode: '' }
+    
+    const parts = address.split(',').map(part => part.trim())
+    return {
+      line1: parts[0] || '',
+      line2: parts[1] || '',
+      city: parts[2] || '',
+      postcode: parts[3] || ''
+    }
+  }
+
+  const [addressComponents, setAddressComponents] = useState(parseAddress(formData.current_address || ''))
+
+  // Update formData when address components change
+  useEffect(() => {
+    const addressParts = [
+      addressComponents.line1,
+      addressComponents.line2,
+      addressComponents.city,
+      addressComponents.postcode
+    ].filter(part => part.trim() !== '')
+    
+    const fullAddress = addressParts.join(', ')
+    if (fullAddress !== formData.current_address) {
+      setFormData({...formData, current_address: fullAddress})
+    }
+  }, [addressComponents])
+
+  // Update address components when formData changes (from external sources)
+  useEffect(() => {
+    const parsed = parseAddress(formData.current_address || '')
+    setAddressComponents(parsed)
+  }, [formData.current_address])
+
+  const updateAddressComponent = (field: string, value: string) => {
+    setAddressComponents(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -78,36 +121,63 @@ export const PersonalInformationTab: React.FC<PersonalInformationTabProps> = ({
 
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Address Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <Label htmlFor="current_address">Current Address *</Label>
-              <Textarea
-                id="current_address"
-                value={formData.current_address || ''}
-                onChange={(e) => setFormData({...formData, current_address: e.target.value})}
-                placeholder="Enter your current full address"
-                rows={3}
-              />
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <Label className="text-sm font-medium">Current Address *</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Input
+                    placeholder="Address Line 1"
+                    value={addressComponents.line1}
+                    onChange={(e) => updateAddressComponent('line1', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Input
+                    placeholder="Address Line 2 (optional)"
+                    value={addressComponents.line2}
+                    onChange={(e) => updateAddressComponent('line2', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Input
+                    placeholder="City"
+                    value={addressComponents.city}
+                    onChange={(e) => updateAddressComponent('city', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Input
+                    placeholder="Postcode"
+                    value={addressComponents.postcode}
+                    onChange={(e) => updateAddressComponent('postcode', e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
-            <div>
-              <Label htmlFor="time_at_current_address">Time at Current Address</Label>
-              <Select 
-                value={formData.time_at_current_address || ''} 
-                onValueChange={(value) => setFormData({...formData, time_at_current_address: value})}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="less-than-6-months">Less than 6 months</SelectItem>
-                  <SelectItem value="6-12-months">6-12 months</SelectItem>
-                  <SelectItem value="1-2-years">1-2 years</SelectItem>
-                  <SelectItem value="2-5-years">2-5 years</SelectItem>
-                  <SelectItem value="more-than-5-years">More than 5 years</SelectItem>
-                </SelectContent>
-              </Select>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label htmlFor="time_at_current_address">Time at Current Address</Label>
+                <Select 
+                  value={formData.time_at_current_address || ''} 
+                  onValueChange={(value) => setFormData({...formData, time_at_current_address: value})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="less-than-6-months">Less than 6 months</SelectItem>
+                    <SelectItem value="6-12-months">6-12 months</SelectItem>
+                    <SelectItem value="1-2-years">1-2 years</SelectItem>
+                    <SelectItem value="2-5-years">2-5 years</SelectItem>
+                    <SelectItem value="more-than-5-years">More than 5 years</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="md:col-span-2">
+
+            <div>
               <Label htmlFor="previous_address">Previous Address</Label>
               <Textarea
                 id="previous_address"
