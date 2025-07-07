@@ -70,59 +70,146 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_holder_name: string | null
           additional_notes: string | null
           annual_income: number | null
+          bank_name: string | null
+          bank_verified: boolean | null
+          bank_verified_at: string | null
           created_at: string
+          credit_score: number | null
+          credit_verified: boolean | null
+          credit_verified_at: string | null
+          current_address: string | null
           current_rental_situation: string | null
+          date_of_birth: string | null
           email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emergency_contact_relationship: string | null
+          employer_address: string | null
+          employer_name: string | null
+          employment_start_date: string | null
           employment_status: string | null
+          employment_verified: boolean | null
+          employment_verified_at: string | null
           full_name: string | null
           has_pets: boolean | null
           id: string
+          identity_verified: boolean | null
+          identity_verified_at: string | null
+          income_verified: boolean | null
+          income_verified_at: string | null
           is_smoker: boolean | null
+          job_title: string | null
           move_in_date: string | null
+          national_insurance_number: string | null
           pet_details: string | null
           phone: string | null
+          previous_address: string | null
           profile_complete: boolean
+          profile_completion_percentage: number | null
+          references_verified: boolean | null
+          references_verified_at: string | null
+          sort_code: string | null
           tenant_references: string | null
+          time_at_current_address: string | null
           updated_at: string
           user_type: string | null
         }
         Insert: {
+          account_holder_name?: string | null
           additional_notes?: string | null
           annual_income?: number | null
+          bank_name?: string | null
+          bank_verified?: boolean | null
+          bank_verified_at?: string | null
           created_at?: string
+          credit_score?: number | null
+          credit_verified?: boolean | null
+          credit_verified_at?: string | null
+          current_address?: string | null
           current_rental_situation?: string | null
+          date_of_birth?: string | null
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relationship?: string | null
+          employer_address?: string | null
+          employer_name?: string | null
+          employment_start_date?: string | null
           employment_status?: string | null
+          employment_verified?: boolean | null
+          employment_verified_at?: string | null
           full_name?: string | null
           has_pets?: boolean | null
           id: string
+          identity_verified?: boolean | null
+          identity_verified_at?: string | null
+          income_verified?: boolean | null
+          income_verified_at?: string | null
           is_smoker?: boolean | null
+          job_title?: string | null
           move_in_date?: string | null
+          national_insurance_number?: string | null
           pet_details?: string | null
           phone?: string | null
+          previous_address?: string | null
           profile_complete?: boolean
+          profile_completion_percentage?: number | null
+          references_verified?: boolean | null
+          references_verified_at?: string | null
+          sort_code?: string | null
           tenant_references?: string | null
+          time_at_current_address?: string | null
           updated_at?: string
           user_type?: string | null
         }
         Update: {
+          account_holder_name?: string | null
           additional_notes?: string | null
           annual_income?: number | null
+          bank_name?: string | null
+          bank_verified?: boolean | null
+          bank_verified_at?: string | null
           created_at?: string
+          credit_score?: number | null
+          credit_verified?: boolean | null
+          credit_verified_at?: string | null
+          current_address?: string | null
           current_rental_situation?: string | null
+          date_of_birth?: string | null
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relationship?: string | null
+          employer_address?: string | null
+          employer_name?: string | null
+          employment_start_date?: string | null
           employment_status?: string | null
+          employment_verified?: boolean | null
+          employment_verified_at?: string | null
           full_name?: string | null
           has_pets?: boolean | null
           id?: string
+          identity_verified?: boolean | null
+          identity_verified_at?: string | null
+          income_verified?: boolean | null
+          income_verified_at?: string | null
           is_smoker?: boolean | null
+          job_title?: string | null
           move_in_date?: string | null
+          national_insurance_number?: string | null
           pet_details?: string | null
           phone?: string | null
+          previous_address?: string | null
           profile_complete?: boolean
+          profile_completion_percentage?: number | null
+          references_verified?: boolean | null
+          references_verified_at?: string | null
+          sort_code?: string | null
           tenant_references?: string | null
+          time_at_current_address?: string | null
           updated_at?: string
           user_type?: string | null
         }
@@ -179,6 +266,99 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      tenant_documents: {
+        Row: {
+          created_at: string | null
+          document_type: string
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          rejection_reason: string | null
+          tenant_id: string
+          updated_at: string | null
+          verification_status: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_type: string
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          rejection_reason?: string | null
+          tenant_id: string
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_type?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          rejection_reason?: string | null
+          tenant_id?: string
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      tenant_references: {
+        Row: {
+          company_name: string | null
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          reference_period: string | null
+          reference_type: string
+          relationship: string | null
+          tenant_id: string
+          updated_at: string | null
+          verification_status: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          contact_email?: string | null
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          reference_period?: string | null
+          reference_type: string
+          relationship?: string | null
+          tenant_id: string
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          reference_period?: string | null
+          reference_type?: string
+          relationship?: string | null
+          tenant_id?: string
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
       }
       user_profiles: {
         Row: {

@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Home, User, Calendar, DollarSign } from 'lucide-react'
+import { ArrowLeft, Home, User, Calendar, DollarSign, Shield, Check, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -22,14 +23,32 @@ interface Property {
 }
 
 interface TenantProfile {
+  full_name: string | null
+  phone: string | null
   employment_status: string | null
   annual_income: number | null
   current_rental_situation: string | null
-  has_pets: boolean
+  has_pets: boolean | null
   pet_details: string | null
-  is_smoker: boolean
+  is_smoker: boolean | null
   tenant_references: string | null
   additional_notes: string | null
+  employer_name: string | null
+  job_title: string | null
+  credit_score: number | null
+  bank_name: string | null
+  current_address: string | null
+  emergency_contact_name: string | null
+  emergency_contact_phone: string | null
+  profile_completion_percentage: number | null
+  
+  // Verification statuses
+  identity_verified: boolean
+  employment_verified: boolean
+  income_verified: boolean
+  credit_verified: boolean
+  references_verified: boolean
+  bank_verified: boolean
 }
 
 const MakeOffer: React.FC = () => {
@@ -76,23 +95,14 @@ const MakeOffer: React.FC = () => {
         // Fetch tenant profile
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .select(`
-            employment_status,
-            annual_income,
-            current_rental_situation,
-            has_pets,
-            pet_details,
-            is_smoker,
-            tenant_references,
-            additional_notes
-          `)
+          .select('*')
           .eq('id', user.id)
           .single()
 
         if (profileError && profileError.code !== 'PGRST116') throw profileError
         
         if (profileData) {
-          setProfile(profileData)
+          setProfile(profileData as TenantProfile)
           setEmploymentStatus(profileData.employment_status || '')
           setAnnualIncome(profileData.annual_income?.toString() || '')
           setCurrentSituation(profileData.current_rental_situation || '')
@@ -220,6 +230,64 @@ const MakeOffer: React.FC = () => {
           <h1 className="text-3xl font-bold text-text-primary">Make an Offer</h1>
           <p className="text-text-muted mt-2">Submit your application for {property.title}</p>
         </div>
+
+        {/* Profile Completion Status */}
+        {profile && profile.profile_completion_percentage !== null && profile.profile_completion_percentage < 80 && (
+          <Card className="mb-8 border-yellow-200 bg-yellow-50">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <AlertCircle className="w-6 h-6 text-yellow-600 mt-1" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-yellow-800 mb-2">
+                    Complete Your Profile for Better Applications
+                  </h3>
+                  <p className="text-yellow-700 mb-4">
+                    Your profile is {profile.profile_completion_percentage}% complete. Complete your verified profile to make faster, more attractive offers to landlords.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate('/profile')}
+                    className="border-yellow-300 text-yellow-800 hover:bg-yellow-100"
+                  >
+                    Complete Profile
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Verification Status */}
+        {profile && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-primary" />
+                Your Verification Status
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  { key: 'identity', label: 'Identity', verified: profile.identity_verified },
+                  { key: 'employment', label: 'Employment', verified: profile.employment_verified },
+                  { key: 'income', label: 'Income', verified: profile.income_verified },
+                  { key: 'credit', label: 'Credit Score', verified: profile.credit_verified },
+                  { key: 'references', label: 'References', verified: profile.references_verified },
+                  { key: 'bank', label: 'Bank Details', verified: profile.bank_verified }
+                ].map((item) => (
+                  <div key={item.key} className="flex items-center justify-between p-3 border rounded-lg">
+                    <span className="text-sm font-medium">{item.label}</span>
+                    <Badge className={item.verified ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                      {item.verified ? <Check className="w-3 h-3 mr-1" /> : <AlertCircle className="w-3 h-3 mr-1" />}
+                      {item.verified ? 'Verified' : 'Pending'}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <form onSubmit={handleSubmitOffer} className="space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
