@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
+import { OTPVerification } from './OTPVerification'
 
 interface AuthFormProps {
   mode: 'signin' | 'signup'
@@ -16,6 +17,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showOTPVerification, setShowOTPVerification] = useState(false)
   const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,31 +26,26 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
 
     try {
       if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({
+        // For signup, use OTP instead of password
+        const { error } = await supabase.auth.signInWithOtp({
           email,
-          password,
           options: {
             data: {
               full_name: fullName
-            },
-            emailRedirectTo: `${window.location.origin}/`
+            }
           }
         })
         
         if (error) throw error
         
-        if (data.user && !data.session) {
-          toast({
-            title: "Check your email! 📧",
-            description: "We've sent you a confirmation link to complete your registration.",
-          })
-        } else {
-          toast({
-            title: "Welcome to RentView! 🎉",
-            description: "Your account has been created successfully.",
-          })
-        }
+        toast({
+          title: "Code sent! 📧",
+          description: "We've sent a 6-digit verification code to your email.",
+        })
+        
+        setShowOTPVerification(true)
       } else {
+        // For signin, keep using password
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -70,8 +67,6 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
         errorMessage = 'Invalid email or password. Please check your credentials and try again.'
       } else if (error.message.includes('User already registered')) {
         errorMessage = 'An account with this email already exists. Please sign in instead.'
-      } else if (error.message.includes('Password should be at least 6 characters')) {
-        errorMessage = 'Password must be at least 6 characters long.'
       }
       
       toast({
@@ -82,6 +77,29 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleOTPSuccess = () => {
+    setShowOTPVerification(false)
+    // Reset form
+    setEmail('')
+    setFullName('')
+  }
+
+  const handleBackToSignup = () => {
+    setShowOTPVerification(false)
+  }
+
+  // Show OTP verification screen during signup
+  if (mode === 'signup' && showOTPVerification) {
+    return (
+      <OTPVerification
+        email={email}
+        fullName={fullName}
+        onSuccess={handleOTPSuccess}
+        onBack={handleBackToSignup}
+      />
+    )
   }
 
   return (
@@ -132,24 +150,23 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-muted text-sm font-medium">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="bg-white border-gray-300 rounded-xl h-11"
-              placeholder="Enter your password"
-              required
-              minLength={6}
-            />
-            {mode === 'signup' && (
-              <p className="text-xs text-gray-500">Password must be at least 6 characters</p>
-            )}
-          </div>
+          {mode === 'signin' && (
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-muted text-sm font-medium">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-white border-gray-300 rounded-xl h-11"
+                placeholder="Enter your password"
+                required
+                minLength={6}
+              />
+            </div>
+          )}
 
           <Button
             type="submit"
@@ -159,10 +176,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
             {loading ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                {mode === 'signin' ? 'Signing in...' : 'Creating account...'}
+                {mode === 'signin' ? 'Signing in...' : 'Sending code...'}
               </div>
             ) : (
-              mode === 'signin' ? 'Sign in' : 'Create account'
+              mode === 'signin' ? 'Sign in' : 'Send verification code'
             )}
           </Button>
 
