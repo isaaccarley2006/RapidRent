@@ -71,7 +71,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const emailResponse = await resend.emails.send({
-      from: "RentView <noreply@yourdomain.com>", // Replace with your verified domain
+      from: "RentView <onboarding@resend.dev>", // Use this for testing, replace with your verified domain later
       to: [to],
       subject,
       html,
