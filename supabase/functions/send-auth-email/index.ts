@@ -27,31 +27,37 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const payload: AuthHookPayload = await req.json()
+    console.log("🚀 Auth hook function called")
+    const payload = await req.json()
     console.log("🔍 Full auth hook payload:", JSON.stringify(payload, null, 2))
     
+    // Handle different payload structures
+    let userEmail: string
+    let token: string
+    let emailActionType: string
+    
     // Check if this is the expected auth hook structure
-    if (!payload.user || !payload.user.email) {
-      console.error("❌ Invalid payload structure - missing user.email")
-      throw new Error("Invalid payload: missing user email")
+    if (payload.user && payload.email_data) {
+      // Standard auth hook format
+      userEmail = payload.user.email
+      token = payload.email_data.token
+      emailActionType = payload.email_data.email_action_type
+    } else if (payload.email && payload.token) {
+      // Alternative format
+      userEmail = payload.email
+      token = payload.token
+      emailActionType = payload.type || 'signup'
+    } else {
+      console.error("❌ Unknown payload structure:", payload)
+      throw new Error("Invalid payload structure")
     }
     
-    if (!payload.email_data || !payload.email_data.token) {
-      console.error("❌ Invalid payload structure - missing email_data.token")
-      throw new Error("Invalid payload: missing email data")
-    }
-    
-    const { user, email_data } = payload
-    const to = user.email
-    const token = email_data.token
-    const type = email_data.email_action_type as 'signup' | 'recovery' | 'email_change'
-    
-    console.log(`📧 Processing ${type} email for ${to} with token ${token}`)
+    console.log(`📧 Processing ${emailActionType} email for ${userEmail} with token ${token}`)
 
     let subject = ""
     let html = ""
 
-    switch (type) {
+    switch (emailActionType) {
       case 'signup':
         subject = "Verify your email - RentView"
         html = `
@@ -92,17 +98,32 @@ const handler = async (req: Request): Promise<Response> => {
         break
         
       default:
-        throw new Error(`Unsupported email type: ${type}`)
+        console.log(`ℹ️ Using default template for type: ${emailActionType}`)
+        subject = "Email Verification - RentView"
+        html = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #333; text-align: center;">Email Verification</h1>
+            <p style="color: #666; font-size: 16px;">Please use the verification code below:</p>
+            
+            <div style="background-color: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0;">
+              <h2 style="color: #333; font-size: 32px; font-weight: bold; letter-spacing: 4px; margin: 0;">${token}</h2>
+            </div>
+            
+            <p style="color: #666; font-size: 14px;">This code will expire in 60 seconds.</p>
+          </div>
+        `
     }
 
+    console.log(`📤 Sending email to ${userEmail} with subject: ${subject}`)
+
     const emailResponse = await resend.emails.send({
-      from: "RentView <onboarding@resend.dev>", // Use this for testing, replace with your verified domain later
-      to: [to],
+      from: "RentView <onboarding@resend.dev>",
+      to: [userEmail],
       subject,
       html,
     })
 
-    console.log("Auth email sent successfully:", emailResponse)
+    console.log("✅ Auth email sent successfully:", emailResponse)
 
     return new Response(JSON.stringify(emailResponse), {
       status: 200,
@@ -112,9 +133,14 @@ const handler = async (req: Request): Promise<Response> => {
       },
     })
   } catch (error: any) {
-    console.error("Error in send-auth-email function:", error)
+    console.error("💥 Error in send-auth-email function:", error)
+    console.error("Stack trace:", error.stack)
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        stack: error.stack 
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
