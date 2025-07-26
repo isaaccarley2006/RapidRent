@@ -8,11 +8,17 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 }
 
-interface AuthEmailRequest {
-  to: string
-  token: string
-  type: 'signup' | 'recovery' | 'email_change'
-  redirectTo?: string
+interface AuthHookPayload {
+  user: {
+    email: string
+  }
+  email_data: {
+    token: string
+    token_hash: string
+    redirect_to: string
+    email_action_type: string
+    site_url: string
+  }
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -21,7 +27,13 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, token, type, redirectTo }: AuthEmailRequest = await req.json()
+    const payload: AuthHookPayload = await req.json()
+    console.log("Received auth hook payload:", JSON.stringify(payload, null, 2))
+    
+    const { user, email_data } = payload
+    const to = user.email
+    const token = email_data.token
+    const type = email_data.email_action_type as 'signup' | 'recovery' | 'email_change'
 
     let subject = ""
     let html = ""
