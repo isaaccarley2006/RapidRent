@@ -28,12 +28,25 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const payload: AuthHookPayload = await req.json()
-    console.log("Received auth hook payload:", JSON.stringify(payload, null, 2))
+    console.log("🔍 Full auth hook payload:", JSON.stringify(payload, null, 2))
+    
+    // Check if this is the expected auth hook structure
+    if (!payload.user || !payload.user.email) {
+      console.error("❌ Invalid payload structure - missing user.email")
+      throw new Error("Invalid payload: missing user email")
+    }
+    
+    if (!payload.email_data || !payload.email_data.token) {
+      console.error("❌ Invalid payload structure - missing email_data.token")
+      throw new Error("Invalid payload: missing email data")
+    }
     
     const { user, email_data } = payload
     const to = user.email
     const token = email_data.token
     const type = email_data.email_action_type as 'signup' | 'recovery' | 'email_change'
+    
+    console.log(`📧 Processing ${type} email for ${to} with token ${token}`)
 
     let subject = ""
     let html = ""
