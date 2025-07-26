@@ -6,9 +6,16 @@ export const testResendEmail = async (email: string) => {
     
     const { data, error } = await supabase.functions.invoke('send-auth-email', {
       body: {
-        to: email,
-        token: '123456',
-        type: 'signup'
+        user: {
+          email: email
+        },
+        email_data: {
+          token: '123456',
+          token_hash: 'test-hash',
+          redirect_to: window.location.origin,
+          email_action_type: 'signup',
+          site_url: window.location.origin
+        }
       }
     })
 
