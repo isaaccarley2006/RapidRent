@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import { MapPin, PoundSterling, Bed, Bath, Home, Check, X } from 'lucide-react'
+import { MapPin, PoundSterling, Bed, Bath, Home, Check, X, Edit2, Eye } from 'lucide-react'
 import { StatusBadge } from '@/components/property/StatusBadge'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface Property {
   id: string
@@ -26,20 +27,31 @@ interface Property {
 
 interface PropertyCardProps {
   property: Property
+  showLandlordActions?: boolean
 }
 
-export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
+export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlordActions = false }) => {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const isOwner = user?.id === property.landlord_id
 
   const handleViewDetails = () => {
     navigate(`/properties/${property.id}`)
+  }
+
+  const handleEdit = () => {
+    navigate(`/create-listing?edit=${property.id}`)
+  }
+
+  const handleViewOffers = () => {
+    navigate(`/dashboard?tab=offers&property=${property.id}`)
   }
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <CardTitle className="text-xl font-semibold text-text-primary line-clamp-2">
+          <CardTitle className="text-xl font-semibold text-text-primary min-h-[3.5rem] leading-relaxed">
             {property.title}
           </CardTitle>
           <StatusBadge status={property.status} />
@@ -125,13 +137,38 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           </div>
         </div>
 
-        {/* View Details Button */}
-        <Button 
-          onClick={handleViewDetails}
-          className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl"
-        >
-          View Details
-        </Button>
+        {/* Action Buttons */}
+        <div className="space-y-2">
+          <Button 
+            onClick={handleViewDetails}
+            className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl"
+          >
+            View Details
+          </Button>
+          
+          {showLandlordActions && isOwner && (
+            <div className="grid grid-cols-2 gap-2">
+              <Button 
+                onClick={handleEdit}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+              >
+                <Edit2 className="w-3 h-3" />
+                Edit
+              </Button>
+              <Button 
+                onClick={handleViewOffers}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+              >
+                <Eye className="w-3 h-3" />
+                Offers
+              </Button>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   )
