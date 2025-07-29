@@ -102,40 +102,10 @@ export const OffersManager: React.FC<OffersManagerProps> = ({ propertyId }) => {
     if (!user) return
 
     try {
-      let query = supabase
-        .from('offers')
-        .select(`
-          *,
-          properties (
-            title,
-            location,
-            price
-          ),
-          profiles (
-            full_name,
-            email,
-            phone,
-            employment_status,
-            annual_income,
-            current_rental_situation,
-            has_pets,
-            pet_details,
-            is_smoker,
-            tenant_references,
-            additional_notes,
-            credit_score,
-            identity_verified,
-            employment_verified,
-            income_verified,
-            credit_verified,
-            references_verified,
-            bank_verified
-          )
-        `)
-        .order('created_at', { ascending: false })
-
+      let propertyIds: string[] = []
+      
       if (propertyId) {
-        query = query.eq('property_id', propertyId)
+        propertyIds = [propertyId]
       } else {
         // For dashboard view, get offers for all landlord's properties
         const { data: properties } = await supabase
@@ -144,15 +114,69 @@ export const OffersManager: React.FC<OffersManagerProps> = ({ propertyId }) => {
           .eq('landlord_id', user.id)
 
         if (properties && properties.length > 0) {
-          const propertyIds = properties.map(p => p.id)
-          query = query.in('property_id', propertyIds)
+          propertyIds = properties.map(p => p.id)
         }
       }
 
-      const { data, error } = await query
+      if (propertyIds.length === 0) {
+        setOffers([])
+        return
+      }
 
-      if (error) throw error
-      setOffers((data as any[]) || [])
+      // Fetch offers without joins first
+      const { data: offersData, error: offersError } = await supabase
+        .from('offers')
+        .select('*')
+        .in('property_id', propertyIds)
+        .order('created_at', { ascending: false })
+
+      if (offersError) throw offersError
+
+      // Manually fetch related data for each offer
+      const offersWithDetails = await Promise.all(
+        (offersData || []).map(async (offer) => {
+          // Fetch property details
+          const { data: propertyData } = await supabase
+            .from('properties')
+            .select('title, location, price')
+            .eq('id', offer.property_id)
+            .single()
+
+          // Fetch tenant profile
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select(`
+              full_name,
+              email,
+              phone,
+              employment_status,
+              annual_income,
+              current_rental_situation,
+              has_pets,
+              pet_details,
+              is_smoker,
+              tenant_references,
+              additional_notes,
+              credit_score,
+              identity_verified,
+              employment_verified,
+              income_verified,
+              credit_verified,
+              references_verified,
+              bank_verified
+            `)
+            .eq('id', offer.tenant_id)
+            .single()
+
+          return {
+            ...offer,
+            properties: propertyData,
+            profiles: profileData
+          }
+        })
+      )
+
+      setOffers(offersWithDetails)
     } catch (error) {
       console.error('Error fetching offers:', error)
       toast({
