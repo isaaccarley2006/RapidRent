@@ -4,8 +4,7 @@ import {
   HeroSection, 
   FeaturesSection, 
   TestimonialsSection, 
-  PricingSection, 
-  Footer 
+  PricingSection 
 } from '@/components/home'
 
 const Home: React.FC = () => {
@@ -15,7 +14,6 @@ const Home: React.FC = () => {
       <FeaturesSection />
       <TestimonialsSection />
       <PricingSection />
-      <Footer />
     </div>
   )
 }
