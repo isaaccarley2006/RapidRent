@@ -16,6 +16,7 @@ interface Property {
   price: number | null
   status: string
   created_at: string
+  images: string[] | null
 }
 
 interface PropertyWithOffers extends Property {
@@ -155,7 +156,25 @@ export const LandlordDashboard: React.FC = () => {
             <div className="space-y-4">
               {properties.map((property) => (
                 <div key={property.id} className="border border-gray-200 rounded-xl p-4">
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    {/* Property Image */}
+                    <div className="w-20 h-16 flex-shrink-0">
+                      {property.images && property.images.length > 0 ? (
+                        <img
+                          src={property.images[0]}
+                          alt={property.title}
+                          className="w-full h-full object-cover rounded-lg"
+                          onError={(e) => {
+                            e.currentTarget.src = "/placeholder.svg?height=64&width=80"
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center">
+                          <Building className="w-6 h-6 text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="flex-1">
                       <h4 className="font-medium text-gray-900">{property.title}</h4>
                       {property.location && (
