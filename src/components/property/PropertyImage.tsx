@@ -9,31 +9,42 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 
-export const PropertyImage: React.FC = () => {
-  // Placeholder images - in a real app these would come from props
-  const images = [
-    { id: 1, alt: "Property exterior" },
-    { id: 2, alt: "Living room" },
-    { id: 3, alt: "Kitchen" },
-    { id: 4, alt: "Bedroom" },
-    { id: 5, alt: "Bathroom" },
-  ]
+interface PropertyImageProps {
+  images: string[]
+}
+
+export const PropertyImage: React.FC<PropertyImageProps> = ({ images }) => {
+  // If no images provided, show placeholder
+  const displayImages = images.length > 0 
+    ? images.map((url, index) => ({ id: index + 1, url, alt: `Property image ${index + 1}` }))
+    : [{ id: 1, url: null, alt: "No image available" }]
 
   return (
     <div className="mb-12">
       <Carousel className="w-full">
         <CarouselContent>
-          {images.map((image) => (
+          {displayImages.map((image) => (
             <CarouselItem key={image.id}>
               <AspectRatio ratio={16 / 9}>
-                <div className="w-full h-full bg-gradient-to-br from-muted/40 to-muted/60 rounded-2xl flex items-center justify-center overflow-hidden group">
-                  <div className="text-center opacity-60 group-hover:opacity-40 transition-opacity duration-300">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <div className="w-8 h-8 bg-primary/20 rounded-lg"></div>
+                {image.url ? (
+                  <img
+                    src={image.url}
+                    alt={image.alt}
+                    className="w-full h-full object-cover rounded-2xl"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder.svg?height=400&width=600"
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-muted/40 to-muted/60 rounded-2xl flex items-center justify-center overflow-hidden group">
+                    <div className="text-center opacity-60 group-hover:opacity-40 transition-opacity duration-300">
+                      <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="w-8 h-8 bg-primary/20 rounded-lg"></div>
+                      </div>
+                      <p className="text-sm font-medium text-muted-foreground">{image.alt}</p>
                     </div>
-                    <p className="text-sm font-medium text-muted-foreground">{image.alt}</p>
                   </div>
-                </div>
+                )}
               </AspectRatio>
             </CarouselItem>
           ))}

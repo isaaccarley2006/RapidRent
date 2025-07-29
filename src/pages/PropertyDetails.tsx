@@ -28,6 +28,7 @@ interface Property {
   bathrooms: number | null
   furnished: boolean
   property_type: string | null
+  images: string[] | null
 }
 
 const PropertyDetails: React.FC = () => {
@@ -40,7 +41,7 @@ const PropertyDetails: React.FC = () => {
 
     const { data, error } = await supabase
       .from('properties')
-      .select('*, bedrooms, bathrooms, furnished, property_type')
+      .select('*, bedrooms, bathrooms, furnished, property_type, images')
       .eq('id', id)
       .single()
 
@@ -104,7 +105,7 @@ const PropertyDetails: React.FC = () => {
       <PropertyPageHeader />
 
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <PropertyImage />
+        <PropertyImage images={property.images || []} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Content */}
