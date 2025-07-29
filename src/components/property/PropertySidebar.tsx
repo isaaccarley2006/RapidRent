@@ -68,7 +68,7 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
         <div className="pt-6 border-t border-muted">
           <Button 
             onClick={onMakeOffer}
-            className="w-full bg-primary hover:bg-primary-dark text-white py-3 text-lg rounded-xl"
+            className="w-full bg-primary hover:bg-primary-dark text-white py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow"
             disabled={property.status !== 'listed'}
           >
             {user ? 'Make an Offer' : 'Sign in to Make an Offer'}
@@ -81,40 +81,42 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
           )}
         </div>
 
-        {/* Additional Property Details */}
-        <div className="pt-6 border-t border-muted space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Home className="w-4 h-4 text-primary mr-2" />
-              <span className="text-sm text-text-muted">Property Type</span>
-            </div>
-            <span className="text-sm text-text-primary font-medium">Apartment</span>
-          </div>
+        {/* Landlord Information */}
+        <div className="pt-6 border-t border-muted">
+          <h3 className="text-lg font-semibold text-foreground mb-4">Landlord Information</h3>
           
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 text-primary mr-2" />
-              <span className="text-sm text-text-muted">Furnished</span>
+          <div className="bg-gradient-to-br from-muted/20 to-muted/40 rounded-xl p-4 space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary font-semibold text-lg">JD</span>
+              </div>
+              <div>
+                <h4 className="font-medium text-foreground">John Doe</h4>
+                <p className="text-sm text-muted-foreground">Property Owner</p>
+              </div>
             </div>
-            <span className="text-sm text-text-primary font-medium">Yes</span>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Calendar className="w-4 h-4 text-primary mr-2" />
-              <span className="text-sm text-text-muted">Minimum Stay</span>
+            
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Rating</span>
+                <div className="flex items-center space-x-1">
+                  <div className="flex text-yellow-500">
+                    {'★'.repeat(5)}
+                  </div>
+                  <span className="text-sm font-medium text-foreground">4.8</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Response Time</span>
+                <span className="text-sm font-medium text-foreground">Within 2 hours</span>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Properties Listed</span>
+                <span className="text-sm font-medium text-foreground">12</span>
+              </div>
             </div>
-            <span className="text-sm text-text-primary font-medium">12 months</span>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Calendar className="w-4 h-4 text-primary mr-2" />
-              <span className="text-sm text-text-muted">Available From</span>
-            </div>
-            <span className="text-sm text-text-primary font-medium">
-              {new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-            </span>
           </div>
         </div>
       </CardContent>
