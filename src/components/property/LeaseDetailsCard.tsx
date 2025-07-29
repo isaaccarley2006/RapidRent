@@ -8,11 +8,12 @@ export const LeaseDetailsCard: React.FC = () => {
         {[
           { label: "Available From", value: "Immediately" },
           { label: "Minimum Lease", value: "12 months" },
-          { label: "Bills Included", value: "Partially" }
+          { label: "Bills Included", value: "Partially" },
+          { label: "Security Deposit", value: "£2,400" }
         ].map((item, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{item.label}</span>
-            <span className="text-sm font-medium text-foreground">{item.value}</span>
+          <div key={index} className="flex justify-between items-center min-h-[24px]">
+            <span className="text-sm text-muted-foreground flex-shrink-0 mr-4">{item.label}</span>
+            <span className="text-sm font-medium text-foreground text-right flex-shrink-0 min-w-[80px]">{item.value}</span>
           </div>
         ))}
       </div>

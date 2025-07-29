@@ -10,12 +10,11 @@ export const OverviewCard: React.FC = () => {
           { label: "Property Type", value: "Apartment" },
           { label: "Bedrooms", value: "2" },
           { label: "Bathrooms", value: "1" },
-          { label: "Furnished", value: "Yes" },
-          { label: "Security Deposit", value: "£2,400" }
+          { label: "Furnished", value: "Yes" }
         ].map((item, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">{item.label}</span>
-            <span className="text-sm font-medium text-foreground">{item.value}</span>
+          <div key={index} className="flex justify-between items-center min-h-[24px]">
+            <span className="text-sm text-muted-foreground flex-shrink-0 mr-4">{item.label}</span>
+            <span className="text-sm font-medium text-foreground text-right flex-shrink-0 min-w-[80px]">{item.value}</span>
           </div>
         ))}
       </div>
