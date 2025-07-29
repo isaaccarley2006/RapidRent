@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { Loader2, Building, Plus, Eye, MapPin } from 'lucide-react'
@@ -210,12 +211,25 @@ export const LandlordDashboard: React.FC = () => {
                         View Details
                       </Button>
                       {property.offers.length > 0 && (
-                        <Button
-                          size="sm"
-                          className="bg-primary hover:bg-primary/90 text-white rounded-xl"
-                        >
-                          View Offers ({property.offers.filter(o => o.status === 'pending').length})
-                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              className="bg-primary hover:bg-primary/90 text-white rounded-xl"
+                            >
+                              View Offers ({property.offers.filter(o => o.status === 'pending').length})
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-6xl max-h-[80vh] overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle>Offers for {property.title}</DialogTitle>
+                              <DialogDescription>
+                                Review and manage offers for this property
+                              </DialogDescription>
+                            </DialogHeader>
+                            <OffersManager propertyId={property.id} />
+                          </DialogContent>
+                        </Dialog>
                       )}
                     </div>
                   </div>
