@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Heading } from '@/components/ui/heading'
 import { supabase } from '@/lib/supabase'
 import { useQuery } from '@tanstack/react-query'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface Property {
   id: string
@@ -35,6 +36,7 @@ interface Filters {
 const Listings: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { user } = useAuth()
   const searchParams = new URLSearchParams(location.search)
   const initialLocation = searchParams.get('location') || ''
 
@@ -49,7 +51,7 @@ const Listings: React.FC = () => {
   const fetchProperties = async (): Promise<Property[]> => {
     let query = supabase
       .from('properties')
-      .select('*, bedrooms, bathrooms, furnished, property_type')
+      .select('*, bedrooms, bathrooms, furnished, property_type, images')
       .eq('status', filters.status || 'listed')
       .order('created_at', { ascending: false })
 
@@ -147,7 +149,11 @@ const Listings: React.FC = () => {
       {properties && properties.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
+            <PropertyCard 
+              key={property.id} 
+              property={property} 
+              showLandlordActions={user?.id === property.landlord_id}
+            />
           ))}
         </div>
       )}
