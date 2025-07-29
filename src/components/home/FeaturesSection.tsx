@@ -1,12 +1,9 @@
-
-import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Heading } from '@/components/ui/heading'
-import { Home as HomeIcon, Users, Shield } from 'lucide-react'
-
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Heading } from '@/components/ui/heading';
+import { Home as HomeIcon, Users, Shield } from 'lucide-react';
 export const FeaturesSection: React.FC = () => {
-  return (
-    <section className="py-20 px-6 bg-surface">
+  return <section className="py-20 px-6 bg-slate-200 rounded-2xl">
       <div className="max-w-6xl mx-auto">
         <Heading level={2} className="text-center text-text-primary mb-16">
           Everything you need in one place
@@ -49,6 +46,5 @@ export const FeaturesSection: React.FC = () => {
           </Card>
         </div>
       </div>
-    </section>
-  )
-}
+    </section>;
+};
