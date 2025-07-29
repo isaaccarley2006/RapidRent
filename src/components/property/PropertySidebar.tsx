@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { DollarSign, Home, Calendar, CheckCircle } from 'lucide-react'
+import { PoundSterling, Home, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
@@ -76,11 +76,11 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
         {/* Monthly Rent */}
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <DollarSign className="w-5 h-5 text-primary mr-2" />
+            <PoundSterling className="w-5 h-5 text-primary mr-2" />
             <span className="text-text-muted">Monthly Rent</span>
           </div>
           <span className="text-2xl font-bold text-text-primary">
-            {property.price ? `$${property.price.toLocaleString()}` : 'Price on request'}
+            {property.price ? `£${property.price.toLocaleString()}` : 'Price on request'}
           </span>
         </div>
 

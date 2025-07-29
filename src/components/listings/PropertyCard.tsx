@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, DollarSign, Calendar } from 'lucide-react'
+import { MapPin, PoundSterling, Calendar } from 'lucide-react'
 import { StatusBadge } from '@/components/property/StatusBadge'
 
 interface Property {
@@ -51,9 +51,9 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
         {/* Price */}
         <div className="flex items-center">
-          <DollarSign className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
+          <PoundSterling className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
           <span className="text-lg font-semibold text-text-primary">
-            {property.price ? `$${property.price.toLocaleString()}/month` : 'Price on request'}
+            {property.price ? `£${property.price.toLocaleString()}/month` : 'Price on request'}
           </span>
         </div>
 
