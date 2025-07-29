@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Loader2, Eye, Check, X, User, Mail, Phone, MapPin } from 'lucide-react'
+import { Loader2, Eye, Check, X, User, Mail, Phone, MapPin, Star } from 'lucide-react'
 import { format } from 'date-fns'
 import { OfferDetailsDialog } from './OfferDetailsDialog'
 
@@ -31,6 +31,13 @@ interface OfferWithDetails {
     is_smoker: boolean | null
     tenant_references: string | null
     additional_notes: string | null
+    credit_score: number | null
+    identity_verified: boolean | null
+    employment_verified: boolean | null
+    income_verified: boolean | null
+    credit_verified: boolean | null
+    references_verified: boolean | null
+    bank_verified: boolean | null
   } | null
 }
 
@@ -63,6 +70,68 @@ export const OfferCard: React.FC<OfferCardProps> = ({
     }).format(amount)
   }
 
+  // Calculate tenant score based on available data  
+  const calculateTenantScore = (): number => {
+    if (!offer.profiles) return 0
+    
+    let score = 0
+    let maxScore = 0
+
+    // Verification status (40% of total score)
+    const verifications = [
+      offer.profiles.identity_verified,
+      offer.profiles.employment_verified,
+      offer.profiles.income_verified,
+      offer.profiles.credit_verified,
+      offer.profiles.references_verified,
+      offer.profiles.bank_verified
+    ]
+    const verifiedCount = verifications.filter(Boolean).length
+    score += (verifiedCount / 6) * 40
+    maxScore += 40
+
+    // Credit score (30% of total score)
+    if (offer.profiles.credit_score) {
+      const creditScore = offer.profiles.credit_score
+      if (creditScore >= 800) score += 30
+      else if (creditScore >= 700) score += 25
+      else if (creditScore >= 600) score += 20
+      else if (creditScore >= 500) score += 15
+      else score += 10
+    }
+    maxScore += 30
+
+    // Income ratio (20% of total score)
+    if (offer.profiles.annual_income && offer.properties?.price) {
+      const monthlyIncome = offer.profiles.annual_income / 12
+      const rentToIncomeRatio = (offer.properties.price / monthlyIncome) * 100
+      if (rentToIncomeRatio <= 25) score += 20
+      else if (rentToIncomeRatio <= 30) score += 15
+      else if (rentToIncomeRatio <= 35) score += 10
+      else score += 5
+    }
+    maxScore += 20
+
+    // Employment status (10% of total score)
+    if (offer.profiles.employment_status) {
+      if (offer.profiles.employment_status === 'employed') score += 10
+      else if (offer.profiles.employment_status === 'self-employed') score += 8
+      else if (offer.profiles.employment_status === 'student') score += 6
+      else score += 3
+    }
+    maxScore += 10
+
+    return Math.round((score / maxScore) * 100)
+  }
+
+  const tenantScore = calculateTenantScore()
+
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return 'text-green-600'
+    if (score >= 60) return 'text-yellow-600'
+    return 'text-red-600'
+  }
+
   return (
     <Card className="relative overflow-hidden border border-border hover:shadow-md transition-shadow animate-fade-in">
       {/* Status Badge */}
@@ -89,11 +158,21 @@ export const OfferCard: React.FC<OfferCardProps> = ({
       <CardContent className="space-y-4">
         {/* Applicant Info */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-primary" />
-            <span className="font-medium text-foreground">
-              {offer.profiles?.full_name || 'Unknown Applicant'}
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4 text-primary" />
+              <span className="font-medium text-foreground">
+                {offer.profiles?.full_name || 'Unknown Applicant'}
+              </span>
+            </div>
+            {tenantScore > 0 && (
+              <div className="flex items-center gap-1">
+                <Star className={`w-4 h-4 ${getScoreColor(tenantScore)}`} />
+                <span className={`text-sm font-semibold ${getScoreColor(tenantScore)}`}>
+                  {tenantScore}%
+                </span>
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Mail className="w-3 h-3" />

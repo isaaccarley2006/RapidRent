@@ -2,8 +2,9 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Loader2, Check, X, User, DollarSign, Mail, Phone } from 'lucide-react'
+import { Loader2, Check, X, DollarSign } from 'lucide-react'
 import { format } from 'date-fns'
+import { TenantCard } from './TenantCard'
 
 interface OfferWithDetails {
   id: string
@@ -29,6 +30,13 @@ interface OfferWithDetails {
     is_smoker: boolean | null
     tenant_references: string | null
     additional_notes: string | null
+    credit_score: number | null
+    identity_verified: boolean | null
+    employment_verified: boolean | null
+    income_verified: boolean | null
+    credit_verified: boolean | null
+    references_verified: boolean | null
+    bank_verified: boolean | null
   } | null
 }
 
@@ -96,75 +104,15 @@ export const OfferDetailsDialog: React.FC<OfferDetailsDialogProps> = ({
           </CardContent>
         </Card>
 
-        {/* Tenant Profile */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-5 h-5 text-primary" />
-              Tenant Profile
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Name</label>
-              <p className="font-medium">{offer.profiles?.full_name || 'Not provided'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Contact</label>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-muted-foreground" />
-                  <span>{offer.profiles?.email || 'No email'}</span>
-                </div>
-                {offer.profiles?.phone && (
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-muted-foreground" />
-                    <span>{offer.profiles.phone}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Employment</label>
-              <p>{offer.profiles?.employment_status || 'Not specified'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Annual Income</label>
-              <p>{offer.profiles?.annual_income ? 
-                formatCurrency(offer.profiles.annual_income) : 
-                'Not disclosed'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Current Situation</label>
-              <p>{offer.profiles?.current_rental_situation || 'Not specified'}</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Pets</label>
-                <p>{offer.profiles?.has_pets ? 'Yes' : 'No'}</p>
-                {offer.profiles?.has_pets && offer.profiles?.pet_details && (
-                  <p className="text-sm text-muted-foreground italic">{offer.profiles.pet_details}</p>
-                )}
-              </div>
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Smoker</label>
-                <p>{offer.profiles?.is_smoker ? 'Yes' : 'No'}</p>
-              </div>
-            </div>
-            {offer.profiles?.tenant_references && (
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">References</label>
-                <p className="text-sm">{offer.profiles.tenant_references}</p>
-              </div>
-            )}
-            {offer.profiles?.additional_notes && (
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Additional Notes</label>
-                <p className="text-sm">{offer.profiles.additional_notes}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        {/* Tenant Profile Card */}
+        {offer.profiles && (
+          <TenantCard
+            profile={offer.profiles}
+            offerPrice={offer.offer_price}
+            listedPrice={offer.properties?.price || null}
+            showFullDetails={true}
+          />
+        )}
       </div>
 
       {offer.status === 'pending' && (

@@ -30,6 +30,13 @@ interface OfferWithDetails {
     is_smoker: boolean | null
     tenant_references: string | null
     additional_notes: string | null
+    credit_score: number | null
+    identity_verified: boolean | null
+    employment_verified: boolean | null
+    income_verified: boolean | null
+    credit_verified: boolean | null
+    references_verified: boolean | null
+    bank_verified: boolean | null
   } | null
 }
 
@@ -47,6 +54,48 @@ export const OffersManager: React.FC<OffersManagerProps> = ({ propertyId }) => {
 
   useEffect(() => {
     fetchOffers()
+    
+    // Set up real-time subscription for offers
+    const setupRealtimeSubscription = async () => {
+      if (!user) return
+
+      // Get landlord's property IDs for filtering
+      const { data: properties } = await supabase
+        .from('properties')
+        .select('id')
+        .eq('landlord_id', user.id)
+
+      if (!properties || properties.length === 0) return
+
+      const propertyIds = properties.map(p => p.id)
+
+      const channel = supabase
+        .channel('offers-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+            schema: 'public',
+            table: 'offers',
+            filter: `property_id=in.(${propertyIds.join(',')})`
+          },
+          () => {
+            // Refetch offers when any change occurs
+            fetchOffers()
+          }
+        )
+        .subscribe()
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
+    }
+
+    const cleanup = setupRealtimeSubscription()
+    
+    return () => {
+      cleanup.then(fn => fn && fn())
+    }
   }, [user, propertyId])
 
   const fetchOffers = async () => {
@@ -73,7 +122,14 @@ export const OffersManager: React.FC<OffersManagerProps> = ({ propertyId }) => {
             pet_details,
             is_smoker,
             tenant_references,
-            additional_notes
+            additional_notes,
+            credit_score,
+            identity_verified,
+            employment_verified,
+            income_verified,
+            credit_verified,
+            references_verified,
+            bank_verified
           )
         `)
         .order('created_at', { ascending: false })
