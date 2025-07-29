@@ -21,7 +21,7 @@ export const PropertyDescription: React.FC<PropertyDescriptionProps> = ({
           {/* Overview Card */}
           <div className="bg-card border border-border rounded-xl p-8">
             <h3 className="text-lg font-medium text-foreground mb-8">Overview</h3>
-            <div className="space-y-6">
+            <div className="space-y-[5px]">
               {[
                 { label: "Location", value: "Central London" },
                 { label: "Property Type", value: "Apartment" },
