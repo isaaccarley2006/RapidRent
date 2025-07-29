@@ -1,15 +1,22 @@
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { DollarSign, Home, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/integrations/supabase/client'
 
 interface Property {
   id: string
   price: number | null
   status: string
   created_at: string
+  landlord_id: string
+}
+
+interface LandlordProfile {
+  full_name: string | null
+  email: string | null
 }
 
 interface PropertySidebarProps {
@@ -22,6 +29,42 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
   onMakeOffer
 }) => {
   const { user } = useAuth()
+  const [landlordProfile, setLandlordProfile] = useState<LandlordProfile | null>(null)
+  const [propertiesCount, setPropertiesCount] = useState<number>(0)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchLandlordData = async () => {
+      try {
+        // Fetch landlord profile
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('id', property.landlord_id)
+          .single()
+
+        // Fetch landlord's property count
+        const { count } = await supabase
+          .from('properties')
+          .select('*', { count: 'exact', head: true })
+          .eq('landlord_id', property.landlord_id)
+
+        setLandlordProfile(profile)
+        setPropertiesCount(count || 0)
+      } catch (error) {
+        console.error('Error fetching landlord data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchLandlordData()
+  }, [property.landlord_id])
+
+  const getInitials = (name: string | null) => {
+    if (!name) return 'LL'
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+  }
 
   return (
     <Card className="sticky top-8">
@@ -85,39 +128,60 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
         <div className="pt-6 border-t border-muted">
           <h3 className="text-lg font-semibold text-foreground mb-4">Landlord Information</h3>
           
-          <div className="bg-gradient-to-br from-muted/20 to-muted/40 rounded-xl p-4 space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                <span className="text-primary font-semibold text-lg">JD</span>
-              </div>
-              <div>
-                <h4 className="font-medium text-foreground">John Doe</h4>
-                <p className="text-sm text-muted-foreground">Property Owner</p>
+          {loading ? (
+            <div className="bg-gradient-to-br from-muted/20 to-muted/40 rounded-xl p-4">
+              <div className="animate-pulse space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-muted rounded-full"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-muted rounded w-24"></div>
+                    <div className="h-3 bg-muted rounded w-20"></div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 bg-muted rounded"></div>
+                  <div className="h-3 bg-muted rounded"></div>
+                </div>
               </div>
             </div>
-            
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Rating</span>
-                <div className="flex items-center space-x-1">
-                  <div className="flex text-yellow-500">
-                    {'★'.repeat(5)}
-                  </div>
-                  <span className="text-sm font-medium text-foreground">4.8</span>
+          ) : (
+            <div className="bg-gradient-to-br from-muted/20 to-muted/40 rounded-xl p-4 space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <span className="text-primary font-semibold text-lg">
+                    {getInitials(landlordProfile?.full_name)}
+                  </span>
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground">
+                    {landlordProfile?.full_name || 'Property Owner'}
+                  </h4>
+                  <p className="text-sm text-muted-foreground">Property Owner</p>
                 </div>
               </div>
               
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Response Time</span>
-                <span className="text-sm font-medium text-foreground">Within 2 hours</span>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Properties Listed</span>
-                <span className="text-sm font-medium text-foreground">12</span>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Email</span>
+                  <span className="text-sm font-medium text-foreground">
+                    {landlordProfile?.email || 'Not available'}
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Properties Listed</span>
+                  <span className="text-sm font-medium text-foreground">{propertiesCount}</span>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Member Since</span>
+                  <span className="text-sm font-medium text-foreground">
+                    {new Date(property.created_at).getFullYear()}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </CardContent>
     </Card>
