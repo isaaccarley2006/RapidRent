@@ -231,6 +231,7 @@ export type Database = {
           description: string | null
           furnished: boolean | null
           id: string
+          images: string[] | null
           landlord_id: string
           location: string | null
           price: number | null
@@ -246,6 +247,7 @@ export type Database = {
           description?: string | null
           furnished?: boolean | null
           id?: string
+          images?: string[] | null
           landlord_id: string
           location?: string | null
           price?: number | null
@@ -261,6 +263,7 @@ export type Database = {
           description?: string | null
           furnished?: boolean | null
           id?: string
+          images?: string[] | null
           landlord_id?: string
           location?: string | null
           price?: number | null
