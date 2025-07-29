@@ -102,7 +102,7 @@ const App = () => (
               path="/property/:propertyId/offers" 
               element={
                 <ProtectedRoute>
-                  <PropertyOffers />
+                  <AppLayout><PropertyOffers /></AppLayout>
                 </ProtectedRoute>
               } 
             />

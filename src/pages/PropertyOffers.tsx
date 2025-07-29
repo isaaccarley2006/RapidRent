@@ -275,156 +275,154 @@ export default function PropertyOffers() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/dashboard/landlord')}
-            className="mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/dashboard/landlord')}
+          className="hover:bg-muted"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </Button>
+      </div>
 
-        {/* Property Header */}
-        <div className="bg-white rounded-xl border border-border p-6 mb-6">
-          <div className="flex items-start gap-6">
-            {property.images && property.images.length > 0 ? (
-              <img
-                src={property.images[0]}
-                alt={property.title}
-                className="w-32 h-24 object-cover rounded-lg"
-                onError={(e) => {
-                  e.currentTarget.src = "/placeholder.svg?height=96&width=128"
-                }}
-              />
-            ) : (
-              <div className="w-32 h-24 bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center">
-                <Building className="w-8 h-8 text-muted-foreground" />
+      {/* Property Header */}
+      <div className="bg-card rounded-xl border border-border p-6">
+        <div className="flex items-start gap-6">
+          {property.images && property.images.length > 0 ? (
+            <img
+              src={property.images[0]}
+              alt={property.title}
+              className="w-32 h-24 object-cover rounded-lg"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.svg?height=96&width=128"
+              }}
+            />
+          ) : (
+            <div className="w-32 h-24 bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center">
+              <Building className="w-8 h-8 text-muted-foreground" />
+            </div>
+          )}
+          
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-foreground mb-2">{property.title}</h1>
+            {property.location && (
+              <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                <MapPin className="w-4 h-4" />
+                <span>{property.location}</span>
               </div>
             )}
-            
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold text-foreground mb-2">{property.title}</h1>
-              {property.location && (
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>{property.location}</span>
-                </div>
+            <div className="flex items-center gap-4">
+              {property.price && (
+                <span className="text-xl font-semibold text-primary">
+                  {formatCurrency(property.price)}/month
+                </span>
               )}
-              <div className="flex items-center gap-4">
-                {property.price && (
-                  <span className="text-xl font-semibold text-primary">
-                    {formatCurrency(property.price)}/month
-                  </span>
-                )}
-                <Badge className={property.status === 'listed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                  {property.status}
-                </Badge>
-              </div>
+              <Badge className={property.status === 'listed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                {property.status}
+              </Badge>
             </div>
           </div>
         </div>
-
-        {/* Insights Cards */}
-        {insights && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Total Offers</p>
-                    <p className="text-2xl font-bold">{offers.length}</p>
-                  </div>
-                  <Users className="w-8 h-8 text-blue-500" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Pending</p>
-                    <p className="text-2xl font-bold">{insights.pendingOffers}</p>
-                  </div>
-                  <Clock className="w-8 h-8 text-yellow-500" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Highest Offer</p>
-                    <p className="text-lg font-bold">{formatCurrency(insights.highestOffer)}</p>
-                  </div>
-                  <TrendingUp className="w-8 h-8 text-green-500" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Avg Tenant Score</p>
-                    <p className="text-2xl font-bold">{insights.avgTenantScore}%</p>
-                  </div>
-                  <Star className="w-8 h-8 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {/* Offers Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Property Offers</CardTitle>
-            <CardDescription>
-              {offers.length === 0 
-                ? "No offers received yet for this property" 
-                : `${offers.length} offer${offers.length !== 1 ? 's' : ''} received`
-              }
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {offers.length === 0 ? (
-              <div className="text-center py-12">
-                <Eye className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">No offers yet</h3>
-                <p className="text-muted-foreground">
-                  When tenants submit offers for this property, they will appear here.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {offers.map((offer) => (
-                  <OfferCard
-                    key={offer.id}
-                    offer={{
-                      ...offer,
-                      properties: {
-                        title: property.title,
-                        location: property.location,
-                        price: property.price
-                      }
-                    }}
-                    updating={updating}
-                    onUpdateStatus={handleUpdateStatus}
-                    onSelectOffer={() => {}}
-                  />
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
+
+      {/* Insights Cards */}
+      {insights && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Offers</p>
+                  <p className="text-2xl font-bold">{offers.length}</p>
+                </div>
+                <Users className="w-8 h-8 text-blue-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Pending</p>
+                  <p className="text-2xl font-bold">{insights.pendingOffers}</p>
+                </div>
+                <Clock className="w-8 h-8 text-yellow-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Highest Offer</p>
+                  <p className="text-lg font-bold">{formatCurrency(insights.highestOffer)}</p>
+                </div>
+                <TrendingUp className="w-8 h-8 text-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Avg Tenant Score</p>
+                  <p className="text-2xl font-bold">{insights.avgTenantScore}%</p>
+                </div>
+                <Star className="w-8 h-8 text-primary" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Offers Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Property Offers</CardTitle>
+          <CardDescription>
+            {offers.length === 0 
+              ? "No offers received yet for this property" 
+              : `${offers.length} offer${offers.length !== 1 ? 's' : ''} received`
+            }
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {offers.length === 0 ? (
+            <div className="text-center py-12">
+              <Eye className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2">No offers yet</h3>
+              <p className="text-muted-foreground">
+                When tenants submit offers for this property, they will appear here.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {offers.map((offer) => (
+                <OfferCard
+                  key={offer.id}
+                  offer={{
+                    ...offer,
+                    properties: {
+                      title: property.title,
+                      location: property.location,
+                      price: property.price
+                    }
+                  }}
+                  updating={updating}
+                  onUpdateStatus={handleUpdateStatus}
+                  onSelectOffer={() => {}}
+                />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }
