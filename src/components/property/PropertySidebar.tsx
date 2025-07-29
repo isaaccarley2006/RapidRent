@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { DollarSign, Home, Calendar } from 'lucide-react'
+import { DollarSign, Home, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
@@ -79,6 +79,43 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
               This property is no longer available for offers
             </p>
           )}
+        </div>
+
+        {/* Additional Property Details */}
+        <div className="pt-6 border-t border-muted space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Home className="w-4 h-4 text-primary mr-2" />
+              <span className="text-sm text-text-muted">Property Type</span>
+            </div>
+            <span className="text-sm text-text-primary font-medium">Apartment</span>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <CheckCircle className="w-4 h-4 text-primary mr-2" />
+              <span className="text-sm text-text-muted">Furnished</span>
+            </div>
+            <span className="text-sm text-text-primary font-medium">Yes</span>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Calendar className="w-4 h-4 text-primary mr-2" />
+              <span className="text-sm text-text-muted">Minimum Stay</span>
+            </div>
+            <span className="text-sm text-text-primary font-medium">12 months</span>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Calendar className="w-4 h-4 text-primary mr-2" />
+              <span className="text-sm text-text-muted">Available From</span>
+            </div>
+            <span className="text-sm text-text-primary font-medium">
+              {new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+            </span>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -18,31 +18,25 @@ export const PropertyDescription: React.FC<PropertyDescriptionProps> = ({
           <div className="w-12 h-0.5 bg-primary rounded-full"></div>
         </div>
         
-        <div className="prose prose-neutral max-w-none">
-          <p className="text-base leading-7 text-muted-foreground font-normal">
-            {description || 'This beautiful property offers modern living with thoughtfully designed spaces and premium finishes throughout. Perfect for those seeking comfort and style in an ideal location.'}
-          </p>
+        <div className="space-y-4">
+          {(description || 'This beautiful property offers modern living with thoughtfully designed spaces and premium finishes throughout. Perfect for those seeking comfort and style in an ideal location. The property features contemporary amenities and is located in a vibrant neighborhood with excellent transport links.')
+            .split('. ')
+            .filter(point => point.trim().length > 0)
+            .map((point, index) => (
+              <div 
+                key={index} 
+                className="flex items-start gap-4 p-4 bg-card rounded-xl border border-border/50 hover:border-primary/20 transition-colors animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                <p className="text-base leading-7 text-muted-foreground font-normal">
+                  {point.trim()}{point.endsWith('.') ? '' : '.'}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 pt-6 border-t border-border">
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium text-foreground">Property Type</h4>
-          <p className="text-sm text-muted-foreground">Apartment</p>
-        </div>
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium text-foreground">Furnished</h4>
-          <p className="text-sm text-muted-foreground">Yes</p>
-        </div>
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium text-foreground">Available From</h4>
-          <p className="text-sm text-muted-foreground">Immediately</p>
-        </div>
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium text-foreground">Minimum Stay</h4>
-          <p className="text-sm text-muted-foreground">12 months</p>
-        </div>
-      </div>
     </div>
   )
 }
