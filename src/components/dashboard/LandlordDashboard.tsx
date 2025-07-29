@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { Loader2, Building, Plus, Eye, MapPin } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { OffersManager } from './OffersManager'
+
 
 interface Property {
   id: string
@@ -227,8 +227,6 @@ export const LandlordDashboard: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Offers Management */}
-      {totalOffers > 0 && <OffersManager />}
     </div>
   )
 }

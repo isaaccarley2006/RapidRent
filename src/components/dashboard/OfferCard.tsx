@@ -23,21 +23,37 @@ interface OfferWithDetails {
     full_name: string | null
     email: string | null
     phone: string | null
+    date_of_birth: string | null
+    national_insurance_number: string | null
+    current_address: string | null
+    previous_address: string | null
+    time_at_current_address: string | null
     employment_status: string | null
+    employer_name: string | null
+    employer_address: string | null
+    job_title: string | null
+    employment_start_date: string | null
     annual_income: number | null
-    current_rental_situation: string | null
+    credit_score: number | null
+    bank_name: string | null
+    account_holder_name: string | null
+    sort_code: string | null
     has_pets: boolean | null
     pet_details: string | null
     is_smoker: boolean | null
     tenant_references: string | null
     additional_notes: string | null
-    credit_score: number | null
+    emergency_contact_name: string | null
+    emergency_contact_phone: string | null
+    emergency_contact_relationship: string | null
     identity_verified: boolean | null
     employment_verified: boolean | null
     income_verified: boolean | null
     credit_verified: boolean | null
     references_verified: boolean | null
     bank_verified: boolean | null
+    profile_completion_percentage: number | null
+    current_rental_situation: string | null
   } | null
 }
 
