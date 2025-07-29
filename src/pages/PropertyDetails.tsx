@@ -99,28 +99,33 @@ const PropertyDetails: React.FC = () => {
     <div className="min-h-screen bg-background font-sans">
       <PropertyPageHeader />
 
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto px-6 py-12">
         <PropertyImage />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Content */}
-          <div className="lg:col-span-2">
-            <Card className="mb-6">
+          <div className="lg:col-span-2 space-y-8">
+            <div className="bg-card rounded-3xl p-8 shadow-sm border border-border/50">
               <PropertyHeader 
                 title={property.title}
                 location={property.location}
                 status={property.status}
               />
+            </div>
+            
+            <div className="bg-card rounded-3xl p-8 shadow-sm border border-border/50">
               <PropertyDescription description={property.description} />
-            </Card>
+            </div>
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <PropertySidebar 
-              property={property}
-              onMakeOffer={handleMakeOffer}
-            />
+            <div className="sticky top-8">
+              <PropertySidebar 
+                property={property}
+                onMakeOffer={handleMakeOffer}
+              />
+            </div>
           </div>
         </div>
       </div>
