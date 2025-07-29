@@ -19,6 +19,10 @@ interface Property {
   landlord_id: string
   created_at: string
   updated_at: string
+  bedrooms: number | null
+  bathrooms: number | null
+  furnished: boolean
+  property_type: string | null
 }
 
 interface Filters {
@@ -45,7 +49,7 @@ const Listings: React.FC = () => {
   const fetchProperties = async (): Promise<Property[]> => {
     let query = supabase
       .from('properties')
-      .select('*')
+      .select('*, bedrooms, bathrooms, furnished, property_type')
       .eq('status', filters.status || 'listed')
       .order('created_at', { ascending: false })
 

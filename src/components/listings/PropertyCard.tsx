@@ -17,10 +17,10 @@ interface Property {
   landlord_id: string
   created_at: string
   updated_at: string
-  bedrooms?: number
-  bathrooms?: number
-  furnished?: boolean
-  property_type?: string
+  bedrooms: number | null
+  bathrooms: number | null
+  furnished: boolean
+  property_type: string | null
   images?: string[]
 }
 
@@ -95,14 +95,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           <div className="flex items-center">
             <Bed className="w-4 h-4 mr-2 text-primary" />
             <span className="text-text-muted">
-              {property.bedrooms || 0} Bedrooms
+              {property.bedrooms === 0 ? 'Studio' : `${property.bedrooms || 0} Bedroom${(property.bedrooms || 0) !== 1 ? 's' : ''}`}
             </span>
           </div>
           
           <div className="flex items-center">
             <Bath className="w-4 h-4 mr-2 text-primary" />
             <span className="text-text-muted">
-              {property.bathrooms || 0} Bathrooms
+              {property.bathrooms || 0} Bathroom{(property.bathrooms || 0) !== 1 ? 's' : ''}
             </span>
           </div>
           

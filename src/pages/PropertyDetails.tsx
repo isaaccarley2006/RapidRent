@@ -24,6 +24,10 @@ interface Property {
   landlord_id: string
   created_at: string
   updated_at: string
+  bedrooms: number | null
+  bathrooms: number | null
+  furnished: boolean
+  property_type: string | null
 }
 
 const PropertyDetails: React.FC = () => {
@@ -36,7 +40,7 @@ const PropertyDetails: React.FC = () => {
 
     const { data, error } = await supabase
       .from('properties')
-      .select('*')
+      .select('*, bedrooms, bathrooms, furnished, property_type')
       .eq('id', id)
       .single()
 

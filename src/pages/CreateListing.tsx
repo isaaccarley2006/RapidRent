@@ -103,7 +103,11 @@ Property Details:
           location: data.location,
           price: parseFloat(data.price),
           landlord_id: user.id,
-          status: 'listed'
+          status: 'listed',
+          bedrooms: data.bedrooms === 'studio' ? 0 : parseInt(data.bedrooms.replace(/[^\d]/g, '')) || null,
+          bathrooms: parseFloat(data.bathrooms.replace(/[^\d.]/g, '')) || null,
+          furnished: data.furnished === 'fully-furnished' || data.furnished === 'part-furnished',
+          property_type: data.propertyType
         })
 
       if (error) throw error

@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "12.2.12 (cd3cf9e)"
   }
   public: {
     Tables: {
@@ -225,34 +225,46 @@ export type Database = {
       }
       properties: {
         Row: {
+          bathrooms: number | null
+          bedrooms: number | null
           created_at: string
           description: string | null
+          furnished: boolean | null
           id: string
           landlord_id: string
           location: string | null
           price: number | null
+          property_type: string | null
           status: string
           title: string
           updated_at: string
         }
         Insert: {
+          bathrooms?: number | null
+          bedrooms?: number | null
           created_at?: string
           description?: string | null
+          furnished?: boolean | null
           id?: string
           landlord_id: string
           location?: string | null
           price?: number | null
+          property_type?: string | null
           status?: string
           title: string
           updated_at?: string
         }
         Update: {
+          bathrooms?: number | null
+          bedrooms?: number | null
           created_at?: string
           description?: string | null
+          furnished?: boolean | null
           id?: string
           landlord_id?: string
           location?: string | null
           price?: number | null
+          property_type?: string | null
           status?: string
           title?: string
           updated_at?: string
