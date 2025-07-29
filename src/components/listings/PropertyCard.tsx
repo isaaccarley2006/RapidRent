@@ -51,8 +51,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
     <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <CardTitle className="text-xl font-semibold text-text-primary min-h-[3.5rem] leading-relaxed">
-            {property.title.length > 26 ? `${property.title.substring(0, 26)}...` : property.title}
+          <CardTitle className="text-lg font-semibold text-text-primary min-h-[3.5rem] leading-relaxed">
+            {property.title.length > 30 ? `${property.title.substring(0, 30)}...` : property.title}
           </CardTitle>
           <StatusBadge status={property.status} />
         </div>
@@ -97,7 +97,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
         {/* Price */}
         <div className="flex items-center">
           <PoundSterling className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
-          <span className="text-lg font-semibold text-text-primary">
+          <span className="text-base font-semibold text-text-primary">
             {property.price ? `£${property.price.toLocaleString()}/month` : 'Price on request'}
           </span>
         </div>
