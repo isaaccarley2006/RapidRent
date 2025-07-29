@@ -1,12 +1,9 @@
-
-import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Heading } from '@/components/ui/heading'
-import { Star } from 'lucide-react'
-
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Heading } from '@/components/ui/heading';
+import { Star } from 'lucide-react';
 export const TestimonialsSection: React.FC = () => {
-  return (
-    <section className="py-20 px-6 bg-white">
+  return <section className="py-20 px-6 rounded-2xl bg-transparent">
       <div className="max-w-6xl mx-auto">
         <Heading level={2} className="text-center text-text-primary mb-16">
           What our users say
@@ -15,9 +12,7 @@ export const TestimonialsSection: React.FC = () => {
           <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                ))}
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
               </div>
               <p className="text-text-muted mb-4">
                 "Found my dream apartment within a week! The process was so smooth and the landlord was fantastic."
@@ -37,9 +32,7 @@ export const TestimonialsSection: React.FC = () => {
           <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                ))}
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
               </div>
               <p className="text-text-muted mb-4">
                 "As a landlord, this platform has made finding quality tenants so much easier. Highly recommended!"
@@ -59,9 +52,7 @@ export const TestimonialsSection: React.FC = () => {
           <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                ))}
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
               </div>
               <p className="text-text-muted mb-4">
                 "The search filters are amazing and the direct communication feature saved me so much time."
@@ -79,6 +70,5 @@ export const TestimonialsSection: React.FC = () => {
           </Card>
         </div>
       </div>
-    </section>
-  )
-}
+    </section>;
+};

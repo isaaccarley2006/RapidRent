@@ -1,16 +1,12 @@
-
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Heading } from '@/components/ui/heading'
-import { CheckCircle } from 'lucide-react'
-
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { CheckCircle } from 'lucide-react';
 export const PricingSection: React.FC = () => {
-  const navigate = useNavigate()
-
-  return (
-    <section className="py-20 px-6 bg-surface">
+  const navigate = useNavigate();
+  return <section className="py-20 px-6 bg-transparent">
       <div className="max-w-6xl mx-auto">
         <Heading level={2} className="text-center text-text-primary mb-16">
           Simple, transparent pricing
@@ -34,11 +30,7 @@ export const PricingSection: React.FC = () => {
                   <span className="text-text-muted">Basic search filters</span>
                 </li>
               </ul>
-              <Button 
-                variant="outline" 
-                className="w-full rounded-xl border-2 border-muted hover:border-primary hover:text-primary"
-                onClick={() => navigate('/auth')}
-              >
+              <Button variant="outline" className="w-full rounded-xl border-2 border-muted hover:border-primary hover:text-primary" onClick={() => navigate('/auth')}>
                 Get Started
               </Button>
             </CardContent>
@@ -67,10 +59,7 @@ export const PricingSection: React.FC = () => {
                   <span className="text-text-muted">Offer boost features</span>
                 </li>
               </ul>
-              <Button 
-                className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl"
-                onClick={() => navigate('/auth')}
-              >
+              <Button className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl" onClick={() => navigate('/auth')}>
                 Choose Plan
               </Button>
             </CardContent>
@@ -96,17 +85,12 @@ export const PricingSection: React.FC = () => {
                   <span className="text-text-muted">Advanced analytics</span>
                 </li>
               </ul>
-              <Button 
-                variant="outline" 
-                className="w-full rounded-xl border-2 border-muted hover:border-primary hover:text-primary"
-                onClick={() => navigate('/auth')}
-              >
+              <Button variant="outline" className="w-full rounded-xl border-2 border-muted hover:border-primary hover:text-primary" onClick={() => navigate('/auth')}>
                 Choose Plan
               </Button>
             </CardContent>
           </Card>
         </div>
       </div>
-    </section>
-  )
-}
+    </section>;
+};
