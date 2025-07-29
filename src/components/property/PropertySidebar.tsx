@@ -16,7 +16,6 @@ interface Property {
 
 interface LandlordProfile {
   full_name: string | null
-  email: string | null
 }
 
 interface PropertySidebarProps {
@@ -39,9 +38,9 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
         // Fetch landlord profile
         const { data: profile } = await supabase
           .from('profiles')
-          .select('full_name, email')
+          .select('full_name')
           .eq('id', property.landlord_id)
-          .single()
+          .maybeSingle()
 
         // Fetch landlord's property count
         const { count } = await supabase
@@ -162,22 +161,23 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
               
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Email</span>
-                  <span className="text-sm font-medium text-foreground">
-                    {landlordProfile?.email || 'Not available'}
-                  </span>
+                  <span className="text-sm text-muted-foreground">Rating</span>
+                  <div className="flex items-center space-x-1">
+                    <div className="flex text-yellow-500">
+                      {'★'.repeat(5)}
+                    </div>
+                    <span className="text-sm font-medium text-foreground">4.8</span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Response Time</span>
+                  <span className="text-sm font-medium text-foreground">Within 2 hours</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Properties Listed</span>
                   <span className="text-sm font-medium text-foreground">{propertiesCount}</span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Member Since</span>
-                  <span className="text-sm font-medium text-foreground">
-                    {new Date(property.created_at).getFullYear()}
-                  </span>
                 </div>
               </div>
             </div>
