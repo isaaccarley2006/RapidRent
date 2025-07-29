@@ -8,6 +8,7 @@ import { PersonalInformationTab } from '@/components/profile/PersonalInformation
 import { EmploymentInformationTab } from '@/components/profile/EmploymentInformationTab'
 import { FinancialInformationTab } from '@/components/profile/FinancialInformationTab'
 import { ReferencesTab } from '@/components/profile/ReferencesTab'
+import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
 import { useProfile } from '@/hooks/useProfile'
 
 const Profile: React.FC = () => {
@@ -27,6 +28,42 @@ const Profile: React.FC = () => {
 
   if (loading) {
     return <LoadingSpinner />
+  }
+
+  // Check if user is a landlord
+  const isLandlord = formData.user_type === 'landlord'
+
+  if (isLandlord) {
+    return (
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-semibold text-text-primary">Landlord Profile</h1>
+          <p className="text-text-muted mt-2">
+            Complete your landlord profile to manage your properties
+          </p>
+        </div>
+
+        <LandlordProfileContent
+          formData={formData}
+          setFormData={setFormData}
+          userEmail={user?.email || ''}
+        />
+
+        {/* Save Button */}
+        <div className="flex justify-between items-center mt-8">
+          <Button
+            variant="outline"
+            onClick={signOut}
+            className="text-red-600 hover:text-red-700"
+          >
+            Sign Out
+          </Button>
+          <Button onClick={saveProfile} disabled={saving} size="lg">
+            {saving ? <LoadingSpinner /> : 'Save Profile'}
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (

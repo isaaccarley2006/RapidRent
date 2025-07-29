@@ -5,6 +5,7 @@ export interface TenantProfile {
   phone: string | null
   date_of_birth: string | null
   national_insurance_number: string | null
+  user_type: string | null
   
   // Address Info
   current_address: string | null
