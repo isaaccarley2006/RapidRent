@@ -52,7 +52,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <CardTitle className="text-xl font-semibold text-text-primary min-h-[3.5rem] leading-relaxed">
-            {property.title}
+            {property.title.length > 26 ? `${property.title.substring(0, 26)}...` : property.title}
           </CardTitle>
           <StatusBadge status={property.status} />
         </div>
