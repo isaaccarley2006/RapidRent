@@ -66,7 +66,7 @@ const PropertyDetails: React.FC = () => {
 
   const handleMakeOffer = () => {
     if (user) {
-      navigate(`/offers/new/${id}`)
+      navigate(`/listing/${id}/offer`)
     } else {
       navigate('/auth')
     }

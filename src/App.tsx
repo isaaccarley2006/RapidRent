@@ -17,6 +17,8 @@ import Profile from './pages/Profile'
 import Listings from './pages/Listings'
 import PropertyDetails from './pages/PropertyDetails'
 import MakeOffer from './pages/MakeOffer'
+import RenterProfile from './pages/RenterProfile'
+import StructuredOffer from './pages/StructuredOffer'
 import CreateListing from './pages/CreateListing'
 import PropertyOffers from './pages/PropertyOffers'
 import PrivacyPolicy from './pages/PrivacyPolicy'
@@ -63,6 +65,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <AppLayout><Profile /></AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/renter/profile" 
+              element={
+                <ProtectedRoute>
+                  <RenterProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/listing/:id/offer" 
+              element={
+                <ProtectedRoute>
+                  <StructuredOffer />
                 </ProtectedRoute>
               } 
             />
