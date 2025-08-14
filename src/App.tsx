@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { HelmetProvider } from 'react-helmet-async'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { AppLayout } from '@/components/layouts/AppLayout'
@@ -18,11 +19,15 @@ import PropertyDetails from './pages/PropertyDetails'
 import MakeOffer from './pages/MakeOffer'
 import CreateListing from './pages/CreateListing'
 import PropertyOffers from './pages/PropertyOffers'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
+import CookiePolicy from './pages/CookiePolicy'
 import NotFound from './pages/NotFound'
 
 const queryClient = new QueryClient()
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
@@ -87,12 +92,19 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
+            
+            {/* Legal Pages */}
+            <Route path="/legal/privacy" element={<AppLayout><PrivacyPolicy /></AppLayout>} />
+            <Route path="/legal/terms" element={<AppLayout><TermsOfService /></AppLayout>} />
+            <Route path="/legal/cookies" element={<AppLayout><CookiePolicy /></AppLayout>} />
+            
             <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 )
 
 export default App

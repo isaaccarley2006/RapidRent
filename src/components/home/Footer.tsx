@@ -70,6 +70,36 @@ export const Footer: React.FC = () => {
           </div>
           
           <div>
+            <h4 className="font-semibold text-text-primary mb-4">Legal</h4>
+            <ul className="space-y-2">
+              <li>
+                <button 
+                  onClick={() => navigate('/legal/privacy')}
+                  className="text-text-muted hover:text-primary transition-colors"
+                >
+                  Privacy Policy
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => navigate('/legal/terms')}
+                  className="text-text-muted hover:text-primary transition-colors"
+                >
+                  Terms of Service
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => navigate('/legal/cookies')}
+                  className="text-text-muted hover:text-primary transition-colors"
+                >
+                  Cookie Policy
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <div>
             <h4 className="font-semibold text-text-primary mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
@@ -80,11 +110,6 @@ export const Footer: React.FC = () => {
               <li>
                 <a href="#" className="text-text-muted hover:text-primary transition-colors">
                   Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-text-muted hover:text-primary transition-colors">
-                  Privacy Policy
                 </a>
               </li>
             </ul>
