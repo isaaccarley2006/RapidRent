@@ -13,6 +13,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { track } from '@/lib/analytics';
+import { useUser } from '@/lib/auth/useUser';
 interface Property {
   id: string;
   title: string;
@@ -60,8 +62,9 @@ const MakeOffer: React.FC = () => {
   const {
     toast
   } = useToast();
+  const { user: authUser, profile: userProfile } = useUser();
   const [property, setProperty] = useState<Property | null>(null);
-  const [profile, setProfile] = useState<TenantProfile | null>(null);
+  const [tenantProfile, setTenantProfile] = useState<TenantProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -98,7 +101,7 @@ const MakeOffer: React.FC = () => {
         } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         if (profileError && profileError.code !== 'PGRST116') throw profileError;
         if (profileData) {
-          setProfile(profileData as TenantProfile);
+          setTenantProfile(profileData as TenantProfile);
           setEmploymentStatus(profileData.employment_status || '');
           setAnnualIncome(profileData.annual_income?.toString() || '');
           setCurrentSituation(profileData.current_rental_situation || '');
@@ -145,6 +148,7 @@ const MakeOffer: React.FC = () => {
 
       // Submit the offer - provide both legacy and new columns for the sync trigger
       const {
+        data: offerData,
         error: offerError
       } = await supabase.from('offers').insert({
         property_id: propertyId,
@@ -155,8 +159,16 @@ const MakeOffer: React.FC = () => {
         preferred_move_in_date: moveInDate,
         tenant_message: message,
         status: 'pending'
-      });
+      }).select().single();
       if (offerError) throw offerError;
+
+      // Track successful offer submission
+      track('offer_submitted', {
+        listing_id: propertyId,
+        offer_id: offerData?.id,
+        user_id: authUser?.id,
+        role: userProfile?.role
+      });
       toast({
         title: "Offer submitted successfully!",
         description: "The landlord will review your offer and get back to you."
@@ -198,7 +210,7 @@ const MakeOffer: React.FC = () => {
         </div>
 
         {/* Profile Completion Status */}
-        {profile && profile.profile_completion_percentage !== null && profile.profile_completion_percentage < 80 && <Card className="mb-8 border-yellow-200 bg-yellow-50">
+        {tenantProfile && tenantProfile.profile_completion_percentage !== null && tenantProfile.profile_completion_percentage < 80 && <Card className="mb-8 border-yellow-200 bg-yellow-50">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <AlertCircle className="w-6 h-6 text-yellow-600 mt-1" />
@@ -207,7 +219,7 @@ const MakeOffer: React.FC = () => {
                     Complete Your Profile for Better Applications
                   </h3>
                   <p className="text-yellow-700 mb-4">
-                    Your profile is {profile.profile_completion_percentage}% complete. Complete your verified profile to make faster, more attractive offers to landlords.
+                    Your profile is {tenantProfile.profile_completion_percentage}% complete. Complete your verified profile to make faster, more attractive offers to landlords.
                   </p>
                   <Button variant="outline" onClick={() => navigate('/profile')} className="border-yellow-300 text-yellow-800 hover:bg-yellow-100">
                     Complete Profile
@@ -218,7 +230,7 @@ const MakeOffer: React.FC = () => {
           </Card>}
 
         {/* Verification Status */}
-        {profile && <Card className="mb-8">
+        {tenantProfile && <Card className="mb-8">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-primary" />
@@ -230,27 +242,27 @@ const MakeOffer: React.FC = () => {
                 {[{
               key: 'identity',
               label: 'Identity',
-              verified: profile.identity_verified
+              verified: tenantProfile.identity_verified
             }, {
               key: 'employment',
               label: 'Employment',
-              verified: profile.employment_verified
+              verified: tenantProfile.employment_verified
             }, {
               key: 'income',
               label: 'Income',
-              verified: profile.income_verified
+              verified: tenantProfile.income_verified
             }, {
               key: 'credit',
               label: 'Credit Score',
-              verified: profile.credit_verified
+              verified: tenantProfile.credit_verified
             }, {
               key: 'references',
               label: 'References',
-              verified: profile.references_verified
+              verified: tenantProfile.references_verified
             }, {
               key: 'bank',
               label: 'Bank Details',
-              verified: profile.bank_verified
+              verified: tenantProfile.bank_verified
             }].map(item => <div key={item.key} className="flex items-center justify-between p-3 border rounded-lg">
                     <span className="text-sm font-medium">{item.label}</span>
                     <Badge className={item.verified ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>

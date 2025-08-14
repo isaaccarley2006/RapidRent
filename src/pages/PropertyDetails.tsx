@@ -14,6 +14,8 @@ import { PropertyImage } from '@/components/property/PropertyImage'
 import { PropertyHeader } from '@/components/property/PropertyHeader'
 import { PropertyDescription } from '@/components/property/PropertyDescription'
 import { PropertySidebar } from '@/components/property/PropertySidebar'
+import { track } from '@/lib/analytics'
+import { useUser } from '@/lib/auth/useUser'
 
 interface Property {
   id: string
@@ -36,6 +38,7 @@ const PropertyDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { user } = useAuth()
+  const { user: authUser, profile } = useUser()
 
   const fetchProperty = async (): Promise<Property> => {
     if (!id) throw new Error('Property ID is required')
@@ -66,6 +69,11 @@ const PropertyDetails: React.FC = () => {
 
   const handleMakeOffer = () => {
     if (user) {
+      track('offer_started', {
+        listing_id: id,
+        user_id: authUser?.id,
+        role: profile?.role
+      })
       navigate(`/listing/${id}/offer`)
     } else {
       navigate('/auth')

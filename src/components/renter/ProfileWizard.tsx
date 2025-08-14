@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, ArrowRight, Check, User, Briefcase, Home, Phone } from 'lucide-react'
@@ -11,6 +11,8 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { renterProfileWizardSchema, RenterProfileWizardFormData } from '@/schemas/renter'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
+import { track } from '@/lib/analytics'
+import { useUser } from '@/lib/auth/useUser'
 
 interface ProfileWizardProps {
   onSubmit: (data: RenterProfileWizardFormData) => Promise<boolean>
@@ -31,6 +33,8 @@ export const ProfileWizard: React.FC<ProfileWizardProps> = ({
   saving
 }) => {
   const [currentStep, setCurrentStep] = useState(1)
+  const [hasTrackedStart, setHasTrackedStart] = useState(false)
+  const { user, profile } = useUser()
   
   const form = useForm<RenterProfileWizardFormData>({
     resolver: zodResolver(renterProfileWizardSchema),
@@ -39,6 +43,17 @@ export const ProfileWizard: React.FC<ProfileWizardProps> = ({
 
   const { register, watch, setValue, trigger, handleSubmit, formState: { errors } } = form
   const watchedValues = watch()
+
+  // Track profile start on first render
+  useEffect(() => {
+    if (!hasTrackedStart) {
+      track('profile_started', {
+        user_id: user?.id,
+        role: profile?.role
+      })
+      setHasTrackedStart(true)
+    }
+  }, [hasTrackedStart, user?.id, profile?.role])
 
   const nextStep = async () => {
     const isValid = await trigger()
@@ -56,7 +71,10 @@ export const ProfileWizard: React.FC<ProfileWizardProps> = ({
   const onFormSubmit = async (data: RenterProfileWizardFormData) => {
     const success = await onSubmit(data)
     if (success) {
-      // Form will be handled by parent component
+      track('profile_completed', {
+        user_id: user?.id,
+        role: profile?.role
+      })
     }
   }
 

@@ -11,11 +11,13 @@ import { OffersTable } from '@/components/landlord/OffersTable'
 import { OfferCompareDrawer } from '@/components/landlord/OfferCompareDrawer'
 import { ListingFilter } from '@/components/landlord/ListingFilter'
 import { fetchLandlordListings, fetchOffersByLandlord, updateOfferStatus } from '@/lib/data/offers'
-import { analyticsEvents } from '@/lib/analytics'
+import { track } from '@/lib/analytics'
+import { useUser } from '@/lib/auth/useUser'
 import type { OfferRow, OfferStatus, LandlordListing } from '@/types/offers'
 
 const LandlordOffers: React.FC = () => {
   const { user } = useAuth()
+  const { user: authUser, profile } = useUser()
   const { toast } = useToast()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -45,8 +47,11 @@ const LandlordOffers: React.FC = () => {
   useEffect(() => {
     if (!user?.id) return
     loadData()
-    analyticsEvents.landlordInboxViewed()
-  }, [user?.id, selectedListingId])
+    track('landlord_inbox_viewed', {
+      user_id: authUser?.id,
+      role: profile?.role
+    })
+  }, [user?.id, selectedListingId, authUser?.id, profile?.role])
 
   const loadData = async () => {
     if (!user?.id) return
@@ -128,7 +133,13 @@ const LandlordOffers: React.FC = () => {
     try {
       await updateOfferStatus(offerId, newStatus)
       
-      analyticsEvents.offerStatusChanged(offerId, oldStatus, newStatus)
+      track('offer_status_changed', {
+        offer_id: offerId,
+        old_status: oldStatus,
+        new_status: newStatus,
+        user_id: authUser?.id,
+        role: profile?.role
+      })
       
       toast({
         title: 'Offer updated',
@@ -161,7 +172,11 @@ const LandlordOffers: React.FC = () => {
   const handleCompare = () => {
     if (selectedOffers.length === 0) return
     
-    analyticsEvents.offerCompared(selectedOffers)
+    track('offer_compared', {
+      offer_ids: selectedOffers,
+      user_id: authUser?.id,
+      role: profile?.role
+    })
     setCompareDrawerOpen(true)
   }
 
