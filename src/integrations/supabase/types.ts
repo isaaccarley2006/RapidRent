@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -18,10 +18,12 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          listing_id: string
           message: string | null
           offer_price: number
           preferred_move_in_date: string | null
           property_id: string
+          renter_id: string
           status: string
           tenant_id: string
           tenant_message: string | null
@@ -30,10 +32,12 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          listing_id: string
           message?: string | null
           offer_price: number
           preferred_move_in_date?: string | null
           property_id: string
+          renter_id: string
           status?: string
           tenant_id: string
           tenant_message?: string | null
@@ -42,10 +46,12 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          listing_id?: string
           message?: string | null
           offer_price?: number
           preferred_move_in_date?: string | null
           property_id?: string
+          renter_id?: string
           status?: string
           tenant_id?: string
           tenant_message?: string | null
@@ -53,17 +59,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "offers_property_id_fkey"
-            columns: ["property_id"]
+            foreignKeyName: "offers_listing_id_fkey"
+            columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "properties"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "offers_tenant_id_fkey"
-            columns: ["tenant_id"]
+            foreignKeyName: "offers_renter_id_fkey"
+            columns: ["renter_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
