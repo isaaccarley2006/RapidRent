@@ -32,7 +32,9 @@ export const PropertyImage: React.FC<PropertyImageProps> = ({ images }) => {
                     alt={image.alt}
                     className="w-full h-full object-cover rounded-2xl"
                     onError={(e) => {
-                      e.currentTarget.src = "/placeholder.svg?height=400&width=600"
+                      const target = e.currentTarget;
+                      target.style.display = 'none';
+                      target.parentElement!.innerHTML = '<div class="w-full h-full bg-gradient-to-br from-muted/40 to-muted/60 rounded-2xl flex items-center justify-center overflow-hidden group"><div class="text-center opacity-60 group-hover:opacity-40 transition-opacity duration-300"><div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4"><div class="w-8 h-8 bg-primary/20 rounded-lg"></div></div><p class="text-sm font-medium text-muted-foreground">Image not available</p></div></div>';
                     }}
                   />
                 ) : (

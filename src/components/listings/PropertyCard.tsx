@@ -64,11 +64,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
           <DialogTrigger asChild>
             <div className="relative h-48 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
               <img
-                src={property.images?.[0] || "/placeholder.svg?height=200&width=300"}
+                src={property.images?.[0] || ""}
                 alt={property.title}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = "/placeholder.svg?height=200&width=300"
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = '<div class="w-full h-full bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center"><svg class="w-8 h-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div>';
                 }}
               />
               <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all" />
@@ -76,11 +78,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
           </DialogTrigger>
           <DialogContent className="max-w-4xl">
             <img
-              src={property.images?.[0] || "/placeholder.svg?height=400&width=600"}
+              src={property.images?.[0] || ""}
               alt={property.title}
               className="w-full h-auto max-h-[80vh] object-contain"
               onError={(e) => {
-                e.currentTarget.src = "/placeholder.svg?height=400&width=600"
+                const target = e.currentTarget;
+                target.style.display = 'none';
+                target.parentElement!.innerHTML = '<div class="w-full h-auto max-h-[80vh] bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center p-12"><svg class="w-16 h-16 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div>';
               }}
             />
           </DialogContent>

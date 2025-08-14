@@ -291,7 +291,7 @@ export default function PropertyOffers() {
         <div className="max-w-6xl mx-auto">
           <Button
             variant="ghost"
-            onClick={() => navigate('/dashboard/landlord')}
+          onClick={() => navigate('/dashboard')}
             className="mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -312,7 +312,7 @@ export default function PropertyOffers() {
       <div className="flex items-center justify-between">
         <Button
           variant="ghost"
-          onClick={() => navigate('/dashboard/landlord')}
+          onClick={() => navigate('/dashboard')}
           className="hover:bg-muted"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -329,7 +329,9 @@ export default function PropertyOffers() {
               alt={property.title}
               className="w-32 h-24 object-cover rounded-lg"
               onError={(e) => {
-                e.currentTarget.src = "/placeholder.svg?height=96&width=128"
+                const target = e.currentTarget;
+                target.style.display = 'none';
+                target.parentElement!.innerHTML = '<div class="w-32 h-24 bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center"><svg class="w-8 h-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div>';
               }}
             />
           ) : (

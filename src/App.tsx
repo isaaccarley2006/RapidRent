@@ -50,22 +50,9 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
-            <Route 
-              path="/dashboard/tenant" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/dashboard/landlord" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
+            {/* Redirect old dashboard routes */}
+            <Route path="/dashboard/tenant" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard/landlord" element={<Navigate to="/dashboard" replace />} />
             <Route 
               path="/profile" 
               element={
@@ -82,14 +69,8 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
-            <Route 
-              path="/listings/new" 
-              element={
-                <ProtectedRoute>
-                  <CreateListing />
-                </ProtectedRoute>
-              } 
-            />
+            {/* Redirect old listings route */}
+            <Route path="/listings/new" element={<Navigate to="/create-listing" replace />} />
             <Route 
               path="/create-listing" 
               element={

@@ -61,13 +61,8 @@ const Dashboard: React.FC = () => {
     return <LoadingSpinner />
   }
 
-  // Determine if we're on a specific dashboard route
-  const isSpecificRoute = location.pathname.includes('/tenant') || location.pathname.includes('/landlord')
-  const routeUserType = location.pathname.includes('/tenant') ? 'tenant' : 
-                       location.pathname.includes('/landlord') ? 'landlord' : null
-
-  // Use route-specific user type if available, otherwise fall back to profile user type
-  const displayUserType = routeUserType || userType
+  // Use profile user type for display
+  const displayUserType = userType
 
   return (
     <AppLayout>

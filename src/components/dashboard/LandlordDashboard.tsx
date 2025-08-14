@@ -131,7 +131,7 @@ export const LandlordDashboard: React.FC = () => {
             </CardDescription>
           </div>
           <Button 
-            onClick={() => navigate('/listings/new')}
+            onClick={() => navigate('/create-listing')}
             className="bg-primary hover:bg-primary/90 text-white rounded-xl"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -145,7 +145,7 @@ export const LandlordDashboard: React.FC = () => {
               <h3 className="text-lg font-medium text-gray-900 mb-2">No properties listed</h3>
               <p className="text-gray-500 mb-4">Create your first property listing to start receiving offers</p>
               <Button 
-                onClick={() => navigate('/listings/new')}
+                onClick={() => navigate('/create-listing')}
                 className="bg-primary hover:bg-primary/90 text-white rounded-xl"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -165,7 +165,9 @@ export const LandlordDashboard: React.FC = () => {
                           alt={property.title}
                           className="w-full h-full object-cover rounded-lg"
                           onError={(e) => {
-                            e.currentTarget.src = "/placeholder.svg?height=64&width=80"
+                            const target = e.currentTarget;
+                            target.style.display = 'none';
+                            target.parentElement!.innerHTML = '<div class="w-full h-full bg-gradient-to-br from-muted/40 to-muted/60 rounded-lg flex items-center justify-center"><svg class="w-6 h-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg></div>';
                           }}
                         />
                       ) : (
