@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '@/lib/supabase'
+import { useUser } from '@/lib/auth/useUser'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,6 +21,39 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
   const [loading, setLoading] = useState(false)
   const [showOTPVerification, setShowOTPVerification] = useState(false)
   const { toast } = useToast()
+  const { refresh } = useUser()
+  const navigate = useNavigate()
+
+  const handleSuccessfulAuth = async () => {
+    // Refresh auth state to get profile
+    await refresh()
+    
+    // Give a moment for profile to load, then redirect based on role
+    setTimeout(async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session?.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('user_type')
+            .eq('id', session.user.id)
+            .single()
+          
+          if (profile?.user_type === 'landlord') {
+            navigate('/dashboard')
+          } else if (profile?.user_type === 'tenant') {
+            navigate('/dashboard')
+          } else {
+            // No role set, go to onboarding
+            navigate('/onboarding')
+          }
+        }
+      } catch (error) {
+        console.error('Error determining redirect:', error)
+        navigate('/dashboard')
+      }
+    }, 100)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,6 +98,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
           title: "Welcome back! 👋",
           description: "You've been signed in successfully.",
         })
+        
+        await handleSuccessfulAuth()
       }
     } catch (error: any) {
       console.error('Auth error:', error)
@@ -85,11 +122,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
     }
   }
 
-  const handleOTPSuccess = () => {
+  const handleOTPSuccess = async () => {
     setShowOTPVerification(false)
     // Reset form
     setEmail('')
     setFullName('')
+    
+    await handleSuccessfulAuth()
   }
 
   const handleBackToSignup = () => {
