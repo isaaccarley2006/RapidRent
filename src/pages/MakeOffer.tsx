@@ -143,12 +143,14 @@ const MakeOffer: React.FC = () => {
       });
       if (profileError) throw profileError;
 
-      // Submit the offer
+      // Submit the offer - provide both legacy and new columns for the sync trigger
       const {
         error: offerError
       } = await supabase.from('offers').insert({
         property_id: propertyId,
+        listing_id: propertyId, // Sync trigger will ensure consistency
         tenant_id: user.id,
+        renter_id: user.id, // Sync trigger will ensure consistency
         offer_price: parseFloat(offerPrice),
         preferred_move_in_date: moveInDate,
         tenant_message: message,
