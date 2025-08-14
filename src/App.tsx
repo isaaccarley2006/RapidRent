@@ -21,6 +21,7 @@ import RenterProfile from './pages/RenterProfile'
 import StructuredOffer from './pages/StructuredOffer'
 import CreateListing from './pages/CreateListing'
 import PropertyOffers from './pages/PropertyOffers'
+import LandlordOffers from './pages/LandlordOffers'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -107,6 +108,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <AppLayout><PropertyOffers /></AppLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/landlord/offers" 
+              element={
+                <ProtectedRoute>
+                  <LandlordOffers />
                 </ProtectedRoute>
               } 
             />
