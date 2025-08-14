@@ -2,6 +2,7 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { Helmet } from 'react-helmet-async'
 import { ArrowLeft } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
@@ -101,10 +102,19 @@ const PropertyDetails: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background font-sans">
-      <PropertyPageHeader />
+    <>
+      <Helmet>
+        <title>{property?.title ? `${property.title} - RentView` : 'Property Details - RentView'}</title>
+        <meta name="description" content={property?.description || 'View detailed information about this rental property on RentView.'} />
+        <link rel="canonical" href={`https://rentview.co.uk/properties/${id}`} />
+        <meta property="og:url" content={`https://rentview.co.uk/properties/${id}`} />
+        <meta property="og:title" content={property?.title ? `${property.title} - RentView` : 'Property Details - RentView'} />
+        <meta property="og:description" content={property?.description || 'View detailed information about this rental property on RentView.'} />
+      </Helmet>
+      <div className="min-h-screen bg-background font-sans">
+        <PropertyPageHeader />
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="max-w-6xl mx-auto px-6 py-12">
         <PropertyImage images={property.images || []} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -133,8 +143,9 @@ const PropertyDetails: React.FC = () => {
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

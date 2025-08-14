@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { PropertyCard } from '@/components/listings/PropertyCard'
 import { SearchFilters } from '@/components/listings/SearchFilters'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
@@ -99,15 +100,22 @@ const Listings: React.FC = () => {
   }
 
   return (
-    <div className="px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-text-primary">
-          Property Listings
-        </h1>
-        <p className="text-text-muted">
-          Find your perfect rental property
-        </p>
-      </div>
+    <>
+      <Helmet>
+        <title>Property Listings - RentView</title>
+        <meta name="description" content="Browse available rental properties on RentView. Filter by location, price, and amenities to find your perfect home." />
+        <link rel="canonical" href="https://rentview.co.uk/listings" />
+        <meta property="og:url" content="https://rentview.co.uk/listings" />
+      </Helmet>
+      <div className="px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-semibold text-text-primary">
+            Property Listings
+          </h1>
+          <p className="text-text-muted">
+            Find your perfect rental property
+          </p>
+        </div>
 
       <SearchFilters
         filters={filters}
@@ -157,7 +165,8 @@ const Listings: React.FC = () => {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 

@@ -1,0 +1,6 @@
+# Block old S3 URLs or legacy routes
+/old-site/* https://rentview.co.uk/ 301
+/legacy/* https://rentview.co.uk/ 301
+
+# Catch-all for unknown routes
+/* /index.html 200
