@@ -24,11 +24,11 @@ export const FeaturesSection: React.FC = () => {
           <Card className="bg-white rounded-xl shadow-sm border border-muted p-8 text-center">
             <CardContent className="pt-0">
               <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
-                <Users className="w-8 h-8 text-white" />
+                <Shield className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-text-primary mb-4">For Agents</h3>
+              <h3 className="text-xl font-semibold text-text-primary mb-4">For Landlords</h3>
               <p className="text-text-muted">
-                Manage multiple properties efficiently and connect with quality tenants seamlessly.
+                List your properties, screen tenants, and manage rentals with confidence and ease.
               </p>
             </CardContent>
           </Card>
@@ -36,11 +36,11 @@ export const FeaturesSection: React.FC = () => {
           <Card className="bg-white rounded-xl shadow-sm border border-muted p-8 text-center">
             <CardContent className="pt-0">
               <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
-                <Shield className="w-8 h-8 text-white" />
+                <Users className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-text-primary mb-4">For Landlords</h3>
+              <h3 className="text-xl font-semibold text-text-primary mb-4">For Agents</h3>
               <p className="text-text-muted">
-                List your properties, screen tenants, and manage rentals with confidence and ease.
+                Manage multiple properties efficiently and connect with quality tenants seamlessly.
               </p>
             </CardContent>
           </Card>
