@@ -26,14 +26,6 @@ export const PropertyDescription: React.FC<PropertyDescriptionProps> = ({
           <KeyFeaturesCard />
         </div>
       </div>
-
-      {description && (
-        <div className="prose max-w-none">
-          <p className="text-muted-foreground leading-relaxed">
-            {description}
-          </p>
-        </div>
-      )}
     </div>
   )
 }
