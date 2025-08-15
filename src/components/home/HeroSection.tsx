@@ -27,7 +27,7 @@ export const HeroSection: React.FC = () => {
             place to call home.
           </h1>
         </div>
-        <p className="text-2xl text-text-muted mb-12 max-w-2xl mx-auto">One platform for your entire rental journey - verified profiles, centralised listings, eligibility checks, and a secure, faster process for renters, landlords, and agents.</p>
+        <p className="text-2xl text-text-muted mb-12 max-w-2xl mx-auto">One platform for your entire rental journey – verified profiles, centralised listings, eligibility checks, and a secure, faster process for renters, landlords, and agents.</p>
         
         {/* Search Input */}
         <div className="max-w-2xl mx-auto mb-8">
