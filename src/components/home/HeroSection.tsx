@@ -35,8 +35,7 @@ export const HeroSection: React.FC = () => {
           </h1>
         </div>
         <p className="text-2xl text-text-muted mb-12 max-w-2xl mx-auto">
-          Discover amazing rental properties and connect with trusted landlords. 
-          Your next home is just a search away.
+          One platform for your entire rental journey — verified profiles, centralised listings, eligibility checks, and a secure, faster process for renters, landlords, and agents.
         </p>
         
         {/* Search Input */}
