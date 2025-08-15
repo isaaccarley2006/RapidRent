@@ -15,7 +15,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({ userType }
 
   const handleSignOut = async () => {
     await signOut()
-    navigate('/auth')
+    navigate('/')
   }
 
   const isActivePath = (path: string) => {

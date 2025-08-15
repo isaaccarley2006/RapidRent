@@ -21,7 +21,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 
   const handleSignOut = async () => {
     await signOut()
-    navigate('/auth')
+    navigate('/')
     onClose()
   }
 
