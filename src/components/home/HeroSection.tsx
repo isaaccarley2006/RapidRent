@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { LocationSearchInput } from './LocationSearchInput';
 export const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [searchLocation, setSearchLocation] = useState('');
@@ -31,10 +30,11 @@ export const HeroSection: React.FC = () => {
         
         {/* Search Input */}
         <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-muted w-5 h-5" />
-            <Input type="text" placeholder="Where do you want to live?" value={searchLocation} onChange={e => setSearchLocation(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSearch()} className="pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-muted focus:border-primary focus:ring-primary bg-white" />
-          </div>
+          <LocationSearchInput
+            value={searchLocation}
+            onChange={setSearchLocation}
+            onSearch={handleSearch}
+          />
         </div>
 
         {/* CTA Buttons */}
