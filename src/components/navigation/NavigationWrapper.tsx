@@ -10,13 +10,14 @@ export const NavigationWrapper: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchUserType = async () => {
-      if (!user) {
-        setUserType(undefined)
-        setLoading(false)
-        return
-      }
+    if (!user) {
+      setUserType(undefined)
+      setLoading(false)
+      return
+    }
 
+    // Debounce the profile fetch to avoid multiple calls
+    const timeoutId = setTimeout(async () => {
       try {
         const { data: profile } = await supabase
           .from('profiles')
@@ -30,9 +31,9 @@ export const NavigationWrapper: React.FC = () => {
       } finally {
         setLoading(false)
       }
-    }
+    }, 100) // Small delay to debounce
 
-    fetchUserType()
+    return () => clearTimeout(timeoutId)
   }, [user])
 
   if (loading && user) {

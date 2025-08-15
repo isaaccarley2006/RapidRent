@@ -18,14 +18,8 @@ export const useAuthRedirect = () => {
       const currentPath = location.pathname
       setRedirecting(true)
 
-      console.log('=== AUTH REDIRECT DEBUG ===')
-      console.log('Current path:', currentPath)
-      console.log('User:', user?.id)
-      console.log('Session exists:', !!session)
-
       // If not logged in, redirect to auth (except if already on auth page)
       if (!user || !session) {
-        console.log('No user/session, redirecting to auth')
         if (currentPath !== '/auth') {
           navigate('/auth', { replace: true })
         }
@@ -33,26 +27,19 @@ export const useAuthRedirect = () => {
         return
       }
 
-      // If logged in, check profile completion
+      // User is authenticated - cache profile fetch to avoid repeated calls
+      if (profileLoading) return
+      
       setProfileLoading(true)
       try {
-        console.log('Fetching profile for user:', user.id)
-        
         const { data: profile, error } = await supabase
           .from('profiles')
           .select('profile_complete, user_type, full_name, email')
           .eq('id', user.id)
           .maybeSingle()
 
-        console.log('Profile query result:')
-        console.log('- Profile data:', profile)
-        console.log('- Profile error:', error)
-        console.log('- Profile complete:', profile?.profile_complete)
-        console.log('- User type:', profile?.user_type)
-
         // If profile doesn't exist, create one and redirect to onboarding
         if (!profile && !error) {
-          console.log('No profile found, creating one...')
           const { error: insertError } = await supabase
             .from('profiles')
             .insert({
@@ -63,12 +50,9 @@ export const useAuthRedirect = () => {
           
           if (insertError) {
             console.error('Error creating profile:', insertError)
-          } else {
-            console.log('Profile created successfully')
           }
           
           if (currentPath !== '/onboarding') {
-            console.log('Redirecting to onboarding (new profile)')
             navigate('/onboarding', { replace: true })
           }
           setProfileLoading(false)
@@ -84,37 +68,19 @@ export const useAuthRedirect = () => {
         const isOnboardingComplete = profile?.profile_complete || false
         const userType = profile?.user_type
 
-        console.log('=== REDIRECT DECISION ===')
-        console.log('Profile complete:', isOnboardingComplete)
-        console.log('User type:', userType)
-        console.log('Current path:', currentPath)
-
         // Redirect based on profile completion status and user type
         if (!isOnboardingComplete && currentPath !== '/onboarding') {
-          console.log('Redirecting to onboarding (incomplete profile)')
           navigate('/onboarding', { replace: true })
         } else if (isOnboardingComplete) {
-          // Determine the correct dashboard path
-          const dashboardPath = userType === 'tenant' ? '/dashboard/tenant' : '/dashboard/landlord'
-          
-          // Redirect completed profiles away from auth/onboarding to appropriate dashboard
-          // Also redirect from home page to dashboard for authenticated users
+          // Use generic dashboard path for simplicity
           if (currentPath === '/auth' || currentPath === '/onboarding' || currentPath === '/') {
-            console.log('Redirecting to dashboard:', dashboardPath)
-            navigate(dashboardPath, { replace: true })
-          } else if (currentPath === '/dashboard' && userType) {
-            // Redirect generic /dashboard to specific dashboard
-            console.log('Redirecting generic dashboard to specific:', dashboardPath)
-            navigate(dashboardPath, { replace: true })
+            navigate('/dashboard', { replace: true })
           }
         }
-        
-        console.log('=== REDIRECT COMPLETE ===')
       } catch (error) {
         console.error('Error in auth redirect logic:', error)
         // If any error occurs, redirect to onboarding to be safe
         if (currentPath !== '/onboarding') {
-          console.log('Error occurred, redirecting to onboarding as fallback')
           navigate('/onboarding', { replace: true })
         }
       } finally {
@@ -123,7 +89,9 @@ export const useAuthRedirect = () => {
       }
     }
 
-    handleRedirect()
+    // Debounce the redirect to prevent rapid successive calls
+    const timeoutId = setTimeout(handleRedirect, 100)
+    return () => clearTimeout(timeoutId)
   }, [user, session, loading, navigate, location.pathname])
 
   return {

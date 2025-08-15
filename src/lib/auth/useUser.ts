@@ -49,10 +49,10 @@ export const useUser = (): UseUserReturn => {
     setUser(newSession?.user ?? null)
     
     if (newSession?.user) {
-      // Defer profile fetch to avoid auth state change deadlock
+      // Debounce profile fetch to avoid multiple calls
       setTimeout(() => {
         fetchProfile(newSession.user.id).then(setProfile)
-      }, 0)
+      }, 200)
     } else {
       setProfile(null)
     }
