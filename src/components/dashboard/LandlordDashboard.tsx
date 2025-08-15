@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
-import { Loader2, Building, Plus, Eye, MapPin } from 'lucide-react'
+import { Loader2, Building, Plus, Eye, MapPin, Upload } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -140,13 +140,23 @@ export const LandlordDashboard: React.FC = () => {
               Manage your rental listings and track offers
             </CardDescription>
           </div>
-          <Button 
-            onClick={() => navigate('/create-listing')}
-            className="bg-primary hover:bg-primary/90 text-white rounded-xl"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Property
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              onClick={() => navigate('/bulk-upload')}
+              variant="outline"
+              className="rounded-xl"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Bulk Upload
+            </Button>
+            <Button 
+              onClick={() => navigate('/create-listing')}
+              className="bg-primary hover:bg-primary/90 text-white rounded-xl"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Property
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           {properties.length === 0 ? (

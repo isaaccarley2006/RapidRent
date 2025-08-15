@@ -21,6 +21,7 @@ import MakeOffer from './pages/MakeOffer'
 import RenterProfile from './pages/RenterProfile'
 import StructuredOffer from './pages/StructuredOffer'
 import CreateListing from './pages/CreateListing'
+import BulkUpload from './pages/BulkUpload'
 import PropertyOffers from './pages/PropertyOffers'
 import LandlordOffers from './pages/LandlordOffers'
 import PrivacyPolicy from './pages/PrivacyPolicy'
@@ -127,6 +128,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <CreateListing />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/bulk-upload" 
+                element={
+                  <ProtectedRoute>
+                    <BulkUpload />
                   </ProtectedRoute>
                 } 
               />
