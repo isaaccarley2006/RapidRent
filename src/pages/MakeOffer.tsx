@@ -82,6 +82,20 @@ const MakeOffer: React.FC = () => {
   const [isSmoker, setIsSmoker] = useState(false);
   const [references, setReferences] = useState('');
   const [additionalNotes, setAdditionalNotes] = useState('');
+
+  // Check if user is a landlord and redirect
+  useEffect(() => {
+    if (userProfile?.role === 'landlord') {
+      toast({
+        title: "Access Denied",
+        description: "Landlords cannot make offers. Only tenants can make offers on properties.",
+        variant: "destructive"
+      });
+      navigate('/dashboard');
+      return;
+    }
+  }, [userProfile, navigate, toast]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (!propertyId || !user) return;

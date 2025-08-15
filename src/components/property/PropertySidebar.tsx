@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react'
 import { PoundSterling, Home, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/contexts/AuthContext'
+import { useUser } from '@/lib/auth/useUser'
 import { supabase } from '@/integrations/supabase/client'
 
 interface Property {
@@ -28,6 +28,7 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
   onMakeOffer
 }) => {
   const { user } = useAuth()
+  const { profile } = useUser()
   const [landlordProfile, setLandlordProfile] = useState<LandlordProfile | null>(null)
   const [propertiesCount, setPropertiesCount] = useState<number>(0)
   const [loading, setLoading] = useState(true)
@@ -108,13 +109,28 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
 
         {/* CTA Button */}
         <div className="pt-6 border-t border-muted">
-          <Button 
-            onClick={onMakeOffer}
-            className="w-full bg-primary hover:bg-primary-dark text-white py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-            disabled={property.status !== 'listed'}
-          >
-            {user ? 'Make an Offer' : 'Sign in to Make an Offer'}
-          </Button>
+          {profile?.role === 'landlord' ? (
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">
+                You cannot make offers as a landlord
+              </p>
+              <Button 
+                variant="outline"
+                className="w-full"
+                disabled
+              >
+                Landlord Account
+              </Button>
+            </div>
+          ) : (
+            <Button 
+              onClick={onMakeOffer}
+              className="w-full bg-primary hover:bg-primary-dark text-white py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+              disabled={property.status !== 'listed'}
+            >
+              {user ? 'Make an Offer' : 'Sign in to Make an Offer'}
+            </Button>
+          )}
           
           {property.status !== 'listed' && (
             <p className="text-sm text-text-muted text-center mt-2">
