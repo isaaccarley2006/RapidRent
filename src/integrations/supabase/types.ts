@@ -74,6 +74,36 @@ export type Database = {
           },
         ]
       }
+      profile_audit_log: {
+        Row: {
+          action: string
+          id: string
+          ip_address: unknown | null
+          table_name: string
+          timestamp: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          id?: string
+          ip_address?: unknown | null
+          table_name: string
+          timestamp?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          id?: string
+          ip_address?: unknown | null
+          table_name?: string
+          timestamp?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           account_holder_name: string | null
@@ -225,6 +255,50 @@ export type Database = {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles_sensitive: {
+        Row: {
+          account_holder_name: string | null
+          annual_income: number | null
+          bank_name: string | null
+          created_at: string
+          credit_score: number | null
+          id: string
+          national_insurance_number: string | null
+          sort_code: string | null
+          updated_at: string
+        }
+        Insert: {
+          account_holder_name?: string | null
+          annual_income?: number | null
+          bank_name?: string | null
+          created_at?: string
+          credit_score?: number | null
+          id: string
+          national_insurance_number?: string | null
+          sort_code?: string | null
+          updated_at?: string
+        }
+        Update: {
+          account_holder_name?: string | null
+          annual_income?: number | null
+          bank_name?: string | null
+          created_at?: string
+          credit_score?: number | null
+          id?: string
+          national_insurance_number?: string | null
+          sort_code?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_sensitive_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
