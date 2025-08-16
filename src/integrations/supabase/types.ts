@@ -500,6 +500,66 @@ export type Database = {
         }
         Relationships: []
       }
+      verifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          provider: string
+          provider_ref: string | null
+          status: string
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          provider: string
+          provider_ref?: string | null
+          status: string
+          type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          provider?: string
+          provider_ref?: string | null
+          status?: string
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_events: {
+        Row: {
+          event_type: string | null
+          id: number
+          payload: Json | null
+          provider: string
+          received_at: string | null
+        }
+        Insert: {
+          event_type?: string | null
+          id?: number
+          payload?: Json | null
+          provider: string
+          received_at?: string | null
+        }
+        Update: {
+          event_type?: string | null
+          id?: number
+          payload?: Json | null
+          provider?: string
+          received_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
