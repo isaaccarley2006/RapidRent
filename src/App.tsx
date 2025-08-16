@@ -29,7 +29,24 @@ import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
 import NotFound from './pages/NotFound'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (renamed from cacheTime)
+      retry: (failureCount, error) => {
+        if (failureCount < 2) return true
+        return false
+      },
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: 'always'
+    },
+    mutations: {
+      retry: 1
+    }
+  }
+})
 
 const App = () => (
   <HelmetProvider>

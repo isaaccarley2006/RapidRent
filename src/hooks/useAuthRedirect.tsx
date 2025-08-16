@@ -2,17 +2,17 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { supabase } from '@/lib/supabase'
+import { useOptimizedAuth } from './useOptimizedAuth'
 
 export const useAuthRedirect = () => {
-  const { user, session, loading } = useAuth()
+  const { user, session, loading: authLoading } = useAuth()
+  const { profile, loading: profileLoading, createProfile } = useOptimizedAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const [profileLoading, setProfileLoading] = useState(false)
   const [redirecting, setRedirecting] = useState(false)
 
   useEffect(() => {
-    if (loading) return
+    if (authLoading || profileLoading) return
 
     const handleRedirect = async () => {
       const currentPath = location.pathname
@@ -27,48 +27,24 @@ export const useAuthRedirect = () => {
         return
       }
 
-      // User is authenticated - cache profile fetch to avoid repeated calls
-      if (profileLoading) return
-      
-      setProfileLoading(true)
       try {
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('profile_complete, user_type, full_name, email')
-          .eq('id', user.id)
-          .maybeSingle()
-
         // If profile doesn't exist, create one and redirect to onboarding
-        if (!profile && !error) {
-          const { error: insertError } = await supabase
-            .from('profiles')
-            .insert({
-              id: user.id,
-              email: user.email,
-              profile_complete: false
-            })
-          
-          if (insertError) {
-            console.error('Error creating profile:', insertError)
-          }
+        if (!profile) {
+          await createProfile({
+            email: user.email,
+            profile_complete: false
+          })
           
           if (currentPath !== '/onboarding') {
             navigate('/onboarding', { replace: true })
           }
-          setProfileLoading(false)
           setRedirecting(false)
           return
         }
 
-        if (error) {
-          console.error('Profile fetch error:', error)
-          throw error
-        }
+        const isOnboardingComplete = profile.profile_complete || false
 
-        const isOnboardingComplete = profile?.profile_complete || false
-        const userType = profile?.user_type
-
-        // Redirect based on profile completion status and user type
+        // Redirect based on profile completion status
         if (!isOnboardingComplete && currentPath !== '/onboarding') {
           navigate('/onboarding', { replace: true })
         } else if (isOnboardingComplete) {
@@ -84,7 +60,6 @@ export const useAuthRedirect = () => {
           navigate('/onboarding', { replace: true })
         }
       } finally {
-        setProfileLoading(false)
         setRedirecting(false)
       }
     }
@@ -92,10 +67,10 @@ export const useAuthRedirect = () => {
     // Debounce the redirect to prevent rapid successive calls
     const timeoutId = setTimeout(handleRedirect, 100)
     return () => clearTimeout(timeoutId)
-  }, [user, session, loading, navigate, location.pathname])
+  }, [user, session, authLoading, profileLoading, profile, navigate, location.pathname, createProfile])
 
   return {
-    loading: loading || profileLoading || redirecting,
+    loading: authLoading || profileLoading || redirecting,
     user,
     session
   }
