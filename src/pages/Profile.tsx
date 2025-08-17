@@ -10,6 +10,7 @@ import { FinancialInformationTab } from '@/components/profile/FinancialInformati
 import { ReferencesTab } from '@/components/profile/ReferencesTab'
 import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
 import { useProfile } from '@/hooks/useProfile'
+import IdentityVerificationCard from '@/components/verification/IdentityVerificationCard'
 
 const Profile: React.FC = () => {
   const { user, signOut } = useAuth()
@@ -76,6 +77,10 @@ const Profile: React.FC = () => {
       </div>
 
       <ProfileVerificationStatus profile={profile} />
+
+      <div className="mt-4">
+        <IdentityVerificationCard />
+      </div>
 
       {/* Profile Form Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
