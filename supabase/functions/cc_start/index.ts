@@ -2,12 +2,9 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const CC_API_KEY = Deno.env.get("CC_API_KEY")!;
-const CC_BASE = "https://api.complycube.com/v1";
-const CC_CALLBACK_BASE = Deno.env.get("CC_CALLBACK_BASE") ?? "https://rentview.co.uk";
-
-type J = Record<string, unknown>;
+const CC_CALLBACK_BASE = Deno.env.get("CC_CALLBACK_BASE")!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,113 +12,137 @@ const corsHeaders = {
 };
 
 Deno.serve(async (req) => {
-  console.log("=== CC_START REQUEST RECEIVED ===");
-  console.log("Method:", req.method);
-  console.log("Headers:", Object.fromEntries(req.headers.entries()));
-  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    console.log("Handling CORS preflight");
     return new Response(null, { headers: corsHeaders });
   }
+
   try {
-    console.log("=== CC_START SIMPLIFIED AUTH ===");
-    console.log("DEPLOYMENT MARKER: SIMPLIFIED_2025_08_17_13_15");
-    console.log("Function deployment time:", new Date().toISOString());
-    console.log("CC_API_KEY exists:", !!CC_API_KEY);
+    console.log("🚀 cc_start function called");
     
-    const authHeader = req.headers.get("Authorization") ?? "";
-    const hasAuth = Boolean(req.headers.get("Authorization"));
-    console.log("[cc_start] hasAuth:", hasAuth);
-    console.log("[cc_start] authHeaderPresent:", Boolean(authHeader), "length:", authHeader.length);
-    
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    // Get the authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error("❌ No authorization header");
+      return json({ error: "Authorization required" }, 401);
+    }
+
+    // Create Supabase client with the user's token
+    const supabase = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!, {
       global: {
-        headers: {
-          Authorization: authHeader,
-        },
+        headers: { Authorization: authHeader },
       },
     });
 
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth?.user) {
-      return new Response(JSON.stringify({
-        error: "Unauthenticated",
-        hint: "Missing or invalid Bearer token"
-      }), { status: 401, headers: { "Content-Type": "application/json" } });
+    // Get the authenticated user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      console.error("❌ User authentication failed:", userError);
+      return json({ error: "Authentication failed" }, 401);
     }
-    const user = auth.user;
-    const email = user.email ?? `${user.id}@example.invalid`;
 
-    const client = await createOrReuseComplyCubeClient(user.id, email);
+    console.log("✅ Authenticated user:", user.id);
 
-    console.log("=== COMPLYCUBE API CALL ===");
-    console.log("API Key exists:", !!CC_API_KEY);
-    console.log("API Key starts with 'test_':", CC_API_KEY?.startsWith('test_'));
-    console.log("Client ID:", client.id);
-    console.log("Callback base:", CC_CALLBACK_BASE);
+    // Create or reuse ComplyCube client
+    const clientId = await createOrReuseComplyCubeClient(user.id, user.email!);
+    console.log("✅ ComplyCube client ID:", clientId);
 
-    const res = await fetch(`${CC_BASE}/flow/sessions`, {
+    // Create a new ComplyCube session
+    const sessionResponse = await fetch("https://api.complycube.com/v1/sessions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${CC_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        clientId: client.id,
-        checkTypes: ["identity_check", "document_check"],
-        successUrl: `${CC_CALLBACK_BASE}/renter/verification?result=success`,
-        cancelUrl: `${CC_CALLBACK_BASE}/renter/verification?result=cancel`,
-        language: "en",
-        theme: "light"
+        clientId,
+        redirectUrl: `${CC_CALLBACK_BASE}/verification-complete`,
       }),
     });
 
-    console.log("ComplyCube API response status:", res.status);
-    
-    if (!res.ok) {
-      return new Response(JSON.stringify({
-        error: "Comply session error",
-        details: await res.text()
-      }), { status: res.status, headers: { "Content-Type": "application/json" } });
+    if (!sessionResponse.ok) {
+      const errorText = await sessionResponse.text();
+      console.error("❌ ComplyCube session creation failed:", errorText);
+      return json({ error: "Failed to create verification session" }, 500);
     }
 
-    const data = await res.json();
-    const redirectUrl = data.redirectUrl as string;
-    const provider_ref = client.id as string;
+    const sessionData = await sessionResponse.json();
+    console.log("✅ ComplyCube session created:", sessionData.redirectUrl);
 
-    await supabase.from("verifications").upsert({
-      user_id: user.id,
-      type: "identity_rtr",
-      provider: "complycube",
-      status: "in_progress",
-      provider_ref,
-      metadata: { createdFrom: "cc_start" },
-      updated_at: new Date().toISOString()
-    }, { onConflict: "user_id,type" });
+    // Store verification status in database
+    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const { error: insertError } = await admin
+      .from("verifications")
+      .upsert({
+        user_id: user.id,
+        provider: "complycube",
+        type: "identity_rtr",
+        status: "in_progress",
+        provider_ref: clientId,
+        metadata: { sessionId: sessionData.id },
+        updated_at: new Date().toISOString(),
+      });
 
-    return json({ redirectUrl, provider_ref });
-  } catch (e) {
-    return json({ error: "Server error", details: String(e) }, 500);
+    if (insertError) {
+      console.error("❌ Database insert failed:", insertError);
+      return json({ error: "Failed to store verification status" }, 500);
+    }
+
+    console.log("✅ Verification status stored in database");
+
+    return json({
+      redirectUrl: sessionData.redirectUrl,
+      provider_ref: clientId,
+    });
+
+  } catch (error) {
+    console.error("❌ cc_start error:", error);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 
-function json(obj: J, status = 200) {
-  return new Response(JSON.stringify(obj), { 
-    status, 
-    headers: { 
-      ...corsHeaders,
-      "Content-Type": "application/json" 
-    } 
+function json(obj: any, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
 
-async function createOrReuseComplyCubeClient(externalId: string, email: string) {
-  const res = await fetch("https://api.complycube.com/v1/clients", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${CC_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ type: "person", email, externalId, personDetails: { firstName: "RentView", lastName: "User" } }),
-  });
-  if (res.ok) return await res.json();
-  return { id: externalId }; // sandbox fallback for duplicates
+async function createOrReuseComplyCubeClient(externalId: string, email: string): Promise<string> {
+  try {
+    console.log("🔄 Creating ComplyCube client for:", email);
+    
+    const response = await fetch("https://api.complycube.com/v1/clients", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${CC_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "person",
+        email,
+        externalId,
+      }),
+    });
+
+    if (response.ok) {
+      const client = await response.json();
+      console.log("✅ ComplyCube client created:", client.id);
+      return client.id;
+    } else {
+      const errorData = await response.json();
+      console.log("⚠️ Client creation failed, checking if duplicate:", errorData);
+      
+      // If it's a duplicate, try to use the externalId as clientId
+      if (errorData.code === "CLIENT_ALREADY_EXISTS" || response.status === 409) {
+        console.log("✅ Using existing client with externalId:", externalId);
+        return externalId;
+      }
+      
+      throw new Error(`ComplyCube client creation failed: ${JSON.stringify(errorData)}`);
+    }
+  } catch (error) {
+    console.error("❌ createOrReuseComplyCubeClient error:", error);
+    throw error;
+  }
 }
