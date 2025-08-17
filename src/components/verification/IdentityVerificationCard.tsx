@@ -49,13 +49,12 @@ export default function IdentityVerificationCard() {
   async function startVerification() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        alert("Please sign in again to start verification.");
-        return;
-      }
+      const headers = session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {};
+      
       const { data, error } = await supabase.functions.invoke("cc_start", {
         body: {},
-        headers: { Authorization: `Bearer ${session.access_token}` }
+        // include the token explicitly to avoid any surprises:
+        headers
       });
       if (error) {
         console.error("cc_start invoke error:", error);
