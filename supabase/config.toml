@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.cc_webhook]
 verify_jwt = false
+
+[functions.cc_echo]
+verify_jwt = false
