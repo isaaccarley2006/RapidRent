@@ -21,12 +21,27 @@ Deno.serve(async (req) => {
   }
   try {
     const authHeader = req.headers.get("Authorization") ?? "";
+    console.log("=== CC_START DEBUG ===");
+    console.log("Auth header exists:", !!authHeader);
+    console.log("Auth header length:", authHeader.length);
+    
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
     });
 
     const { data: auth, error: authErr } = await supabase.auth.getUser();
-    if (authErr || !auth?.user) return json({ error: "Unauthenticated" }, 401);
+    console.log("Auth error:", authErr);
+    console.log("User exists:", !!auth?.user);
+    console.log("User ID:", auth?.user?.id);
+    
+    if (authErr || !auth?.user) {
+      console.log("Authentication failed - returning 401");
+      return json({ 
+        error: "Authentication failed", 
+        details: authErr?.message || "No user found",
+        debug: { hasAuthHeader: !!authHeader, authError: authErr }
+      }, 401);
+    }
     const user = auth.user;
     const email = user.email ?? `${user.id}@example.invalid`;
 

@@ -47,22 +47,49 @@ export default function IdentityVerificationCard() {
     s === "failed" ? "Try again" : "Verify now";
 
   async function startVerification() {
-    if (!user) { 
-      alert("Please sign in to start verification."); 
-      return; 
+    if (!user) {
+      console.log("No user found, cannot start verification")
+      alert("Please sign in to start verification.")
+      return
     }
     
-    setLoading(true);
+    console.log("=== VERIFICATION START DEBUG ===")
+    console.log("User ID:", user.id)
+    console.log("User email:", user.email)
+    
+    // Get fresh session before making the call
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+    console.log("Session exists:", !!sessionData.session)
+    console.log("Session error:", sessionError)
+    console.log("Access token exists:", !!sessionData.session?.access_token)
+    
+    setLoading(true)
     try {
-      const { data, error } = await supabase.functions.invoke("cc_start", { body: {} });
-      if (error) throw error;
-      if (data?.redirectUrl) window.open(data.redirectUrl, "_blank", "noopener");
-      await loadStatus();
+      console.log("Calling cc_start function...")
+      const { data, error } = await supabase.functions.invoke("cc_start", { body: {} })
+      
+      console.log("Function response:", { data, error })
+      
+      if (error) {
+        console.error('Verification error details:', error)
+        alert(`Verification failed: ${JSON.stringify(error, null, 2)}`)
+        return
+      }
+      
+      if (data?.redirectUrl) {
+        console.log("Redirecting to:", data.redirectUrl)
+        window.open(data.redirectUrl, "_blank", "noopener")
+      } else {
+        console.error("No redirect URL received:", data)
+        alert("No redirect URL received from verification service")
+      }
+      
+      await loadStatus()
     } catch (e) {
-      console.error(e);
-      alert("Could not start verification. Please try again.");
+      console.error('Unexpected error:', e)
+      alert(`Unexpected error: ${e.message || 'Unknown error'}`)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
