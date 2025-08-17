@@ -25,13 +25,16 @@ Deno.serve(async (req) => {
     console.log("Function deployment time:", new Date().toISOString());
     console.log("CC_API_KEY exists:", !!CC_API_KEY);
     
+    const authHeader = req.headers.get("Authorization") ?? "";
+    
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) {
+      console.log("[cc_start] authHeaderPresent:", Boolean(authHeader), "length:", authHeader.length);
       return new Response(JSON.stringify({
         error: "Unauthenticated",
-        hint: "No Authorization header or invalid access token"
+        hint: "Missing/invalid Bearer token"
       }), { status: 401, headers: { "Content-Type": "application/json" } });
     }
     const user = auth.user;
