@@ -47,6 +47,12 @@ Deno.serve(async (req) => {
 
     const client = await createOrReuseComplyCubeClient(user.id, email);
 
+    console.log("=== COMPLYCUBE API CALL ===");
+    console.log("API Key exists:", !!CC_API_KEY);
+    console.log("API Key starts with 'test_':", CC_API_KEY?.startsWith('test_'));
+    console.log("Client ID:", client.id);
+    console.log("Callback base:", CC_CALLBACK_BASE);
+
     const res = await fetch(`${CC_BASE}/flow/sessions`, {
       method: "POST",
       headers: {
@@ -63,7 +69,26 @@ Deno.serve(async (req) => {
       }),
     });
 
-    if (!res.ok) return json({ error: "ComplyCube session error", details: await res.text() }, res.status);
+    console.log("ComplyCube API response status:", res.status);
+    
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.log("ComplyCube API error response:", errorText);
+      
+      let errorDetails;
+      try {
+        errorDetails = JSON.parse(errorText);
+      } catch {
+        errorDetails = errorText;
+      }
+      
+      return json({ 
+        error: "ComplyCube session error", 
+        status: res.status,
+        details: errorDetails,
+        apiKeyType: CC_API_KEY?.startsWith('test_') ? 'test' : 'live'
+      }, res.status);
+    }
 
     const data = await res.json();
     const redirectUrl = data.redirectUrl as string;
