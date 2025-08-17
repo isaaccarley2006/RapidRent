@@ -9,7 +9,16 @@ const CC_CALLBACK_BASE = Deno.env.get("CC_CALLBACK_BASE") ?? "https://rentview.c
 
 type J = Record<string, unknown>;
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 Deno.serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
   try {
     const authHeader = req.headers.get("Authorization") ?? "";
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -62,7 +71,13 @@ Deno.serve(async (req) => {
 });
 
 function json(obj: J, status = 200) {
-  return new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json" } });
+  return new Response(JSON.stringify(obj), { 
+    status, 
+    headers: { 
+      ...corsHeaders,
+      "Content-Type": "application/json" 
+    } 
+  });
 }
 
 async function createOrReuseComplyCubeClient(externalId: string, email: string) {
