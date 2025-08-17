@@ -1,10 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const CC_API_KEY = Deno.env.get("CC_API_KEY")!;
-const CC_CALLBACK_BASE = Deno.env.get("CC_CALLBACK_BASE")!;
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY");
+const CC_API_KEY = Deno.env.get("CC_API_KEY");
+const CC_CALLBACK_BASE = Deno.env.get("CC_CALLBACK_BASE");
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,6 +21,18 @@ Deno.serve(async (req) => {
   try {
     console.log("🚀 cc_start function called");
     
+    // Check environment variables first
+    if (!SUPABASE_URL || !SERVICE_ROLE || !SUPABASE_ANON_KEY || !CC_API_KEY || !CC_CALLBACK_BASE) {
+      console.error("❌ Missing environment variables:", {
+        SUPABASE_URL: !!SUPABASE_URL,
+        SERVICE_ROLE: !!SERVICE_ROLE,
+        SUPABASE_ANON_KEY: !!SUPABASE_ANON_KEY,
+        CC_API_KEY: !!CC_API_KEY,
+        CC_CALLBACK_BASE: !!CC_CALLBACK_BASE,
+      });
+      return json({ error: "Server configuration error" }, 500);
+    }
+    
     // Get the authorization header
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
@@ -28,7 +41,7 @@ Deno.serve(async (req) => {
     }
 
     // Create Supabase client with the user's token
-    const supabase = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!, {
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_ANON_KEY!, {
       global: {
         headers: { Authorization: authHeader },
       },
@@ -70,7 +83,7 @@ Deno.serve(async (req) => {
     console.log("✅ ComplyCube session created:", sessionData.redirectUrl);
 
     // Store verification status in database
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const admin = createClient(SUPABASE_URL!, SERVICE_ROLE!);
     const { error: insertError } = await admin
       .from("verifications")
       .upsert({
