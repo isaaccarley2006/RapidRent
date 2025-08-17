@@ -50,25 +50,46 @@ export default function IdentityVerificationCard() {
     s === "failed" ? "Try again" : "Verify now";
 
   async function startVerification() {
+    setLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      const headers = session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {};
+      if (!session?.access_token) {
+        alert("Please sign in first");
+        return;
+      }
+      
+      const headers = { Authorization: `Bearer ${session.access_token}` };
       
       const { data, error } = await supabase.functions.invoke("cc_start", {
         body: {},
-        // include the token explicitly to avoid any surprises:
         headers
       });
+      
       if (error) {
         console.error("cc_start invoke error:", error);
-        alert(error.message);
+        if (error.message?.includes("Server configuration error")) {
+          alert("Verification service is temporarily unavailable. Please contact support.");
+        } else {
+          alert(`Verification failed: ${error.message}`);
+        }
         return;
       }
-      if (data?.redirectUrl) window.open(data.redirectUrl, "_blank", "noopener");
+      
+      if (data?.redirectUrl) {
+        window.open(data.redirectUrl, "_blank", "noopener,noreferrer");
+        // Update status immediately to show in_progress
+        setStatus("in_progress");
+        setUpdatedAt(new Date().toLocaleString());
+      } else {
+        alert("No verification URL received. Please try again.");
+      }
+      
       await loadStatus();
     } catch (e: any) {
       console.error("startVerification exception:", e);
-      alert(e?.message || String(e));
+      alert(`Verification error: ${e?.message || String(e)}`);
+    } finally {
+      setLoading(false);
     }
   }
 
