@@ -47,49 +47,26 @@ export default function IdentityVerificationCard() {
     s === "failed" ? "Try again" : "Verify now";
 
   async function startVerification() {
-    if (!user) {
-      console.log("No user found, cannot start verification")
-      alert("Please sign in to start verification.")
-      return
-    }
-    
-    console.log("=== VERIFICATION START DEBUG ===")
-    console.log("User ID:", user.id)
-    console.log("User email:", user.email)
-    
-    // Get fresh session before making the call
-    const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
-    console.log("Session exists:", !!sessionData.session)
-    console.log("Session error:", sessionError)
-    console.log("Access token exists:", !!sessionData.session?.access_token)
-    
-    setLoading(true)
     try {
-      console.log("Calling cc_start function...")
-      const { data, error } = await supabase.functions.invoke("cc_start", { body: {} })
-      
-      console.log("Function response:", { data, error })
-      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        alert("Please sign in again to start verification.");
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("cc_start", {
+        body: {},
+        headers: { Authorization: `Bearer ${session.access_token}` }
+      });
       if (error) {
-        console.error('Verification error details:', error)
-        alert(`Verification failed: ${JSON.stringify(error, null, 2)}`)
-        return
+        console.error("cc_start invoke error:", error);
+        alert(`Could not start verification.\n${error.message || "Unknown error"}`);
+        return;
       }
-      
-      if (data?.redirectUrl) {
-        console.log("Redirecting to:", data.redirectUrl)
-        window.open(data.redirectUrl, "_blank", "noopener")
-      } else {
-        console.error("No redirect URL received:", data)
-        alert("No redirect URL received from verification service")
-      }
-      
-      await loadStatus()
-    } catch (e) {
-      console.error('Unexpected error:', e)
-      alert(`Unexpected error: ${e.message || 'Unknown error'}`)
-    } finally {
-      setLoading(false)
+      if (data?.redirectUrl) window.open(data.redirectUrl, "_blank", "noopener");
+      await loadStatus();
+    } catch (e: any) {
+      console.error("startVerification exception:", e);
+      alert(`Could not start verification.\n${e?.message || String(e)}`);
     }
   }
 
