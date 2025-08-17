@@ -9,7 +9,10 @@ export default function IdentityVerificationCard() {
   const [status, setStatus] = useState<Status>("not_started");
   const [updatedAt, setUpdatedAt] = useState<string>("—");
   const [loading, setLoading] = useState(false);
+  const [diagnostics, setDiagnostics] = useState<any>(null);
   const { user } = useAuth();
+
+  const isDebugMode = new URLSearchParams(window.location.search).get('debug') === '1';
 
   async function loadStatus() {
     if (!user?.id) { 
@@ -58,14 +61,29 @@ export default function IdentityVerificationCard() {
       });
       if (error) {
         console.error("cc_start invoke error:", error);
-        alert(`Could not start verification.\n${error.message || "Unknown error"}`);
+        alert(error.message);
         return;
       }
       if (data?.redirectUrl) window.open(data.redirectUrl, "_blank", "noopener");
       await loadStatus();
     } catch (e: any) {
       console.error("startVerification exception:", e);
-      alert(`Could not start verification.\n${e?.message || String(e)}`);
+      alert(e?.message || String(e));
+    }
+  }
+
+  async function runDiagnostics() {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const headers = session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {};
+      
+      const { data, error } = await supabase.functions.invoke("cc_echo", {
+        body: {},
+        headers
+      });
+      setDiagnostics({ data, error });
+    } catch (e: any) {
+      setDiagnostics({ error: e });
     }
   }
 
@@ -104,7 +122,23 @@ export default function IdentityVerificationCard() {
         >
           {loading ? "Loading..." : label(status)}
         </Button>
+        {isDebugMode && (
+          <button
+            onClick={runDiagnostics}
+            className="ml-3 text-sm text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+          >
+            Run diagnostics
+          </button>
+        )}
       </div>
+
+      {diagnostics && (
+        <div className="mt-4">
+          <pre className="text-xs bg-muted p-3 rounded overflow-auto">
+            {JSON.stringify(diagnostics, null, 2)}
+          </pre>
+        </div>
+      )}
 
       {!user && (
         <p className="mt-2 text-xs text-muted-foreground">Sign in to start verification.</p>
