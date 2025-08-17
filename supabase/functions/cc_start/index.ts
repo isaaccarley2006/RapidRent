@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
   }
   try {
     const authHeader = req.headers.get("Authorization") ?? "";
-    console.log("=== CC_START DEBUG ===");
+    console.log("=== CC_START DEBUG (JWT DISABLED) ===");
     console.log("Auth header exists:", !!authHeader);
     console.log("Auth header length:", authHeader.length);
     console.log("Function deployment time:", new Date().toISOString());
@@ -32,21 +32,36 @@ Deno.serve(async (req) => {
     console.log("SUPABASE_URL:", SUPABASE_URL);
     console.log("SUPABASE_ANON_KEY exists:", !!SUPABASE_ANON_KEY);
     
+    // Manual authentication check since JWT verification is disabled
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.log("No valid auth header - returning 401");
+      return json({ 
+        error: "Authentication required", 
+        details: "Missing or invalid Authorization header",
+        debug: { hasAuthHeader: !!authHeader, headerFormat: authHeader.substring(0, 20) }
+      }, 401);
+    }
+    
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
     });
 
     const { data: auth, error: authErr } = await supabase.auth.getUser();
-    console.log("Auth error:", authErr);
-    console.log("User exists:", !!auth?.user);
-    console.log("User ID:", auth?.user?.id);
+    console.log("Manual auth check - Auth error:", authErr);
+    console.log("Manual auth check - User exists:", !!auth?.user);
+    console.log("Manual auth check - User ID:", auth?.user?.id);
     
     if (authErr || !auth?.user) {
-      console.log("Authentication failed - returning 401");
+      console.log("Manual authentication failed - returning 401");
       return json({ 
         error: "Authentication failed", 
         details: authErr?.message || "No user found",
-        debug: { hasAuthHeader: !!authHeader, authError: authErr }
+        debug: { 
+          hasAuthHeader: !!authHeader, 
+          authError: authErr,
+          jwtDisabled: true,
+          manualValidation: true
+        }
       }, 401);
     }
     const user = auth.user;

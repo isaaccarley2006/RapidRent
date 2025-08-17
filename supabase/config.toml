@@ -1,7 +1,7 @@
 project_id = "jerfstkniwyxnsnimcrv"
 
 [functions.cc_start]
-verify_jwt = true
+verify_jwt = false
 
 [functions.cc_webhook]
 verify_jwt = false
