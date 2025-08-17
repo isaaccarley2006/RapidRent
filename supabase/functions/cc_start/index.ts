@@ -22,6 +22,7 @@ Deno.serve(async (req) => {
   try {
     const authHeader = req.headers.get("Authorization") ?? "";
     console.log("=== CC_START DEBUG (JWT DISABLED) ===");
+    console.log("DEPLOYMENT MARKER: FORCE_REDEPLOY_2025_08_17_13_07");
     console.log("Auth header exists:", !!authHeader);
     console.log("Auth header length:", authHeader.length);
     console.log("Function deployment time:", new Date().toISOString());
