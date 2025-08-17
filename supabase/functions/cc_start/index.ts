@@ -26,8 +26,15 @@ Deno.serve(async (req) => {
     console.log("CC_API_KEY exists:", !!CC_API_KEY);
     
     const authHeader = req.headers.get("Authorization") ?? "";
+    console.log("[cc_start] authHeaderPresent:", Boolean(authHeader), "length:", authHeader.length);
     
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: {
+        headers: {
+          Authorization: authHeader,
+        },
+      },
+    });
 
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) {
