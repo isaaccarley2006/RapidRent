@@ -31,6 +31,8 @@ Deno.serve(async (req) => {
     console.log("CC_API_KEY exists:", !!CC_API_KEY);
     
     const authHeader = req.headers.get("Authorization") ?? "";
+    const hasAuth = Boolean(req.headers.get("Authorization"));
+    console.log("[cc_start] hasAuth:", hasAuth);
     console.log("[cc_start] authHeaderPresent:", Boolean(authHeader), "length:", authHeader.length);
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -43,10 +45,9 @@ Deno.serve(async (req) => {
 
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) {
-      console.log("[cc_start] authHeaderPresent:", Boolean(authHeader), "length:", authHeader.length);
       return new Response(JSON.stringify({
         error: "Unauthenticated",
-        hint: "Missing/invalid Bearer token"
+        hint: "Missing or invalid Bearer token"
       }), { status: 401, headers: { "Content-Type": "application/json" } });
     }
     const user = auth.user;
@@ -79,22 +80,10 @@ Deno.serve(async (req) => {
     console.log("ComplyCube API response status:", res.status);
     
     if (!res.ok) {
-      const errorText = await res.text();
-      console.log("ComplyCube API error response:", errorText);
-      
-      let errorDetails;
-      try {
-        errorDetails = JSON.parse(errorText);
-      } catch {
-        errorDetails = errorText;
-      }
-      
-      return json({ 
-        error: "ComplyCube session error", 
-        status: res.status,
-        details: errorDetails,
-        apiKeyType: CC_API_KEY?.startsWith('test_') ? 'test' : 'live'
-      }, res.status);
+      return new Response(JSON.stringify({
+        error: "Comply session error",
+        details: await res.text()
+      }), { status: res.status, headers: { "Content-Type": "application/json" } });
     }
 
     const data = await res.json();
