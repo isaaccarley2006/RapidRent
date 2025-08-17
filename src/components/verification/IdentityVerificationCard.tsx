@@ -65,8 +65,8 @@ export default function IdentityVerificationCard() {
     
     setLoading(true)
     try {
-      console.log("Calling NEW cc_verify function...")
-      const { data, error } = await supabase.functions.invoke("cc_verify", { body: {} })
+      console.log("Calling cc_start function...")
+      const { data, error } = await supabase.functions.invoke("cc_start", { body: {} })
       
       console.log("Function response:", { data, error })
       

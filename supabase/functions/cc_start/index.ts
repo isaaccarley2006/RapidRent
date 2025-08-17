@@ -20,50 +20,19 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
   try {
-    const authHeader = req.headers.get("Authorization") ?? "";
-    console.log("=== CC_START DEBUG (JWT DISABLED) ===");
-    console.log("DEPLOYMENT MARKER: FORCE_REDEPLOY_2025_08_17_13_07");
-    console.log("Auth header exists:", !!authHeader);
-    console.log("Auth header length:", authHeader.length);
+    console.log("=== CC_START SIMPLIFIED AUTH ===");
+    console.log("DEPLOYMENT MARKER: SIMPLIFIED_2025_08_17_13_15");
     console.log("Function deployment time:", new Date().toISOString());
-    console.log("Auth header preview:", authHeader.substring(0, 50) + "...");
     console.log("CC_API_KEY exists:", !!CC_API_KEY);
-    console.log("CC_API_KEY length:", CC_API_KEY?.length || 0);
-    console.log("CC_API_KEY preview:", CC_API_KEY?.substring(0, 10) + "..." || "MISSING");
-    console.log("SUPABASE_URL:", SUPABASE_URL);
-    console.log("SUPABASE_ANON_KEY exists:", !!SUPABASE_ANON_KEY);
     
-    // Manual authentication check since JWT verification is disabled
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      console.log("No valid auth header - returning 401");
-      return json({ 
-        error: "Authentication required", 
-        details: "Missing or invalid Authorization header",
-        debug: { hasAuthHeader: !!authHeader, headerFormat: authHeader.substring(0, 20) }
-      }, 401);
-    }
-    
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
-    });
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const { data: auth, error: authErr } = await supabase.auth.getUser();
-    console.log("Manual auth check - Auth error:", authErr);
-    console.log("Manual auth check - User exists:", !!auth?.user);
-    console.log("Manual auth check - User ID:", auth?.user?.id);
-    
-    if (authErr || !auth?.user) {
-      console.log("Manual authentication failed - returning 401");
-      return json({ 
-        error: "Authentication failed", 
-        details: authErr?.message || "No user found",
-        debug: { 
-          hasAuthHeader: !!authHeader, 
-          authError: authErr,
-          jwtDisabled: true,
-          manualValidation: true
-        }
-      }, 401);
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth?.user) {
+      return new Response(JSON.stringify({
+        error: "Unauthenticated",
+        hint: "No Authorization header or invalid access token"
+      }), { status: 401, headers: { "Content-Type": "application/json" } });
     }
     const user = auth.user;
     const email = user.email ?? `${user.id}@example.invalid`;
