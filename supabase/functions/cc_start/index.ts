@@ -25,6 +25,12 @@ Deno.serve(async (req) => {
     console.log("Auth header exists:", !!authHeader);
     console.log("Auth header length:", authHeader.length);
     console.log("Function deployment time:", new Date().toISOString());
+    console.log("Auth header preview:", authHeader.substring(0, 50) + "...");
+    console.log("CC_API_KEY exists:", !!CC_API_KEY);
+    console.log("CC_API_KEY length:", CC_API_KEY?.length || 0);
+    console.log("CC_API_KEY preview:", CC_API_KEY?.substring(0, 10) + "..." || "MISSING");
+    console.log("SUPABASE_URL:", SUPABASE_URL);
+    console.log("SUPABASE_ANON_KEY exists:", !!SUPABASE_ANON_KEY);
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
