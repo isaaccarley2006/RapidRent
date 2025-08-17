@@ -3,8 +3,5 @@ project_id = "jerfstkniwyxnsnimcrv"
 [functions.cc_start]
 verify_jwt = false
 
-[functions.cc_verify]
-verify_jwt = false
-
 [functions.cc_webhook]
 verify_jwt = false
