@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 type Status = "not_started" | "in_progress" | "verified" | "failed" | "needs_attention";
 
@@ -89,16 +90,17 @@ export default function IdentityVerificationCard() {
       </div>
 
       <div className="mt-4">
-        <button
+        <Button
           id="verify-start"
           data-testid="verify-start"
           onClick={startVerification}
           disabled={loading}
           aria-label="Start identity verification"
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+          variant="default"
+          size="lg"
         >
           {loading ? "Loading..." : label(status)}
-        </button>
+        </Button>
       </div>
 
       {!user && (
