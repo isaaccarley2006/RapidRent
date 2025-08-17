@@ -24,6 +24,7 @@ Deno.serve(async (req) => {
     console.log("=== CC_START DEBUG ===");
     console.log("Auth header exists:", !!authHeader);
     console.log("Auth header length:", authHeader.length);
+    console.log("Function deployment time:", new Date().toISOString());
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: authHeader } },
