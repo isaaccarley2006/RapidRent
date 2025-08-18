@@ -25,94 +25,67 @@ const PrivacyPolicy: React.FC = () => {
           </header>
 
           <main className="prose prose-lg max-w-none">
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">1. Introduction</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Legal counsel review required]</strong> RentView ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our rental property platform.
-              </p>
-            </section>
+            <p className="text-text-muted mb-8">
+              RentView ("we", "us", "our") is committed to protecting your privacy and handling your personal data in a secure and transparent way. This policy explains how we collect, use, and share information when you use our platform.
+            </p>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">2. Information We Collect</h2>
-              
-              <h3 className="text-xl font-medium text-text-primary mb-3">2.1 Personal Information</h3>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Specify exact data types collected]</strong> We may collect personal information including but not limited to:
-              </p>
-              <ul className="list-disc pl-6 text-text-muted mb-4">
-                <li>Name, email address, and contact information</li>
-                <li>Identity verification documents</li>
-                <li>Financial information for tenancy applications</li>
-                <li>Property preferences and search history</li>
-                <li>Communication records</li>
-              </ul>
-
-              <h3 className="text-xl font-medium text-text-primary mb-3">2.2 Technical Information</h3>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Define technical data collection scope]</strong> We automatically collect certain technical information when you use our platform.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">3. How We Use Your Information</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Detail specific use cases and legal basis under GDPR]</strong> We use your information to provide and improve our services, including:
-              </p>
-              <ul className="list-disc pl-6 text-text-muted mb-4">
-                <li>Facilitating property searches and applications</li>
-                <li>Verifying identity and conducting background checks</li>
-                <li>Communicating about your account and services</li>
-                <li>Improving our platform and user experience</li>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">1. Information We Collect</h2>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li><strong>Account information:</strong> name, email, phone number, password.</li>
+                <li><strong>Verification data:</strong> ID documents, biometrics, credit history, employment/income details, rental history (processed by trusted third-party providers such as ComplyCube, Lets Safe, and Konfir).</li>
+                <li><strong>Property data:</strong> property details if you are a landlord or agent.</li>
+                <li><strong>Usage data:</strong> website interactions, cookies, and analytics.</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">4. Data Sharing and Disclosure</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Specify third-party sharing arrangements]</strong> We may share your information with landlords, property managers, and service providers as necessary to facilitate rental transactions.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">5. Your Rights Under GDPR</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Detail specific GDPR rights and procedures]</strong> As a data subject, you have the right to:
-              </p>
-              <ul className="list-disc pl-6 text-text-muted mb-4">
-                <li>Access your personal data</li>
-                <li>Rectify inaccurate data</li>
-                <li>Request erasure of your data</li>
-                <li>Restrict processing</li>
-                <li>Data portability</li>
-                <li>Object to processing</li>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">2. How We Use Your Data</h2>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li>To create and manage your RentView account.</li>
+                <li>To verify your identity, credit, and rental eligibility.</li>
+                <li>To share verified results with landlords or agents (with your consent).</li>
+                <li>To improve and secure the RentView platform.</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">6. Data Security</h2>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">3. Sharing Your Data</h2>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li>With third-party verification providers (ComplyCube, Lets Safe, Konfir).</li>
+                <li>With landlords and agents, once you consent to share your verified profile.</li>
+                <li>With legal or regulatory bodies if required by law.</li>
+              </ul>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">4. Your Rights</h2>
               <p className="text-text-muted mb-4">
-                <strong>[TODO: Specify security measures]</strong> We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.
+                Under UK GDPR, you have the right to:
+              </p>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li>Access your data.</li>
+                <li>Request correction or deletion.</li>
+                <li>Withdraw consent.</li>
+                <li>Request portability of your data.</li>
+              </ul>
+              <p className="text-text-muted mb-4">
+                Requests can be made to: support@rentview.co.uk
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">7. Data Retention</h2>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">5. Data Retention</h2>
               <p className="text-text-muted mb-4">
-                <strong>[TODO: Define retention periods]</strong> We retain your personal data only for as long as necessary to fulfill the purposes outlined in this policy.
+                We only keep your data for as long as necessary to provide our services or comply with legal obligations. Verification data is stored securely and can be deleted upon request.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">8. Contact Information</h2>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">6. Security</h2>
               <p className="text-text-muted mb-4">
-                <strong>[TODO: Provide complete contact details]</strong> For any privacy-related questions or to exercise your rights, please contact us at:
+                We use industry-standard security measures, including encryption and secure third-party integrations.
               </p>
-              <div className="bg-muted/20 p-4 rounded-lg">
-                <p className="text-text-muted">
-                  Email: [TODO: Add privacy email]<br />
-                  Address: [TODO: Add registered address]
-                </p>
-              </div>
             </section>
           </main>
         </div>

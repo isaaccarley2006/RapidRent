@@ -14,117 +14,69 @@ const TermsOfService: React.FC = () => {
       <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-6 py-12">
           <header className="mb-12">
-            <h1 className="text-4xl font-bold text-text-primary mb-4">Terms of Service</h1>
+            <h1 className="text-4xl font-bold text-text-primary mb-4">📜 RentView Terms of Service</h1>
             <p className="text-text-muted text-lg">
-              Last updated: {new Date().toLocaleDateString('en-GB', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
+              Welcome to RentView. By using our platform, you agree to these terms.
             </p>
           </header>
 
           <main className="prose prose-lg max-w-none">
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">1. Acceptance of Terms</h2>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">1. Our Role</h2>
               <p className="text-text-muted mb-4">
-                <strong>[TODO: Legal counsel review required]</strong> By accessing and using RentView, you accept and agree to be bound by the terms and provision of this agreement.
+                RentView provides a platform for tenants, landlords, and agents to manage rental journeys. We are not a letting or estate agent and do not guarantee rental agreements. Verification is carried out by third-party providers.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">2. Description of Service</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Define service scope and limitations]</strong> RentView is a platform that connects tenants and landlords for rental property transactions. We facilitate property listings, applications, and related services.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">3. User Accounts and Registration</h2>
-              <h3 className="text-xl font-medium text-text-primary mb-3">3.1 Account Creation</h3>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Specify registration requirements]</strong> Users must provide accurate and complete information when creating an account.
-              </p>
-              
-              <h3 className="text-xl font-medium text-text-primary mb-3">3.2 Account Security</h3>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Define security responsibilities]</strong> Users are responsible for maintaining the confidentiality of their account credentials.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">4. User Conduct and Prohibited Activities</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Detail prohibited activities]</strong> Users agree not to engage in activities that may harm the platform or other users, including:
-              </p>
-              <ul className="list-disc pl-6 text-text-muted mb-4">
-                <li>Providing false or misleading information</li>
-                <li>Violating applicable laws or regulations</li>
-                <li>Interfering with platform operations</li>
-                <li>Harassing or discriminating against other users</li>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">2. Using RentView</h2>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li>You must provide accurate information.</li>
+                <li>You must not use RentView for unlawful purposes.</li>
+                <li>You are responsible for keeping your login details secure.</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">5. Property Listings and Transactions</h2>
-              <h3 className="text-xl font-medium text-text-primary mb-3">5.1 Landlord Obligations</h3>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">3. Verification Services</h2>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li>Verification is performed by trusted third-party providers.</li>
+                <li>RentView displays the results but is not responsible for their accuracy.</li>
+                <li>Landlords remain legally responsible for all tenant checks, including Right-to-Rent.</li>
+              </ul>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">4. Limitation of Liability</h2>
+              <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
+                <li>RentView is not responsible for rental outcomes, disputes, or losses arising from use of the platform.</li>
+                <li>The service is provided "as is" without warranties of uninterrupted access.</li>
+              </ul>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">5. Termination</h2>
               <p className="text-text-muted mb-4">
-                <strong>[TODO: Define landlord responsibilities]</strong> Landlords must ensure all property information is accurate and comply with applicable housing laws.
-              </p>
-              
-              <h3 className="text-xl font-medium text-text-primary mb-3">5.2 Tenant Obligations</h3>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Define tenant responsibilities]</strong> Tenants must provide truthful information in applications and comply with lease terms.
+                We may suspend or terminate accounts that violate these terms.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">6. Fees and Payments</h2>
+              <h2 className="text-2xl font-semibold text-text-primary mb-4">6. Governing Law</h2>
               <p className="text-text-muted mb-4">
-                <strong>[TODO: Detail fee structure and payment terms]</strong> Certain services may be subject to fees. All applicable fees will be clearly disclosed before any transaction.
+                These terms are governed by the laws of England and Wales.
               </p>
             </section>
 
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">7. Intellectual Property</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Define IP ownership and usage rights]</strong> All content and materials on RentView are protected by intellectual property laws.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">8. Disclaimers and Limitation of Liability</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Legal review required for liability limitations]</strong> RentView provides the platform "as is" without warranties of any kind.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">9. Termination</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Define termination procedures]</strong> Either party may terminate this agreement under certain circumstances.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">10. Governing Law</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Specify governing law and jurisdiction]</strong> These terms are governed by the laws of England and Wales.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-text-primary mb-4">11. Contact Information</h2>
-              <p className="text-text-muted mb-4">
-                <strong>[TODO: Provide complete contact details]</strong> For questions about these terms, please contact us at:
-              </p>
-              <div className="bg-muted/20 p-4 rounded-lg">
-                <p className="text-text-muted">
-                  Email: [TODO: Add legal email]<br />
-                  Address: [TODO: Add registered address]
-                </p>
-              </div>
-            </section>
+            <div className="bg-amber-50 border border-amber-200 p-6 rounded-lg mt-8">
+              <h3 className="text-lg font-semibold text-amber-800 mb-3">⚠️ Important Disclaimers</h3>
+              <ul className="list-disc pl-6 text-amber-700 space-y-1">
+                <li>RentView is not a letting or estate agent.</li>
+                <li>Verification services are delivered by authorised third-party providers.</li>
+                <li>Landlords remain responsible for their own legal duties, including Right-to-Rent compliance.</li>
+                <li>RentView does not guarantee tenancy approval, rental agreements, or property availability.</li>
+              </ul>
+            </div>
           </main>
         </div>
       </div>
