@@ -1,9 +1,7 @@
-import React from 'react'
-import { Helmet } from 'react-helmet-async'
-
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
 const CookiePolicy: React.FC = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Cookie Policy - RentView</title>
         <meta name="description" content="Learn about how RentView uses cookies and similar technologies to enhance your experience on our rental property platform." />
@@ -14,7 +12,7 @@ const CookiePolicy: React.FC = () => {
       <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-6 py-12">
           <header className="mb-12">
-            <h1 className="text-4xl font-bold text-text-primary mb-4">🍪 RentView Cookie Policy</h1>
+            <h1 className="text-4xl font-bold text-text-primary mb-4">RentView Cookie Policy</h1>
             <p className="text-text-muted text-lg">
               RentView uses cookies and similar technologies to provide and improve our services.
             </p>
@@ -46,8 +44,6 @@ const CookiePolicy: React.FC = () => {
           </main>
         </div>
       </div>
-    </>
-  )
-}
-
-export default CookiePolicy
+    </>;
+};
+export default CookiePolicy;
