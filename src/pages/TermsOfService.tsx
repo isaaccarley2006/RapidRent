@@ -1,9 +1,7 @@
-import React from 'react'
-import { Helmet } from 'react-helmet-async'
-
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
 const TermsOfService: React.FC = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Terms of Service - RentView</title>
         <meta name="description" content="RentView's terms of service outline the rules and regulations for using our rental property platform and services." />
@@ -14,7 +12,7 @@ const TermsOfService: React.FC = () => {
       <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-6 py-12">
           <header className="mb-12">
-            <h1 className="text-4xl font-bold text-text-primary mb-4">📜 RentView Terms of Service</h1>
+            <h1 className="text-4xl font-bold text-text-primary mb-4">RentView Terms of Service</h1>
             <p className="text-text-muted text-lg">
               Welcome to RentView. By using our platform, you agree to these terms.
             </p>
@@ -80,8 +78,6 @@ const TermsOfService: React.FC = () => {
           </main>
         </div>
       </div>
-    </>
-  )
-}
-
-export default TermsOfService
+    </>;
+};
+export default TermsOfService;
