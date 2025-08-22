@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Loader2, Eye, Check, X, User, Mail, Phone, MapPin, Star } from 'lucide-react'
+import { Loader2, Eye, Check, X, User, Mail, Phone, MapPin, Star, Shield, CheckCircle, AlertCircle, DollarSign } from 'lucide-react'
 import { format } from 'date-fns'
 import { OfferDetailsDialog } from './OfferDetailsDialog'
 
@@ -148,6 +148,42 @@ export const OfferCard: React.FC<OfferCardProps> = ({
     return 'text-red-600'
   }
 
+  const getCreditScoreColor = (score: number) => {
+    if (score >= 800) return 'text-green-600 bg-green-50'
+    if (score >= 700) return 'text-blue-600 bg-blue-50'
+    if (score >= 600) return 'text-yellow-600 bg-yellow-50'
+    return 'text-red-600 bg-red-50'
+  }
+
+  const getCreditScoreLabel = (score: number) => {
+    if (score >= 800) return 'Excellent'
+    if (score >= 700) return 'Good'
+    if (score >= 600) return 'Fair'
+    return 'Poor'
+  }
+
+  const getVerificationCount = () => {
+    if (!offer.profiles) return 0
+    const verifications = [
+      offer.profiles.identity_verified,
+      offer.profiles.employment_verified,
+      offer.profiles.income_verified,
+      offer.profiles.credit_verified,
+      offer.profiles.references_verified,
+      offer.profiles.bank_verified
+    ]
+    return verifications.filter(Boolean).length
+  }
+
+  const getIncomeToRentRatio = () => {
+    if (!offer.profiles?.annual_income || !offer.properties?.price) return null
+    const monthlyIncome = offer.profiles.annual_income / 12
+    return Math.round((offer.properties.price / monthlyIncome) * 100)
+  }
+
+  const verificationCount = getVerificationCount()
+  const incomeToRentRatio = getIncomeToRentRatio()
+
   return (
     <Card className="relative overflow-hidden border border-border hover:shadow-md transition-shadow animate-fade-in">
       {/* Status Badge */}
@@ -173,7 +209,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({
 
       <CardContent className="space-y-4">
         {/* Applicant Info */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-primary" />
@@ -182,7 +218,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({
               </span>
             </div>
             {tenantScore > 0 && (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/50">
                 <Star className={`w-4 h-4 ${getScoreColor(tenantScore)}`} />
                 <span className={`text-sm font-semibold ${getScoreColor(tenantScore)}`}>
                   {tenantScore}%
@@ -190,16 +226,100 @@ export const OfferCard: React.FC<OfferCardProps> = ({
               </div>
             )}
           </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Mail className="w-3 h-3" />
-            <span className="text-sm">{offer.profiles?.email || 'No email'}</span>
+          
+          {/* Contact Info - Only show if exists */}
+          <div className="space-y-1">
+            {offer.profiles?.email && (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Mail className="w-3 h-3" />
+                <span className="text-sm">{offer.profiles.email}</span>
+              </div>
+            )}
+            {offer.profiles?.phone && (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Phone className="w-3 h-3" />
+                <span className="text-sm">{offer.profiles.phone}</span>
+              </div>
+            )}
           </div>
-          {offer.profiles?.phone && (
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Phone className="w-3 h-3" />
-              <span className="text-sm">{offer.profiles.phone}</span>
+
+          {/* Tenant Quality Section */}
+          <div className="p-3 bg-secondary/30 rounded-lg space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-foreground">Tenant Quality</span>
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">
+                  {verificationCount}/6 Verified
+                </span>
+              </div>
             </div>
-          )}
+            
+            {/* Verification Badges */}
+            <div className="flex flex-wrap gap-1">
+              {offer.profiles?.identity_verified && (
+                <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  ID
+                </Badge>
+              )}
+              {offer.profiles?.employment_verified && (
+                <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  Employment
+                </Badge>
+              )}
+              {offer.profiles?.income_verified && (
+                <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-700">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  Income
+                </Badge>
+              )}
+              {offer.profiles?.credit_verified && (
+                <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-700">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  Credit
+                </Badge>
+              )}
+              {offer.profiles?.references_verified && (
+                <Badge variant="secondary" className="text-xs bg-teal-100 text-teal-700">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  References
+                </Badge>
+              )}
+              {offer.profiles?.bank_verified && (
+                <Badge variant="secondary" className="text-xs bg-indigo-100 text-indigo-700">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  Bank
+                </Badge>
+              )}
+            </div>
+
+            {/* Financial Health */}
+            <div className="grid grid-cols-2 gap-3">
+              {offer.profiles?.credit_score && (
+                <div className="text-center">
+                  <div className={`px-2 py-1 rounded text-xs font-medium ${getCreditScoreColor(offer.profiles.credit_score)}`}>
+                    {offer.profiles.credit_score} • {getCreditScoreLabel(offer.profiles.credit_score)}
+                  </div>
+                  <span className="text-xs text-muted-foreground">Credit Score</span>
+                </div>
+              )}
+              
+              {incomeToRentRatio && (
+                <div className="text-center">
+                  <div className={`px-2 py-1 rounded text-xs font-medium ${
+                    incomeToRentRatio <= 30 ? 'text-green-600 bg-green-50' : 
+                    incomeToRentRatio <= 40 ? 'text-yellow-600 bg-yellow-50' : 
+                    'text-red-600 bg-red-50'
+                  }`}>
+                    {incomeToRentRatio}% of income
+                  </div>
+                  <span className="text-xs text-muted-foreground">Rent Ratio</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Offer Details */}
@@ -231,19 +351,20 @@ export const OfferCard: React.FC<OfferCardProps> = ({
           </div>
         </div>
 
-        {/* Key Applicant Details */}
+        {/* Additional Details */}
         <div className="space-y-2">
           {offer.profiles?.employment_status && (
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Employment</span>
-              <span className="text-sm font-medium">{offer.profiles.employment_status}</span>
+              <span className="text-sm font-medium capitalize">{offer.profiles.employment_status}</span>
             </div>
           )}
           
           {offer.profiles?.annual_income && (
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Annual Income</span>
-              <span className="text-sm font-medium">
+              <span className="text-sm font-medium flex items-center gap-1">
+                <DollarSign className="w-3 h-3" />
                 {formatCurrency(offer.profiles.annual_income)}
               </span>
             </div>
@@ -251,12 +372,16 @@ export const OfferCard: React.FC<OfferCardProps> = ({
 
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">Pets</span>
-            <span className="text-sm">{offer.profiles?.has_pets ? 'Yes' : 'No'}</span>
+            <span className={`text-sm ${offer.profiles?.has_pets ? 'text-orange-600' : 'text-green-600'}`}>
+              {offer.profiles?.has_pets ? 'Yes' : 'No'}
+            </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">Smoker</span>
-            <span className="text-sm">{offer.profiles?.is_smoker ? 'Yes' : 'No'}</span>
+            <span className={`text-sm ${offer.profiles?.is_smoker ? 'text-red-600' : 'text-green-600'}`}>
+              {offer.profiles?.is_smoker ? 'Yes' : 'No'}
+            </span>
           </div>
         </div>
 
