@@ -362,6 +362,126 @@ export type Database = {
           },
         ]
       }
+      reference_check_applications: {
+        Row: {
+          contact_consent: boolean | null
+          created_at: string
+          credit_check_consent: boolean | null
+          declaration_date: string | null
+          digital_signature: string | null
+          employer_contact_email: string | null
+          employer_contact_phone: string | null
+          employment_type: string | null
+          financial_explanation: string | null
+          guarantor_address: string | null
+          guarantor_annual_income: number | null
+          guarantor_employer_name: string | null
+          guarantor_id_url: string | null
+          guarantor_job_title: string | null
+          guarantor_name: string | null
+          guarantor_proof_address_url: string | null
+          guarantor_relationship: string | null
+          has_ccj_iva_bankruptcy: boolean | null
+          has_guarantor: boolean | null
+          id: string
+          immigration_status: string | null
+          information_consent: boolean | null
+          monthly_rent_paid: number | null
+          photo_id_url: string | null
+          previous_landlord_email: string | null
+          previous_landlord_name: string | null
+          previous_landlord_phone: string | null
+          previous_property_address: string | null
+          proof_of_address_url: string | null
+          proof_of_income_urls: string[] | null
+          right_to_rent_document_url: string | null
+          status: string
+          tenancy_end_date: string | null
+          tenancy_start_date: string | null
+          updated_at: string
+          user_id: string
+          visa_permit_url: string | null
+        }
+        Insert: {
+          contact_consent?: boolean | null
+          created_at?: string
+          credit_check_consent?: boolean | null
+          declaration_date?: string | null
+          digital_signature?: string | null
+          employer_contact_email?: string | null
+          employer_contact_phone?: string | null
+          employment_type?: string | null
+          financial_explanation?: string | null
+          guarantor_address?: string | null
+          guarantor_annual_income?: number | null
+          guarantor_employer_name?: string | null
+          guarantor_id_url?: string | null
+          guarantor_job_title?: string | null
+          guarantor_name?: string | null
+          guarantor_proof_address_url?: string | null
+          guarantor_relationship?: string | null
+          has_ccj_iva_bankruptcy?: boolean | null
+          has_guarantor?: boolean | null
+          id?: string
+          immigration_status?: string | null
+          information_consent?: boolean | null
+          monthly_rent_paid?: number | null
+          photo_id_url?: string | null
+          previous_landlord_email?: string | null
+          previous_landlord_name?: string | null
+          previous_landlord_phone?: string | null
+          previous_property_address?: string | null
+          proof_of_address_url?: string | null
+          proof_of_income_urls?: string[] | null
+          right_to_rent_document_url?: string | null
+          status?: string
+          tenancy_end_date?: string | null
+          tenancy_start_date?: string | null
+          updated_at?: string
+          user_id: string
+          visa_permit_url?: string | null
+        }
+        Update: {
+          contact_consent?: boolean | null
+          created_at?: string
+          credit_check_consent?: boolean | null
+          declaration_date?: string | null
+          digital_signature?: string | null
+          employer_contact_email?: string | null
+          employer_contact_phone?: string | null
+          employment_type?: string | null
+          financial_explanation?: string | null
+          guarantor_address?: string | null
+          guarantor_annual_income?: number | null
+          guarantor_employer_name?: string | null
+          guarantor_id_url?: string | null
+          guarantor_job_title?: string | null
+          guarantor_name?: string | null
+          guarantor_proof_address_url?: string | null
+          guarantor_relationship?: string | null
+          has_ccj_iva_bankruptcy?: boolean | null
+          has_guarantor?: boolean | null
+          id?: string
+          immigration_status?: string | null
+          information_consent?: boolean | null
+          monthly_rent_paid?: number | null
+          photo_id_url?: string | null
+          previous_landlord_email?: string | null
+          previous_landlord_name?: string | null
+          previous_landlord_phone?: string | null
+          previous_property_address?: string | null
+          proof_of_address_url?: string | null
+          proof_of_income_urls?: string[] | null
+          right_to_rent_document_url?: string | null
+          status?: string
+          tenancy_end_date?: string | null
+          tenancy_start_date?: string | null
+          updated_at?: string
+          user_id?: string
+          visa_permit_url?: string | null
+        }
+        Relationships: []
+      }
       tenant_documents: {
         Row: {
           created_at: string | null
