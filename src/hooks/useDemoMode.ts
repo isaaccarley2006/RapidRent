@@ -13,6 +13,14 @@ export interface DemoVerificationState {
 }
 
 const DEMO_STORAGE_KEY = 'rentview_demo_state';
+const REFERENCE_CHECK_STORAGE_KEY = 'rentview_reference_check';
+
+interface ReferenceCheckState {
+  submissionId: string;
+  startTime: number;
+  completionTime: number;
+  status: 'not_started' | 'in_progress' | 'completed';
+}
 
 export const useDemoMode = () => {
   const { toast } = useToast();
@@ -24,6 +32,12 @@ export const useDemoMode = () => {
     credit_verified: 'not_started',
     references_verified: 'not_started',
     bank_verified: 'not_started',
+  });
+  const [referenceCheckState, setReferenceCheckState] = useState<ReferenceCheckState>({
+    submissionId: '',
+    startTime: 0,
+    completionTime: 0,
+    status: 'not_started'
   });
 
   useEffect(() => {
@@ -40,6 +54,23 @@ export const useDemoMode = () => {
           setDemoState(JSON.parse(savedState));
         } catch (e) {
           console.warn('Failed to parse demo state from localStorage');
+        }
+      }
+
+      // Load reference check state
+      const savedReferenceState = localStorage.getItem(REFERENCE_CHECK_STORAGE_KEY);
+      if (savedReferenceState) {
+        try {
+          const parsedState = JSON.parse(savedReferenceState);
+          setReferenceCheckState(parsedState);
+          
+          // Check if verification should be completed
+          const now = Date.now();
+          if (parsedState.status === 'in_progress' && now >= parsedState.completionTime) {
+            completeReferenceCheck(parsedState.submissionId);
+          }
+        } catch (e) {
+          console.warn('Failed to parse reference check state from localStorage');
         }
       }
     }
@@ -117,6 +148,67 @@ export const useDemoMode = () => {
     });
   };
 
+  const startReferenceCheck = (submissionId: string) => {
+    const now = Date.now();
+    // Use 30 seconds for demo instead of 6 hours
+    const completionTime = now + (30 * 1000);
+    
+    const newState: ReferenceCheckState = {
+      submissionId,
+      startTime: now,
+      completionTime,
+      status: 'in_progress'
+    };
+    
+    setReferenceCheckState(newState);
+    localStorage.setItem(REFERENCE_CHECK_STORAGE_KEY, JSON.stringify(newState));
+    
+    toast({
+      title: "Reference check started",
+      description: "Your verification is being processed. You'll be notified when complete.",
+    });
+
+    // Set a timer to complete the verification
+    setTimeout(() => {
+      completeReferenceCheck(submissionId);
+    }, 30 * 1000);
+  };
+
+  const completeReferenceCheck = (submissionId: string) => {
+    const completedState: DemoVerificationState = {
+      identity_verified: 'verified',
+      employment_verified: 'verified',
+      income_verified: 'verified',
+      credit_verified: 'verified',
+      references_verified: 'verified',
+      bank_verified: 'verified',
+    };
+    
+    const completedReferenceState: ReferenceCheckState = {
+      submissionId,
+      startTime: referenceCheckState.startTime,
+      completionTime: Date.now(),
+      status: 'completed'
+    };
+    
+    setDemoState(completedState);
+    setReferenceCheckState(completedReferenceState);
+    localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(completedState));
+    localStorage.setItem(REFERENCE_CHECK_STORAGE_KEY, JSON.stringify(completedReferenceState));
+    
+    toast({
+      title: "✅ Verification Complete!",
+      description: "Your profile has been fully verified. You now have verified status across all views.",
+    });
+  };
+
+  const getRemainingTime = () => {
+    if (referenceCheckState.status !== 'in_progress') return 0;
+    const now = Date.now();
+    const remaining = Math.max(0, referenceCheckState.completionTime - now);
+    return Math.ceil(remaining / 1000); // Return seconds remaining
+  };
+
   const getCompletionPercentage = () => {
     const verifications = Object.values(demoState);
     const verifiedCount = verifications.filter(status => status === 'verified').length;
@@ -126,9 +218,13 @@ export const useDemoMode = () => {
   return {
     isDemoMode,
     demoState,
+    referenceCheckState,
     simulateVerification,
     resetDemoState,
     completeAllVerifications,
+    startReferenceCheck,
+    completeReferenceCheck,
+    getRemainingTime,
     getCompletionPercentage,
   };
 };

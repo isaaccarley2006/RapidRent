@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDemoMode } from '@/hooks/useDemoMode';
 import { Button } from "@/components/ui/button";
+import { useToast } from '@/hooks/use-toast';
 
 type Status = "not_started" | "in_progress" | "verified" | "failed" | "needs_attention";
 
@@ -10,7 +12,10 @@ export default function IdentityVerificationCard() {
   const [updatedAt, setUpdatedAt] = useState<string>("—");
   const [loading, setLoading] = useState(false);
   const [diagnostics, setDiagnostics] = useState<any>(null);
+  const [remainingTime, setRemainingTime] = useState(0);
   const { user } = useAuth();
+  const { toast } = useToast();
+  const { isDemoMode, referenceCheckState, startReferenceCheck, getRemainingTime } = useDemoMode();
 
   const isDebugMode = new URLSearchParams(window.location.search).get('debug') === '1';
 
@@ -67,6 +72,22 @@ export default function IdentityVerificationCard() {
     loadStatus(); 
   }, [user]);
 
+  // Update remaining time for demo mode
+  useEffect(() => {
+    if (isDemoMode && referenceCheckState.status === 'in_progress') {
+      const interval = setInterval(() => {
+        const remaining = getRemainingTime();
+        setRemainingTime(remaining);
+        if (remaining <= 0) {
+          setStatus("verified");
+          clearInterval(interval);
+        }
+      }, 1000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [isDemoMode, referenceCheckState, getRemainingTime]);
+
   const pillClass = (s: Status) => {
     const base = "inline-flex items-center rounded-full border px-2 py-1 text-xs";
     if (s === "verified") return `${base} border-green-500 text-green-700`;
@@ -83,13 +104,37 @@ export default function IdentityVerificationCard() {
   async function startVerification() {
     setLoading(true);
     try {
+      if (!user) {
+        toast({
+          title: "Authentication required",
+          description: "Please sign in to start verification",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (isDemoMode) {
+        // For demo mode, use internal reference check system
+        const submissionId = `demo_${Date.now()}`;
+        startReferenceCheck(submissionId);
+        setStatus('in_progress');
+        setUpdatedAt(new Date().toLocaleString());
+        setLoading(false);
+        return;
+      }
+
+      // For non-demo mode, use the actual backend
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
-        alert("Please sign in first");
+        toast({
+          title: "Authentication required",
+          description: "Please sign in first",
+          variant: "destructive"
+        });
         return;
       }
       
-      // Get all profile data and references from the useProfile hook
+      // Get all profile data and references
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
@@ -98,7 +143,11 @@ export default function IdentityVerificationCard() {
 
       if (profileError) {
         console.error('Error fetching profile data:', profileError);
-        alert('Unable to fetch profile data. Please ensure your profile is complete.');
+        toast({
+          title: "Profile error",
+          description: "Unable to fetch profile data. Please ensure your profile is complete.",
+          variant: "destructive"
+        });
         return;
       }
 
@@ -125,7 +174,11 @@ export default function IdentityVerificationCard() {
       
       if (error) {
         console.error("Reference check submission error:", error);
-        alert(`Reference check failed: ${error.message}`);
+        toast({
+          title: "Reference check failed",
+          description: error.message,
+          variant: "destructive"
+        });
         return;
       }
       
@@ -133,12 +186,19 @@ export default function IdentityVerificationCard() {
       setStatus("in_progress");
       setUpdatedAt(new Date().toLocaleString());
       
-      alert(`Reference check submitted successfully! You will receive a verification email within 6 hours. Submission ID: ${data.submissionId}`);
+      toast({
+        title: "Reference check submitted",
+        description: `Your verification will complete in 30 seconds. Submission ID: ${data.submissionId}`,
+      });
       
       await loadStatus();
     } catch (e: any) {
       console.error("Reference check submission exception:", e);
-      alert(`Reference check error: ${e?.message || String(e)}`);
+      toast({
+        title: "Reference check error",
+        description: e?.message || String(e),
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -164,7 +224,10 @@ export default function IdentityVerificationCard() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold">Identity verification</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Confirm your identity to unlock faster decisions.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {isDemoMode ? "Complete your reference check to unlock verified status" : "Confirm your identity to unlock faster decisions."}
+            {isDemoMode && status === 'in_progress' && ` (${remainingTime}s remaining)`}
+          </p>
         </div>
         <button
           onClick={loadStatus}
