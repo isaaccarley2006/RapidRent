@@ -11,9 +11,12 @@ import { ReferencesTab } from '@/components/profile/ReferencesTab'
 import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
 import { useProfile } from '@/hooks/useProfile'
 import IdentityVerificationCard from '@/components/verification/IdentityVerificationCard'
+import { VerificationDashboard } from '@/components/verification/VerificationDashboard'
+import { useDemoMode } from '@/hooks/useDemoMode'
 
 const Profile: React.FC = () => {
   const { user, signOut } = useAuth()
+  const { isDemoMode } = useDemoMode()
   const [activeTab, setActiveTab] = useState('personal')
   
   const {
@@ -76,11 +79,16 @@ const Profile: React.FC = () => {
         </p>
       </div>
 
-      <ProfileVerificationStatus profile={profile} />
-
-      <div className="mt-4">
-        <IdentityVerificationCard />
-      </div>
+      {isDemoMode ? (
+        <VerificationDashboard />
+      ) : (
+        <>
+          <ProfileVerificationStatus profile={profile} />
+          <div className="mt-4">
+            <IdentityVerificationCard />
+          </div>
+        </>
+      )}
 
       {/* Profile Form Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
