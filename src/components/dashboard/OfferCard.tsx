@@ -184,6 +184,27 @@ export const OfferCard: React.FC<OfferCardProps> = ({
   const verificationCount = getVerificationCount()
   const incomeToRentRatio = getIncomeToRentRatio()
 
+  // Debug logging to track data issues
+  React.useEffect(() => {
+    console.log('OfferCard Debug Data:', {
+      offerId: offer.id,
+      profilesExists: !!offer.profiles,
+      verificationCount,
+      verificationData: {
+        identity_verified: offer.profiles?.identity_verified,
+        employment_verified: offer.profiles?.employment_verified,
+        income_verified: offer.profiles?.income_verified,
+        credit_verified: offer.profiles?.credit_verified,
+        references_verified: offer.profiles?.references_verified,
+        bank_verified: offer.profiles?.bank_verified
+      },
+      financialData: {
+        annual_income: offer.profiles?.annual_income,
+        credit_score: offer.profiles?.credit_score
+      }
+    })
+  }, [offer.id, offer.profiles, verificationCount])
+
   return (
     <Card className="relative overflow-hidden border border-border hover:shadow-md transition-shadow animate-fade-in">
       {/* Status Badge */}
@@ -297,16 +318,23 @@ export const OfferCard: React.FC<OfferCardProps> = ({
 
             {/* Financial Health */}
             <div className="grid grid-cols-2 gap-3">
-              {offer.profiles?.credit_score && (
+              {offer.profiles?.credit_score ? (
                 <div className="text-center">
                   <div className={`px-2 py-1 rounded text-xs font-medium ${getCreditScoreColor(offer.profiles.credit_score)}`}>
                     {offer.profiles.credit_score} • {getCreditScoreLabel(offer.profiles.credit_score)}
                   </div>
                   <span className="text-xs text-muted-foreground">Credit Score</span>
                 </div>
+              ) : (
+                <div className="text-center">
+                  <div className="px-2 py-1 rounded text-xs font-medium text-gray-500 bg-gray-50">
+                    No Score
+                  </div>
+                  <span className="text-xs text-muted-foreground">Credit Score</span>
+                </div>
               )}
               
-              {incomeToRentRatio && (
+              {incomeToRentRatio ? (
                 <div className="text-center">
                   <div className={`px-2 py-1 rounded text-xs font-medium ${
                     incomeToRentRatio <= 30 ? 'text-green-600 bg-green-50' : 
@@ -314,6 +342,13 @@ export const OfferCard: React.FC<OfferCardProps> = ({
                     'text-red-600 bg-red-50'
                   }`}>
                     {incomeToRentRatio}% of income
+                  </div>
+                  <span className="text-xs text-muted-foreground">Rent Ratio</span>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <div className="px-2 py-1 rounded text-xs font-medium text-gray-500 bg-gray-50">
+                    No Income
                   </div>
                   <span className="text-xs text-muted-foreground">Rent Ratio</span>
                 </div>
@@ -360,13 +395,18 @@ export const OfferCard: React.FC<OfferCardProps> = ({
             </div>
           )}
           
-          {offer.profiles?.annual_income && (
+          {offer.profiles?.annual_income ? (
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Annual Income</span>
               <span className="text-sm font-medium flex items-center gap-1">
                 <DollarSign className="w-3 h-3" />
                 {formatCurrency(offer.profiles.annual_income)}
               </span>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Annual Income</span>
+              <span className="text-sm text-gray-500">Not provided</span>
             </div>
           )}
 
