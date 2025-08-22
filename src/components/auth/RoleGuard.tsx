@@ -8,7 +8,7 @@ import { AlertCircle } from 'lucide-react'
 
 interface RoleGuardProps {
   children: React.ReactNode
-  requiredRole: 'tenant' | 'landlord'
+  requiredRole: 'tenant' | 'landlord' | 'agent'
 }
 
 export const RoleGuard: React.FC<RoleGuardProps> = ({ children, requiredRole }) => {
@@ -63,7 +63,9 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({ children, requiredRole }) 
 
   // Redirect to correct area if wrong role
   if (profile.role !== requiredRole) {
-    const correctPath = profile.role === 'tenant' ? '/dashboard' : '/dashboard'
+    const correctPath = profile.role === 'tenant' ? '/dashboard' : 
+                       profile.role === 'landlord' ? '/dashboard' : 
+                       profile.role === 'agent' ? '/agent/dashboard' : '/dashboard'
     return <Navigate to={correctPath} replace />
   }
 

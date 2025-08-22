@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_tenant_access: {
+        Row: {
+          agent_id: string
+          created_at: string
+          granted_at: string
+          granted_by: string
+          id: string
+          notes: string | null
+          revoked_at: string | null
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string
+          granted_at?: string
+          granted_by: string
+          id?: string
+          notes?: string | null
+          revoked_at?: string | null
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string
+          granted_at?: string
+          granted_by?: string
+          id?: string
+          notes?: string | null
+          revoked_at?: string | null
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       offers: {
         Row: {
           created_at: string

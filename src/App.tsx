@@ -9,6 +9,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { AppLayout } from '@/components/layouts/AppLayout'
 import { RenterLayout } from './layouts/RenterLayout'
 import { LandlordLayout } from './layouts/LandlordLayout'
+import { AgentLayout } from './layouts/AgentLayout'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import EmailConfirmed from './pages/EmailConfirmed'
@@ -24,6 +25,7 @@ import CreateListing from './pages/CreateListing'
 import BulkUpload from './pages/BulkUpload'
 import PropertyOffers from './pages/PropertyOffers'
 import LandlordOffers from './pages/LandlordOffers'
+import AgentDashboard from './pages/AgentDashboard'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
 import CookiePolicy from './pages/CookiePolicy'
@@ -83,6 +85,17 @@ const App = () => (
                       <Route path="*" element={<Navigate to="/landlord/offers" replace />} />
                     </Routes>
                   </LandlordLayout>
+                } 
+              />
+              <Route 
+                path="/agent/*" 
+                element={
+                  <AgentLayout>
+                    <Routes>
+                      <Route path="dashboard" element={<AgentDashboard />} />
+                      <Route path="*" element={<Navigate to="/agent/dashboard" replace />} />
+                    </Routes>
+                  </AgentLayout>
                 } 
               />
               
