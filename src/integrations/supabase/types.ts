@@ -112,6 +112,8 @@ export type Database = {
           bank_name: string | null
           bank_verified: boolean | null
           bank_verified_at: string | null
+          comprehensive_verification_completed_at: string | null
+          comprehensive_verification_status: string | null
           created_at: string
           credit_score: number | null
           credit_verified: boolean | null
@@ -160,6 +162,8 @@ export type Database = {
           bank_name?: string | null
           bank_verified?: boolean | null
           bank_verified_at?: string | null
+          comprehensive_verification_completed_at?: string | null
+          comprehensive_verification_status?: string | null
           created_at?: string
           credit_score?: number | null
           credit_verified?: boolean | null
@@ -208,6 +212,8 @@ export type Database = {
           bank_name?: string | null
           bank_verified?: boolean | null
           bank_verified_at?: string | null
+          comprehensive_verification_completed_at?: string | null
+          comprehensive_verification_status?: string | null
           created_at?: string
           credit_score?: number | null
           credit_verified?: boolean | null
@@ -479,6 +485,111 @@ export type Database = {
           updated_at?: string
           user_id?: string
           visa_permit_url?: string | null
+        }
+        Relationships: []
+      }
+      reference_check_submissions: {
+        Row: {
+          account_holder_name: string | null
+          additional_notes: string | null
+          annual_income: number | null
+          bank_name: string | null
+          created_at: string
+          credit_score: number | null
+          current_address: string | null
+          date_of_birth: string | null
+          email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emergency_contact_relationship: string | null
+          employer_address: string | null
+          employer_name: string | null
+          employment_start_date: string | null
+          employment_status: string | null
+          full_name: string | null
+          has_pets: boolean | null
+          id: string
+          is_smoker: boolean | null
+          job_title: string | null
+          notification_sent_at: string | null
+          pet_details: string | null
+          phone: string | null
+          previous_address: string | null
+          sort_code: string | null
+          status: string
+          time_at_current_address: string | null
+          updated_at: string
+          user_id: string
+          verification_completed_at: string | null
+          verification_scheduled_for: string | null
+        }
+        Insert: {
+          account_holder_name?: string | null
+          additional_notes?: string | null
+          annual_income?: number | null
+          bank_name?: string | null
+          created_at?: string
+          credit_score?: number | null
+          current_address?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relationship?: string | null
+          employer_address?: string | null
+          employer_name?: string | null
+          employment_start_date?: string | null
+          employment_status?: string | null
+          full_name?: string | null
+          has_pets?: boolean | null
+          id?: string
+          is_smoker?: boolean | null
+          job_title?: string | null
+          notification_sent_at?: string | null
+          pet_details?: string | null
+          phone?: string | null
+          previous_address?: string | null
+          sort_code?: string | null
+          status?: string
+          time_at_current_address?: string | null
+          updated_at?: string
+          user_id: string
+          verification_completed_at?: string | null
+          verification_scheduled_for?: string | null
+        }
+        Update: {
+          account_holder_name?: string | null
+          additional_notes?: string | null
+          annual_income?: number | null
+          bank_name?: string | null
+          created_at?: string
+          credit_score?: number | null
+          current_address?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relationship?: string | null
+          employer_address?: string | null
+          employer_name?: string | null
+          employment_start_date?: string | null
+          employment_status?: string | null
+          full_name?: string | null
+          has_pets?: boolean | null
+          id?: string
+          is_smoker?: boolean | null
+          job_title?: string | null
+          notification_sent_at?: string | null
+          pet_details?: string | null
+          phone?: string | null
+          previous_address?: string | null
+          sort_code?: string | null
+          status?: string
+          time_at_current_address?: string | null
+          updated_at?: string
+          user_id?: string
+          verification_completed_at?: string | null
+          verification_scheduled_for?: string | null
         }
         Relationships: []
       }

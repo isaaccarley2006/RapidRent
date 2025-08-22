@@ -21,6 +21,37 @@ export default function IdentityVerificationCard() {
       return; 
     }
 
+    // Check comprehensive verification status first
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("comprehensive_verification_status, comprehensive_verification_completed_at")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (profileData?.comprehensive_verification_status === 'verified') {
+      setStatus("verified");
+      setUpdatedAt(profileData.comprehensive_verification_completed_at 
+        ? new Date(profileData.comprehensive_verification_completed_at).toLocaleString() 
+        : "—");
+      return;
+    }
+
+    // Check if there's a pending reference check submission
+    const { data: submissionData } = await supabase
+      .from("reference_check_submissions")
+      .select("status, created_at, verification_scheduled_for")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (submissionData) {
+      setStatus(submissionData.status === 'verified' ? "verified" : "in_progress");
+      setUpdatedAt(submissionData.created_at ? new Date(submissionData.created_at).toLocaleString() : "—");
+      return;
+    }
+
+    // Fallback to old verification system
     const { data } = await supabase
       .from("verifications")
       .select("status,updated_at")
@@ -58,36 +89,56 @@ export default function IdentityVerificationCard() {
         return;
       }
       
+      // Get all profile data and references from the useProfile hook
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) {
+        console.error('Error fetching profile data:', profileError);
+        alert('Unable to fetch profile data. Please ensure your profile is complete.');
+        return;
+      }
+
+      const { data: references, error: referencesError } = await supabase
+        .from('tenant_references')
+        .select('*')
+        .eq('tenant_id', user.id);
+
+      if (referencesError) {
+        console.error('Error fetching references:', referencesError);
+      }
+      
+      console.log('Submitting reference check with data:', { profileData, references });
+      
       const headers = { Authorization: `Bearer ${session.access_token}` };
       
-      const { data, error } = await supabase.functions.invoke("cc_start", {
-        body: {},
+      const { data, error } = await supabase.functions.invoke("process-reference-check", {
+        body: {
+          profileData: profileData,
+          references: references || []
+        },
         headers
       });
       
       if (error) {
-        console.error("cc_start invoke error:", error);
-        if (error.message?.includes("Server configuration error")) {
-          alert("Verification service is temporarily unavailable. Please contact support.");
-        } else {
-          alert(`Verification failed: ${error.message}`);
-        }
+        console.error("Reference check submission error:", error);
+        alert(`Reference check failed: ${error.message}`);
         return;
       }
       
-      if (data?.redirectUrl) {
-        window.open(data.redirectUrl, "_blank", "noopener,noreferrer");
-        // Update status immediately to show in_progress
-        setStatus("in_progress");
-        setUpdatedAt(new Date().toLocaleString());
-      } else {
-        alert("No verification URL received. Please try again.");
-      }
+      // Update status immediately to show in_progress
+      setStatus("in_progress");
+      setUpdatedAt(new Date().toLocaleString());
+      
+      alert(`Reference check submitted successfully! You will receive a verification email within 6 hours. Submission ID: ${data.submissionId}`);
       
       await loadStatus();
     } catch (e: any) {
-      console.error("startVerification exception:", e);
-      alert(`Verification error: ${e?.message || String(e)}`);
+      console.error("Reference check submission exception:", e);
+      alert(`Reference check error: ${e?.message || String(e)}`);
     } finally {
       setLoading(false);
     }
