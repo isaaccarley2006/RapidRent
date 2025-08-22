@@ -2,75 +2,28 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDemoMode } from '@/hooks/useDemoMode';
+import { useVerificationStatus } from '@/hooks/useVerificationStatus';
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 
 type Status = "not_started" | "in_progress" | "verified" | "failed" | "needs_attention";
 
 export default function IdentityVerificationCard() {
-  const [status, setStatus] = useState<Status>("not_started");
-  const [updatedAt, setUpdatedAt] = useState<string>("—");
   const [loading, setLoading] = useState(false);
   const [diagnostics, setDiagnostics] = useState<any>(null);
   const [remainingTime, setRemainingTime] = useState(0);
   const { user } = useAuth();
   const { toast } = useToast();
   const { isDemoMode, referenceCheckState, startReferenceCheck, getRemainingTime } = useDemoMode();
+  const { verificationState, refresh: refreshVerification } = useVerificationStatus();
 
   const isDebugMode = new URLSearchParams(window.location.search).get('debug') === '1';
 
-  async function loadStatus() {
-    if (!user?.id) { 
-      setStatus("not_started"); 
-      setUpdatedAt("—"); 
-      return; 
-    }
-
-    // Check comprehensive verification status first
-    const { data: profileData } = await supabase
-      .from("profiles")
-      .select("comprehensive_verification_status, comprehensive_verification_completed_at")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (profileData?.comprehensive_verification_status === 'verified') {
-      setStatus("verified");
-      setUpdatedAt(profileData.comprehensive_verification_completed_at 
-        ? new Date(profileData.comprehensive_verification_completed_at).toLocaleString() 
-        : "—");
-      return;
-    }
-
-    // Check if there's a pending reference check submission
-    const { data: submissionData } = await supabase
-      .from("reference_check_submissions")
-      .select("status, created_at, verification_scheduled_for")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    if (submissionData) {
-      setStatus(submissionData.status === 'verified' ? "verified" : "in_progress");
-      setUpdatedAt(submissionData.created_at ? new Date(submissionData.created_at).toLocaleString() : "—");
-      return;
-    }
-
-    // Fallback to old verification system
-    const { data } = await supabase
-      .from("verifications")
-      .select("status,updated_at")
-      .eq("user_id", user.id)
-      .eq("type", "identity_rtr")
-      .maybeSingle();
-
-    setStatus((data?.status as Status) ?? "not_started");
-    setUpdatedAt(data?.updated_at ? new Date(data.updated_at).toLocaleString() : "—");
-  }
-
-  useEffect(() => { 
-    loadStatus(); 
-  }, [user]);
+  // Get status and updated time from unified verification state
+  const status: Status = verificationState.comprehensive_verification_status as Status;
+  const updatedAt = verificationState.comprehensive_verification_completed_at 
+    ? new Date(verificationState.comprehensive_verification_completed_at).toLocaleString() 
+    : "—";
 
   // Update remaining time for demo mode
   useEffect(() => {
@@ -79,14 +32,14 @@ export default function IdentityVerificationCard() {
         const remaining = getRemainingTime();
         setRemainingTime(remaining);
         if (remaining <= 0) {
-          setStatus("verified");
+          refreshVerification();
           clearInterval(interval);
         }
       }, 1000);
       
       return () => clearInterval(interval);
     }
-  }, [isDemoMode, referenceCheckState, getRemainingTime]);
+  }, [isDemoMode, referenceCheckState, getRemainingTime, refreshVerification]);
 
   const pillClass = (s: Status) => {
     const base = "inline-flex items-center rounded-full border px-2 py-1 text-xs";
@@ -117,8 +70,7 @@ export default function IdentityVerificationCard() {
         // For demo mode, use internal reference check system
         const submissionId = `demo_${Date.now()}`;
         startReferenceCheck(submissionId);
-        setStatus('in_progress');
-        setUpdatedAt(new Date().toLocaleString());
+        refreshVerification();
         setLoading(false);
         return;
       }
@@ -182,16 +134,12 @@ export default function IdentityVerificationCard() {
         return;
       }
       
-      // Update status immediately to show in_progress
-      setStatus("in_progress");
-      setUpdatedAt(new Date().toLocaleString());
-      
       toast({
         title: "Reference check submitted",
         description: `Your verification will complete in 30 seconds. Submission ID: ${data.submissionId}`,
       });
       
-      await loadStatus();
+      refreshVerification();
     } catch (e: any) {
       console.error("Reference check submission exception:", e);
       toast({
@@ -230,7 +178,7 @@ export default function IdentityVerificationCard() {
           </p>
         </div>
         <button
-          onClick={loadStatus}
+          onClick={refreshVerification}
           className="text-sm text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
           aria-label="Refresh verification status"
         >

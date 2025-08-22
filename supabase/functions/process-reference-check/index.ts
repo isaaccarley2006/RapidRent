@@ -135,12 +135,19 @@ const handler = async (req: Request): Promise<Response> => {
           .update({
             comprehensive_verification_status: 'verified',
             comprehensive_verification_completed_at: new Date().toISOString(),
+            profile_completion_percentage: 100,
             identity_verified: true,
             employment_verified: true,
             income_verified: true,
             credit_verified: true,
             references_verified: true,
-            bank_verified: true
+            bank_verified: true,
+            identity_verified_at: new Date().toISOString(),
+            employment_verified_at: new Date().toISOString(),
+            income_verified_at: new Date().toISOString(),
+            credit_verified_at: new Date().toISOString(),
+            references_verified_at: new Date().toISOString(),
+            bank_verified_at: new Date().toISOString(),
           })
           .eq('id', user.id);
 

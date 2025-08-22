@@ -3,19 +3,35 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Shield, Check, Clock } from 'lucide-react'
-import { TenantProfile } from '@/types/profile'
+import { useVerificationStatus } from '@/hooks/useVerificationStatus'
 
 interface ProfileVerificationStatusProps {
-  profile: TenantProfile | null
+  profile?: any // Keep for compatibility but we'll use the hook instead
 }
 
 export const ProfileVerificationStatus: React.FC<ProfileVerificationStatusProps> = ({ profile }) => {
+  const { verificationState, getVerificationProgress, loading } = useVerificationStatus();
+
   const getVerificationColor = (verified: boolean) => {
     return verified ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
   }
 
   const getVerificationIcon = (verified: boolean) => {
     return verified ? <Check className="w-4 h-4" /> : <Clock className="w-4 h-4" />
+  }
+
+  if (loading) {
+    return (
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="w-5 h-5 text-primary" />
+            Profile Verification Status
+          </CardTitle>
+          <CardDescription>Loading verification status...</CardDescription>
+        </CardHeader>
+      </Card>
+    );
   }
 
   return (
@@ -35,20 +51,20 @@ export const ProfileVerificationStatus: React.FC<ProfileVerificationStatusProps>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">Profile Completion</span>
               <span className="text-sm text-text-muted">
-                {profile?.profile_completion_percentage || 0}%
+                {getVerificationProgress()}%
               </span>
             </div>
-            <Progress value={profile?.profile_completion_percentage || 0} className="h-2" />
+            <Progress value={getVerificationProgress()} className="h-2" />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { key: 'identity', label: 'Identity', verified: profile?.identity_verified },
-              { key: 'employment', label: 'Employment', verified: profile?.employment_verified },
-              { key: 'income', label: 'Income', verified: profile?.income_verified },
-              { key: 'credit', label: 'Credit Score', verified: profile?.credit_verified },
-              { key: 'references', label: 'References', verified: profile?.references_verified },
-              { key: 'bank', label: 'Bank Details', verified: profile?.bank_verified }
+              { key: 'identity', label: 'Identity', verified: verificationState.identity_verified },
+              { key: 'employment', label: 'Employment', verified: verificationState.employment_verified },
+              { key: 'income', label: 'Income', verified: verificationState.income_verified },
+              { key: 'credit', label: 'Credit Score', verified: verificationState.credit_verified },
+              { key: 'references', label: 'References', verified: verificationState.references_verified },
+              { key: 'bank', label: 'Bank Details', verified: verificationState.bank_verified }
             ].map((item) => (
               <div key={item.key} className="flex items-center justify-between p-3 border rounded-lg">
                 <span className="text-sm font-medium">{item.label}</span>

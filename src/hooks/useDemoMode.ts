@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase';
 
 export type VerificationStatus = 'not_started' | 'in_progress' | 'verified' | 'failed';
 
@@ -174,7 +175,7 @@ export const useDemoMode = () => {
     }, 30 * 1000);
   };
 
-  const completeReferenceCheck = (submissionId: string) => {
+  const completeReferenceCheck = async (submissionId: string) => {
     const completedState: DemoVerificationState = {
       identity_verified: 'verified',
       employment_verified: 'verified',
@@ -196,10 +197,52 @@ export const useDemoMode = () => {
     localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(completedState));
     localStorage.setItem(REFERENCE_CHECK_STORAGE_KEY, JSON.stringify(completedReferenceState));
     
+    // Persist verification status to database
+    await persistVerificationToDatabase();
+    
     toast({
       title: "✅ Verification Complete!",
       description: "Your profile has been fully verified. You now have verified status across all views.",
     });
+  };
+
+  const persistVerificationToDatabase = async () => {
+    try {
+      // Check if we have access to user context
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user?.id) {
+        console.log('No user found, skipping database persistence');
+        return;
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          identity_verified: true,
+          employment_verified: true,
+          income_verified: true,
+          credit_verified: true,
+          references_verified: true,
+          bank_verified: true,
+          comprehensive_verification_status: 'verified',
+          comprehensive_verification_completed_at: new Date().toISOString(),
+          profile_completion_percentage: 100,
+          identity_verified_at: new Date().toISOString(),
+          employment_verified_at: new Date().toISOString(),
+          income_verified_at: new Date().toISOString(),
+          credit_verified_at: new Date().toISOString(),
+          references_verified_at: new Date().toISOString(),
+          bank_verified_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+      
+      console.log('Successfully persisted demo verification to database');
+    } catch (error) {
+      console.error('Error persisting verification to database:', error);
+    }
   };
 
   const getRemainingTime = () => {
