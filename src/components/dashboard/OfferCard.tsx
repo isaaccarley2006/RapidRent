@@ -262,46 +262,6 @@ export const OfferCard: React.FC<OfferCardProps> = ({
               </div>
             </div>
             
-            {/* Verification Badges */}
-            <div className="flex flex-wrap gap-1">
-              {offer.profiles?.identity_verified && (
-                <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  ID
-                </Badge>
-              )}
-              {offer.profiles?.employment_verified && (
-                <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Employment
-                </Badge>
-              )}
-              {offer.profiles?.income_verified && (
-                <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-700">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Income
-                </Badge>
-              )}
-              {offer.profiles?.credit_verified && (
-                <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-700">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Credit
-                </Badge>
-              )}
-              {offer.profiles?.references_verified && (
-                <Badge variant="secondary" className="text-xs bg-teal-100 text-teal-700">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  References
-                </Badge>
-              )}
-              {offer.profiles?.bank_verified && (
-                <Badge variant="secondary" className="text-xs bg-indigo-100 text-indigo-700">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Bank
-                </Badge>
-              )}
-            </div>
-
             {/* Financial Health */}
             <div className="grid grid-cols-2 gap-3">
               {offer.profiles?.credit_score ? (
