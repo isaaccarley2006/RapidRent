@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Loader2, Check, X, DollarSign } from 'lucide-react'
+import { Loader2, Check, X, Banknote } from 'lucide-react'
 import { format } from 'date-fns'
 import { TenantCard } from './TenantCard'
 
@@ -88,7 +88,7 @@ export const OfferDetailsDialog: React.FC<OfferDetailsDialogProps> = ({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-primary" />
+              <Banknote className="w-5 h-5 text-primary" />
               Offer Details
             </CardTitle>
           </CardHeader>

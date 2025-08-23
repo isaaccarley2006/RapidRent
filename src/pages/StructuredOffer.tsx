@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Helmet } from 'react-helmet-async'
-import { ArrowLeft, DollarSign, Calendar, MessageSquare } from 'lucide-react'
+import { ArrowLeft, Banknote, Calendar, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -220,7 +220,7 @@ const StructuredOffer: React.FC = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-primary" />
+                    <Banknote className="w-5 h-5 text-primary" />
                     Your Offer
                   </CardTitle>
                 </CardHeader>

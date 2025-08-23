@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Briefcase, Mail, Phone, Upload, DollarSign } from 'lucide-react'
+import { Briefcase, Mail, Phone, Upload, Banknote } from 'lucide-react'
 import { ReferenceCheckApplication } from '@/types/referenceCheck'
 import { DocumentUpload } from '../DocumentUpload'
 
@@ -74,7 +74,7 @@ export const EmploymentStep: React.FC<EmploymentStepProps> = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <DollarSign className="w-5 h-5 text-primary" />
+            <Banknote className="w-5 h-5 text-primary" />
             Employment Details
           </CardTitle>
           <CardDescription>

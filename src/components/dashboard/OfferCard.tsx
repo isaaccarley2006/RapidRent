@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Loader2, Eye, Check, X, User, Mail, Phone, MapPin, Star, Shield, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
+import { Loader2, Eye, Check, X, User, Mail, Phone, MapPin, Star, Shield, CheckCircle, AlertCircle, Banknote } from 'lucide-react';
 import { format } from 'date-fns';
 import { OfferDetailsDialog } from './OfferDetailsDialog';
 interface OfferWithDetails {
@@ -284,7 +284,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({
           {offer.profiles?.annual_income ? <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Annual Income</span>
               <span className="text-sm font-medium flex items-center gap-1">
-                <DollarSign className="w-3 h-3" />
+                <Banknote className="w-3 h-3" />
                 {formatCurrency(offer.profiles.annual_income)}
               </span>
             </div> : <div className="flex items-center justify-between">

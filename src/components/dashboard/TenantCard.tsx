@@ -7,8 +7,8 @@ import {
   Mail, 
   Phone, 
   Briefcase, 
-  DollarSign, 
-  Home, 
+  Banknote, 
+  Home,
   PawPrint, 
   Cigarette,
   Star,
@@ -131,7 +131,7 @@ export const TenantCard: React.FC<TenantCardProps> = ({
   const verifiedBadges = [
     { key: 'identity_verified', label: 'ID', icon: Shield },
     { key: 'employment_verified', label: 'Employment', icon: Briefcase },
-    { key: 'income_verified', label: 'Income', icon: DollarSign },
+    { key: 'income_verified', label: 'Income', icon: Banknote },
     { key: 'credit_verified', label: 'Credit', icon: TrendingUp },
     { key: 'references_verified', label: 'References', icon: User },
     { key: 'bank_verified', label: 'Bank', icon: Home }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Check, Home, User, Calendar, DollarSign } from 'lucide-react'
+import { Check, Home, User, Calendar, Banknote } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -72,7 +72,7 @@ export const OfferReview: React.FC<OfferReviewProps> = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-primary" />
+            <Banknote className="w-5 h-5 text-primary" />
             Your Offer
           </CardTitle>
         </CardHeader>

@@ -13,7 +13,7 @@ import {
   Users, 
   TrendingUp, 
   Clock,
-  DollarSign,
+  Banknote,
   Star,
   Eye
 } from 'lucide-react'

@@ -7,8 +7,8 @@ import { useDemoMode } from '@/hooks/useDemoMode';
 import { 
   IdCard, 
   Briefcase, 
-  DollarSign, 
-  CreditCard, 
+  Banknote, 
+  CreditCard,
   Users, 
   Building2,
   RotateCcw,
@@ -56,7 +56,7 @@ export const VerificationDashboard: React.FC = () => {
       key: 'income_verified' as const,
       title: 'Income Verification',
       description: 'Verify your income with pay stubs or tax documents',
-      icon: <DollarSign className="w-5 h-5" />,
+      icon: <Banknote className="w-5 h-5" />,
       duration: 3000,
     },
     {

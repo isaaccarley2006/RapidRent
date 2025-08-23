@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Users, Upload, User, Briefcase, DollarSign } from 'lucide-react'
+import { Users, Upload, User, Briefcase, Banknote } from 'lucide-react'
 import { ReferenceCheckApplication } from '@/types/referenceCheck'
 import { DocumentUpload } from '../DocumentUpload'
 
@@ -148,7 +148,7 @@ export const GuarantorStep: React.FC<GuarantorStepProps> = ({
               <div>
                 <Label htmlFor="guarantor_annual_income">Annual Income *</Label>
                 <div className="relative">
-                  <DollarSign className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                  <Banknote className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="guarantor_annual_income"
                     type="number"

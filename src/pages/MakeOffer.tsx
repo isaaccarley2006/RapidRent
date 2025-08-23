@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Home, User, Calendar, DollarSign, Shield, Check, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Home, User, Calendar, Banknote, Shield, Check, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -294,7 +294,7 @@ const MakeOffer: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-primary" />
+                  <Banknote className="w-5 h-5 text-primary" />
                   Offer Details
                 </CardTitle>
               </CardHeader>
