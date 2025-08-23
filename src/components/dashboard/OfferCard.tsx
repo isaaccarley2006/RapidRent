@@ -283,8 +283,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({
           
           {offer.profiles?.annual_income ? <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Annual Income</span>
-              <span className="text-sm font-medium flex items-center gap-1">
-                <Banknote className="w-3 h-3" />
+              <span className="text-sm font-medium">
                 {formatCurrency(offer.profiles.annual_income)}
               </span>
             </div> : <div className="flex items-center justify-between">
