@@ -442,11 +442,7 @@ export default function PropertyOffers() {
                   key={offer.id}
                   offer={{
                     ...offer,
-                    properties: {
-                      title: property.title,
-                      location: property.location,
-                      price: property.price
-                    }
+                    properties: null // Don't show property info since we're on property-specific page
                   }}
                   updating={updating}
                   onUpdateStatus={handleUpdateStatus}
