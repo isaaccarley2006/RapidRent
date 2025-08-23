@@ -237,7 +237,7 @@ export const LandlordDashboard: React.FC = () => {
                           className="bg-primary hover:bg-primary/90 text-white rounded-xl"
                           onClick={() => navigate(`/property/${property.id}/offers`)}
                         >
-                          View Offers ({property.offers.filter(o => o.status === 'pending').length})
+                          View Offers ({property.offers.length})
                         </Button>
                       )}
                     </div>
