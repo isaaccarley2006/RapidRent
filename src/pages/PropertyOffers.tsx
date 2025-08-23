@@ -369,7 +369,7 @@ export default function PropertyOffers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Offers</p>
-                  <p className="text-2xl font-bold">{offers.length}</p>
+                  <p className="text-xl font-bold">{offers.length}</p>
                 </div>
                 <Users className="w-8 h-8 text-blue-500" />
               </div>
@@ -381,7 +381,7 @@ export default function PropertyOffers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Pending</p>
-                  <p className="text-2xl font-bold">{insights.pendingOffers}</p>
+                  <p className="text-xl font-bold">{insights.pendingOffers}</p>
                 </div>
                 <Clock className="w-8 h-8 text-yellow-500" />
               </div>
@@ -393,7 +393,7 @@ export default function PropertyOffers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Highest Offer</p>
-                  <p className="text-2xl font-bold">{formatCurrency(insights.highestOffer)}</p>
+                  <p className="text-xl font-bold">{formatCurrency(insights.highestOffer)}</p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-green-500" />
               </div>
@@ -405,7 +405,7 @@ export default function PropertyOffers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Avg Offer-to-Move-In Time</p>
-                  <p className="text-2xl font-bold">5.6 days</p>
+                  <p className="text-xl font-bold">5.6 days</p>
                 </div>
                 <Clock className="w-8 h-8 text-primary" />
               </div>
