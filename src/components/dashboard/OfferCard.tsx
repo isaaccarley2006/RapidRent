@@ -216,9 +216,11 @@ export const OfferCard: React.FC<OfferCardProps> = ({
 
       <CardHeader className="pb-3">
         <div className="space-y-2">
-          <h3 className="font-semibold text-lg text-foreground pr-20">
-            {offer.properties?.title || 'Property not found'}
-          </h3>
+          {offer.properties?.title && (
+            <h3 className="font-semibold text-lg text-foreground pr-20">
+              {offer.properties.title}
+            </h3>
+          )}
           {offer.properties?.location && (
             <div className="flex items-center gap-1 text-muted-foreground">
               <MapPin className="w-3 h-3" />
