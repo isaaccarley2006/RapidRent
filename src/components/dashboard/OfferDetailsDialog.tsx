@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Loader2, Check, X, Banknote } from 'lucide-react'
+import { Loader2, Check, X, Banknote, Star } from 'lucide-react'
 import { format } from 'date-fns'
 import { TenantCard } from './TenantCard'
 
@@ -58,7 +58,7 @@ interface OfferWithDetails {
 interface OfferDetailsDialogProps {
   offer: OfferWithDetails
   updating: string | null
-  onUpdateStatus: (offerId: string, status: 'accepted' | 'rejected') => void
+  onUpdateStatus: (offerId: string, status: 'shortlisted' | 'accepted') => void
 }
 
 export const OfferDetailsDialog: React.FC<OfferDetailsDialogProps> = ({
@@ -130,12 +130,12 @@ export const OfferDetailsDialog: React.FC<OfferDetailsDialogProps> = ({
         <div className="flex justify-end gap-4 mt-6">
           <Button
             variant="outline"
-            onClick={() => onUpdateStatus(offer.id, 'rejected')}
+            onClick={() => onUpdateStatus(offer.id, 'shortlisted')}
             disabled={updating === offer.id}
             className="hover-scale"
           >
-            <X className="w-4 h-4 mr-2" />
-            Reject
+            <Star className="w-4 h-4 mr-2" />
+            Shortlist
           </Button>
           <Button
             onClick={() => onUpdateStatus(offer.id, 'accepted')}

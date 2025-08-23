@@ -220,7 +220,7 @@ export const OffersManager: React.FC<OffersManagerProps> = ({ propertyId }) => {
     }
   }
 
-  const handleUpdateStatus = async (offerId: string, status: 'accepted' | 'rejected') => {
+  const handleUpdateStatus = async (offerId: string, status: 'shortlisted' | 'accepted') => {
     setUpdating(offerId)
 
     try {

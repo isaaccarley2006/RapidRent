@@ -210,7 +210,7 @@ export default function PropertyOffers() {
     }
   }
 
-  const handleUpdateStatus = async (offerId: string, status: 'accepted' | 'rejected') => {
+  const handleUpdateStatus = async (offerId: string, status: 'shortlisted' | 'accepted') => {
     setUpdating(offerId)
 
     try {

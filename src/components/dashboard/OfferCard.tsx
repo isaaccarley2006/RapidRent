@@ -57,7 +57,7 @@ interface OfferWithDetails {
 interface OfferCardProps {
   offer: OfferWithDetails;
   updating: string | null;
-  onUpdateStatus: (offerId: string, status: 'accepted' | 'rejected') => void;
+  onUpdateStatus: (offerId: string, status: 'shortlisted' | 'accepted') => void;
   onSelectOffer: (offer: OfferWithDetails) => void;
   applicantNumber?: number;
 }
@@ -72,10 +72,10 @@ export const OfferCard: React.FC<OfferCardProps> = ({
     switch (status) {
       case 'accepted':
         return 'bg-green-100 text-green-800';
-      case 'rejected':
-        return 'bg-red-100 text-red-800';
-      case 'pending':
+      case 'shortlisted':
         return 'bg-yellow-100 text-yellow-800';
+      case 'pending':
+        return 'bg-blue-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -323,9 +323,14 @@ export const OfferCard: React.FC<OfferCardProps> = ({
           </Dialog>
 
           {offer.status === 'pending' && <>
-              <Button variant="outline" size="sm" onClick={() => onUpdateStatus(offer.id, 'rejected')} disabled={updating === offer.id} className="px-3 hover-scale">
-                <X className="w-4 h-4" />
+              <Button variant="outline" size="sm" onClick={() => onUpdateStatus(offer.id, 'shortlisted')} disabled={updating === offer.id} className="px-3 hover-scale">
+                {updating === offer.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Star className="w-3 h-3" />}
               </Button>
+              <Button size="sm" onClick={() => onUpdateStatus(offer.id, 'accepted')} disabled={updating === offer.id} className="px-3 hover-scale">
+                {updating === offer.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+              </Button>
+            </>}
+          {offer.status === 'shortlisted' && <>
               <Button size="sm" onClick={() => onUpdateStatus(offer.id, 'accepted')} disabled={updating === offer.id} className="px-3 hover-scale">
                 {updating === offer.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
               </Button>

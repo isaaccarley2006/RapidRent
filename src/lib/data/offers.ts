@@ -54,7 +54,7 @@ export const fetchOffersByLandlord = async (
       occupants: null, // Not in current schema
       pets: null, // Not in current schema
       notes: offer.message || offer.tenant_message,
-      status: offer.status as OfferStatus,
+      status: offer.status === 'submitted' ? 'pending' : offer.status as OfferStatus,
       created_at: offer.created_at,
       renter: offer.profiles ? {
         name: offer.profiles.full_name,
@@ -97,7 +97,7 @@ export const updateOfferStatus = async (offerId: string, status: OfferStatus): P
       occupants: null, // Not in current schema
       pets: null, // Not in current schema
       notes: data.message || data.tenant_message,
-      status: data.status as OfferStatus,
+      status: data.status === 'submitted' ? 'pending' : data.status as OfferStatus,
       created_at: data.created_at,
       renter: data.profiles ? {
         name: data.profiles.full_name,

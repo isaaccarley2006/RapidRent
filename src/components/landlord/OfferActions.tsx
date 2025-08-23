@@ -32,18 +32,14 @@ export const OfferActions: React.FC<OfferActionsProps> = ({
       case 'accept':
         onStatusChange(offerId, 'accepted')
         break
-      case 'reject':
-        onStatusChange(offerId, 'rejected')
-        break
       case 'request-docs':
         onRequestDocs(offerId)
         break
     }
   }
 
-  const canShortlist = currentStatus === 'submitted'
-  const canAccept = ['submitted', 'shortlisted'].includes(currentStatus)
-  const canReject = currentStatus !== 'rejected'
+  const canShortlist = currentStatus === 'pending'
+  const canAccept = ['pending', 'shortlisted'].includes(currentStatus)
 
   return (
     <DropdownMenu>
@@ -68,12 +64,6 @@ export const OfferActions: React.FC<OfferActionsProps> = ({
           <DropdownMenuItem onClick={() => handleAction('accept')}>
             <Check className="mr-2 h-4 w-4" />
             Accept Offer
-          </DropdownMenuItem>
-        )}
-        {canReject && (
-          <DropdownMenuItem onClick={() => handleAction('reject')}>
-            <X className="mr-2 h-4 w-4" />
-            Reject Offer
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

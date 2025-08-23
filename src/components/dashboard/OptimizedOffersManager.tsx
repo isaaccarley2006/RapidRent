@@ -94,7 +94,7 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
   }, [offersData])
 
   const updateOfferMutation = useMutation({
-    mutationFn: async ({ offerId, status }: { offerId: string; status: 'accepted' | 'rejected' }) => {
+    mutationFn: async ({ offerId, status }: { offerId: string; status: 'shortlisted' | 'accepted' }) => {
       const { error } = await supabase
         .from('offers')
         .update({ status })
@@ -120,7 +120,7 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
     }
   })
 
-  const handleUpdateStatus = useCallback((offerId: string, status: 'accepted' | 'rejected') => {
+  const handleUpdateStatus = useCallback((offerId: string, status: 'shortlisted' | 'accepted') => {
     updateOfferMutation.mutate({ offerId, status })
   }, [updateOfferMutation])
 

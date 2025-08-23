@@ -1,4 +1,4 @@
-export type OfferStatus = 'submitted' | 'shortlisted' | 'accepted' | 'rejected'
+export type OfferStatus = 'pending' | 'shortlisted' | 'accepted'
 
 export interface OfferRow {
   id: string

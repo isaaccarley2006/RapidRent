@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
-import { Loader2, Home, Clock, CheckCircle } from 'lucide-react'
+import { Loader2, Home, Clock, CheckCircle, Star } from 'lucide-react'
 
 interface Offer {
   id: string
@@ -58,8 +58,8 @@ export const TenantDashboard: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'accepted': return 'text-green-600 bg-green-50'
-      case 'rejected': return 'text-red-600 bg-red-50'
-      case 'pending': return 'text-yellow-600 bg-yellow-50'
+      case 'shortlisted': return 'text-yellow-600 bg-yellow-50'
+      case 'pending': return 'text-blue-600 bg-blue-50'
       default: return 'text-gray-600 bg-gray-50'
     }
   }
@@ -67,8 +67,9 @@ export const TenantDashboard: React.FC = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'accepted': return <CheckCircle className="w-4 h-4" />
+      case 'shortlisted': return <Star className="w-4 h-4" />
       case 'pending': return <Clock className="w-4 h-4" />
-      default: return null
+      default: return <Clock className="w-4 h-4" />
     }
   }
 
