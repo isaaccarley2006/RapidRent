@@ -254,26 +254,23 @@ export default function PropertyOffers() {
     const avgOfferPrice = offers.reduce((sum, offer) => sum + offer.offer_price, 0) / offers.length
     const highestOffer = Math.max(...offers.map(o => o.offer_price))
     const pendingOffers = offers.filter(o => o.status === 'pending').length
-    const avgTenantScore = offers
-      .filter(o => o.profiles)
-      .reduce((sum, offer) => {
-        // Calculate score for each tenant (simplified version)
-        const verifications = [
-          offer.profiles?.identity_verified,
-          offer.profiles?.employment_verified,
-          offer.profiles?.income_verified,
-          offer.profiles?.credit_verified,
-          offer.profiles?.references_verified,
-          offer.profiles?.bank_verified
-        ].filter(Boolean).length
-        return sum + (verifications / 6) * 100
-      }, 0) / offers.filter(o => o.profiles).length
+    
+    // Calculate average offer-to-move-in time in days
+    const offersWithMoveInDate = offers.filter(o => o.preferred_move_in_date)
+    const avgOfferToMoveInTime = offersWithMoveInDate.length > 0 
+      ? offersWithMoveInDate.reduce((sum, offer) => {
+          const offerDate = new Date(offer.created_at)
+          const moveInDate = new Date(offer.preferred_move_in_date!)
+          const diffInDays = Math.ceil((moveInDate.getTime() - offerDate.getTime()) / (1000 * 60 * 60 * 24))
+          return sum + Math.max(0, diffInDays) // Ensure non-negative
+        }, 0) / offersWithMoveInDate.length
+      : 0
 
     return {
       avgOfferPrice,
       highestOffer,
       pendingOffers,
-      avgTenantScore: Math.round(avgTenantScore)
+      avgOfferToMoveInTime: Math.round(avgOfferToMoveInTime)
     }
   }
 
@@ -407,10 +404,10 @@ export default function PropertyOffers() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Avg Tenant Score</p>
-                  <p className="text-2xl font-bold">{insights.avgTenantScore}%</p>
+                  <p className="text-sm text-muted-foreground">Avg Offer-to-Move-In Time</p>
+                  <p className="text-2xl font-bold">{insights.avgOfferToMoveInTime} days</p>
                 </div>
-                <Star className="w-8 h-8 text-primary" />
+                <Clock className="w-8 h-8 text-primary" />
               </div>
             </CardContent>
           </Card>
