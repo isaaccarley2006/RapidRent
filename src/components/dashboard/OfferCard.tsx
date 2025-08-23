@@ -255,9 +255,9 @@ export const OfferCard: React.FC<OfferCardProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-foreground">Tenant Quality</span>
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">
-                  {verificationCount}/6 Verified
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-medium text-green-600">
+                  Verified
                 </span>
               </div>
             </div>
