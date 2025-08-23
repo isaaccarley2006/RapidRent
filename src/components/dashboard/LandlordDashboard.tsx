@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
-import { Loader2, Building, Plus, Eye, MapPin, Upload } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
+import { Loader2, Building, Plus, Eye, MapPin, Upload, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -31,8 +33,10 @@ interface PropertyWithOffers extends Property {
 export const LandlordDashboard: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { toast } = useToast()
   const [properties, setProperties] = useState<PropertyWithOffers[]>([])
   const [loading, setLoading] = useState(true)
+  const [deletingProperty, setDeletingProperty] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -64,6 +68,39 @@ export const LandlordDashboard: React.FC = () => {
 
     fetchProperties()
   }, [user])
+
+  const handleDeleteProperty = async (propertyId: string) => {
+    if (!user) return
+    
+    try {
+      setDeletingProperty(propertyId)
+      
+      const { error } = await supabase
+        .from('properties')
+        .delete()
+        .eq('id', propertyId)
+        .eq('landlord_id', user.id)
+
+      if (error) throw error
+
+      // Update local state to remove the deleted property
+      setProperties(prev => prev.filter(p => p.id !== propertyId))
+      
+      toast({
+        title: "Property deleted",
+        description: "Your property has been deleted successfully."
+      })
+    } catch (error) {
+      console.error('Error deleting property:', error)
+      toast({
+        title: "Error deleting property",
+        description: "Failed to delete property. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setDeletingProperty(null)
+    }
+  }
 
   const totalOffers = properties.reduce((sum, property) => sum + property.offers.length, 0)
   const pendingOffers = properties.reduce((sum, property) => 
@@ -230,6 +267,39 @@ export const LandlordDashboard: React.FC = () => {
                           View Offers ({property.offers.length})
                         </Button>
                       )}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-red-300 text-red-700 hover:bg-red-50 rounded-xl"
+                            disabled={deletingProperty === property.id}
+                          >
+                            {deletingProperty === property.id ? (
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                            ) : (
+                              <Trash2 className="w-3 h-3" />
+                            )}
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Property</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete "{property.title}"? This action cannot be undone and will also delete all associated offers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteProperty(property.id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Delete Property
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </div>
                 </div>
