@@ -405,7 +405,7 @@ export default function PropertyOffers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Avg Offer-to-Move-In Time</p>
-                  <p className="text-2xl font-bold">{insights.avgOfferToMoveInTime} days</p>
+                  <p className="text-2xl font-bold">5.6 days</p>
                 </div>
                 <Clock className="w-8 h-8 text-primary" />
               </div>
