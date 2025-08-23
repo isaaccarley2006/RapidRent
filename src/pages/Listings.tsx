@@ -25,6 +25,7 @@ interface Property {
   bathrooms: number | null
   furnished: boolean
   property_type: string | null
+  images: string[] | null
 }
 
 interface Filters {
