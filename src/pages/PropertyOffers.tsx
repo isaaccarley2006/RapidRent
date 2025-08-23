@@ -393,7 +393,7 @@ export default function PropertyOffers() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Highest Offer</p>
-                  <p className="text-lg font-bold">{formatCurrency(insights.highestOffer)}</p>
+                  <p className="text-2xl font-bold">{formatCurrency(insights.highestOffer)}</p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-green-500" />
               </div>
