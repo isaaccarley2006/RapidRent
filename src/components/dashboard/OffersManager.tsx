@@ -11,7 +11,6 @@ interface OfferWithDetails {
   offer_price: number
   status: string
   preferred_move_in_date: string | null
-  tenant_message: string | null
   created_at: string
   properties: {
     title: string

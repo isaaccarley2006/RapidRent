@@ -11,7 +11,6 @@ interface OfferWithDetails {
   offer_price: number;
   status: string;
   preferred_move_in_date: string | null;
-  tenant_message: string | null;
   created_at: string;
   properties: {
     title: string;
@@ -310,11 +309,6 @@ export const OfferCard: React.FC<OfferCardProps> = ({
           </div>
         </div>
 
-        {/* Message Preview */}
-        {offer.tenant_message && <div className="p-3 bg-muted/50 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Message:</p>
-            <p className="text-sm italic line-clamp-2">"{offer.tenant_message}"</p>
-          </div>}
 
         {/* Actions */}
         <div className="flex gap-2 pt-2">

@@ -11,7 +11,6 @@ interface OfferWithDetails {
   offer_price: number
   status: string
   preferred_move_in_date: string | null
-  tenant_message: string | null
   created_at: string
   properties: {
     title: string
@@ -113,12 +112,6 @@ export const OfferDetailsDialog: React.FC<OfferDetailsDialogProps> = ({
               <label className="text-sm font-medium text-muted-foreground">Submitted</label>
               <p>{format(new Date(offer.created_at), 'MMMM d, yyyy')}</p>
             </div>
-            {offer.tenant_message && (
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Message</label>
-                <p className="italic">"{offer.tenant_message}"</p>
-              </div>
-            )}
           </CardContent>
         </Card>
 
