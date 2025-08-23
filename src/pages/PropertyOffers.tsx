@@ -439,7 +439,7 @@ export default function PropertyOffers() {
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {offers.map((offer) => (
+              {offers.map((offer, index) => (
                 <OfferCard
                   key={offer.id}
                   offer={{
@@ -453,6 +453,7 @@ export default function PropertyOffers() {
                   updating={updating}
                   onUpdateStatus={handleUpdateStatus}
                   onSelectOffer={() => {}}
+                  applicantNumber={index + 1}
                 />
               ))}
             </div>

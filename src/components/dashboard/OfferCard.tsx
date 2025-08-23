@@ -60,12 +60,14 @@ interface OfferCardProps {
   updating: string | null;
   onUpdateStatus: (offerId: string, status: 'accepted' | 'rejected') => void;
   onSelectOffer: (offer: OfferWithDetails) => void;
+  applicantNumber?: number;
 }
 export const OfferCard: React.FC<OfferCardProps> = ({
   offer,
   updating,
   onUpdateStatus,
-  onSelectOffer
+  onSelectOffer,
+  applicantNumber
 }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -200,7 +202,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-primary" />
               <span className="font-medium text-foreground">
-                Applicant
+                {applicantNumber ? `Applicant ${applicantNumber}` : 'Applicant'}
               </span>
             </div>
             {tenantScore > 0 && <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-secondary/50">
