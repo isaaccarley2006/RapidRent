@@ -180,7 +180,7 @@ export default function PropertyOffers() {
       supabase.removeChannel(channel);
     };
   };
-  const handleUpdateStatus = async (offerId: string, status: 'accepted' | 'rejected') => {
+  const handleUpdateStatus = async (offerId: string, status: 'accepted' | 'shortlisted') => {
     setUpdating(offerId);
     try {
       const {
