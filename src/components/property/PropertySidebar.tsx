@@ -81,7 +81,7 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
             <span className="text-text-muted">Monthly Rent</span>
           </div>
           <span className="text-2xl font-bold text-text-primary">
-            {property.price ? `£${property.price.toLocaleString()}` : 'Price on request'}
+            {property.price ? `£${Math.round(property.price).toLocaleString()}` : 'Price on request'}
           </span>
         </div>
 

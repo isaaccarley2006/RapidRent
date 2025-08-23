@@ -119,7 +119,9 @@ export const TenantCard: React.FC<TenantCardProps> = ({
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-GB', {
       style: 'currency',
-      currency: 'GBP'
+      currency: 'GBP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
     }).format(amount)
   }
 

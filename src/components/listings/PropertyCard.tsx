@@ -102,7 +102,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
         <div className="flex items-center">
           <PoundSterling className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
           <span className="text-base font-semibold text-text-primary">
-            {property.price ? `£${property.price.toLocaleString()}/month` : 'Price on request'}
+            {property.price ? `£${Math.round(property.price).toLocaleString()}/month` : 'Price on request'}
           </span>
         </div>
 

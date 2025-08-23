@@ -207,7 +207,7 @@ export const LandlordDashboard: React.FC = () => {
                       )}
                       {property.price && (
                         <p className="text-lg font-semibold text-primary mt-2">
-                          £{property.price.toLocaleString()}/month
+                          £{Math.round(property.price).toLocaleString()}/month
                         </p>
                       )}
                       <div className="flex items-center gap-4 mt-3">

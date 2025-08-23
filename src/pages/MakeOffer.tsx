@@ -301,7 +301,7 @@ const MakeOffer: React.FC = () => {
               <CardContent className="space-y-6">
                 <div>
                   <Label htmlFor="offerPrice">Offer Price (£/month)</Label>
-                  <Input id="offerPrice" type="number" value={offerPrice} onChange={e => setOfferPrice(e.target.value)} placeholder={property.price ? `Listed at £${property.price.toLocaleString()}` : 'Enter your offer'} required />
+                  <Input id="offerPrice" type="number" value={offerPrice} onChange={e => setOfferPrice(e.target.value)} placeholder={property.price ? `Listed at £${Math.round(property.price).toLocaleString()}` : 'Enter your offer'} required />
                 </div>
 
                 <div>

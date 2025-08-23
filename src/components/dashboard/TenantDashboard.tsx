@@ -155,11 +155,11 @@ export const TenantDashboard: React.FC = () => {
                       </p>
                       <div className="flex items-center gap-4 mt-2">
                         <span className="text-sm text-gray-600">
-                          Your offer: £{offer.offer_price.toLocaleString()}
+                          Your offer: £{Math.round(offer.offer_price).toLocaleString()}
                         </span>
                         {offer.properties.price && (
                           <span className="text-sm text-gray-500">
-                            Listed at: £{offer.properties.price.toLocaleString()}
+                            Listed at: £{Math.round(offer.properties.price).toLocaleString()}
                           </span>
                         )}
                       </div>

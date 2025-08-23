@@ -209,7 +209,7 @@ const StructuredOffer: React.FC = () => {
                     <p className="text-text-muted">{property.location}</p>
                     {property.price && (
                       <p className="text-lg font-medium">
-                        Listed at: £{property.price.toLocaleString()}/month
+                        Listed at: £{Math.round(property.price).toLocaleString()}/month
                       </p>
                     )}
                   </div>
@@ -232,7 +232,7 @@ const StructuredOffer: React.FC = () => {
                         id="offer_price"
                         type="number"
                         {...register('offer_price', { valueAsNumber: true })}
-                        placeholder={property.price ? `Listed at £${property.price.toLocaleString()}` : 'Enter your offer'}
+                        placeholder={property.price ? `Listed at £${Math.round(property.price).toLocaleString()}` : 'Enter your offer'}
                         disabled={!isProfileComplete()}
                       />
                       {errors.offer_price && (
