@@ -235,7 +235,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-primary" />
               <span className="font-medium text-foreground">
-                {offer.profiles?.full_name || 'Unknown Applicant'}
+                Applicant
               </span>
             </div>
             {tenantScore > 0 && (
@@ -244,22 +244,6 @@ export const OfferCard: React.FC<OfferCardProps> = ({
                 <span className={`text-sm font-semibold ${getScoreColor(tenantScore)}`}>
                   {tenantScore}%
                 </span>
-              </div>
-            )}
-          </div>
-          
-          {/* Contact Info - Only show if exists */}
-          <div className="space-y-1">
-            {offer.profiles?.email && (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Mail className="w-3 h-3" />
-                <span className="text-sm">{offer.profiles.email}</span>
-              </div>
-            )}
-            {offer.profiles?.phone && (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Phone className="w-3 h-3" />
-                <span className="text-sm">{offer.profiles.phone}</span>
               </div>
             )}
           </div>
