@@ -24,7 +24,7 @@ import StructuredOffer from './pages/StructuredOffer'
 import CreateListing from './pages/CreateListing'
 import BulkUpload from './pages/BulkUpload'
 import PropertyOffers from './pages/PropertyOffers'
-import LandlordOffers from './pages/LandlordOffers'
+
 import AgentDashboard from './pages/AgentDashboard'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsOfService from './pages/TermsOfService'
@@ -81,8 +81,7 @@ const App = () => (
                 element={
                   <LandlordLayout>
                     <Routes>
-                      <Route path="offers" element={<LandlordOffers />} />
-                      <Route path="*" element={<Navigate to="/landlord/offers" replace />} />
+                      <Route path="*" element={<Navigate to="/dashboard" replace />} />
                     </Routes>
                   </LandlordLayout>
                 } 
@@ -174,14 +173,6 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <AppLayout><PropertyOffers /></AppLayout>
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/landlord/offers" 
-                element={
-                  <ProtectedRoute>
-                    <LandlordOffers />
                   </ProtectedRoute>
                 } 
               />

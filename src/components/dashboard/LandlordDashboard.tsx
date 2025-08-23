@@ -100,16 +100,6 @@ export const LandlordDashboard: React.FC = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Offers</p>
                 <p className="text-2xl font-semibold text-gray-900">{totalOffers}</p>
-                {totalOffers > 0 && (
-                  <Button 
-                    variant="link" 
-                    size="sm" 
-                    className="p-0 h-auto text-xs text-primary"
-                    onClick={() => navigate('/landlord/offers')}
-                  >
-                    View all offers
-                  </Button>
-                )}
               </div>
               <Eye className="w-8 h-8 text-blue-500" />
             </div>
