@@ -5,8 +5,8 @@ const PrivacyPolicy: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy - RentView</title>
-        <meta name="description" content="RentView's privacy policy explains how we collect, use, and protect your personal information when you use our rental property platform." />
+        <title>Privacy Policy - RapidRent</title>
+        <meta name="description" content="RapidRent's privacy policy explains how we collect, use, and protect your personal information when you use our rental property platform." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="/legal/privacy" />
       </Helmet>
@@ -26,7 +26,7 @@ const PrivacyPolicy: React.FC = () => {
 
           <main className="prose prose-lg max-w-none">
             <p className="text-text-muted mb-8">
-              RentView ("we", "us", "our") is committed to protecting your privacy and handling your personal data in a secure and transparent way. This policy explains how we collect, use, and share information when you use our platform.
+              RapidRent ("we", "us", "our") is committed to protecting your privacy and handling your personal data in a secure and transparent way. This policy explains how we collect, use, and share information when you use our platform.
             </p>
 
             <section className="mb-8">
@@ -42,10 +42,10 @@ const PrivacyPolicy: React.FC = () => {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-text-primary mb-4">2. How We Use Your Data</h2>
               <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
-                <li>To create and manage your RentView account.</li>
+                <li>To create and manage your RapidRent account.</li>
                 <li>To verify your identity, credit, and rental eligibility.</li>
                 <li>To share verified results with landlords or agents (with your consent).</li>
-                <li>To improve and secure the RentView platform.</li>
+                <li>To improve and secure the RapidRent platform.</li>
               </ul>
             </section>
 
@@ -70,7 +70,7 @@ const PrivacyPolicy: React.FC = () => {
                 <li>Request portability of your data.</li>
               </ul>
               <p className="text-text-muted mb-4">
-                Requests can be made to: support@rentview.co.uk
+                Requests can be made to: support@rapidrent.co.uk
               </p>
             </section>
 

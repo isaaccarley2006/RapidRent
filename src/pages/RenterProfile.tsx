@@ -25,7 +25,7 @@ const RenterProfile: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Complete Your Renter Profile - RentView</title>
+        <title>Complete Your Renter Profile - RapidRent</title>
         <meta name="description" content="Complete your renter profile to submit verified offers to landlords." />
       </Helmet>
       

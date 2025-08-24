@@ -50,7 +50,7 @@ const EmailConfirmed: React.FC = () => {
             Thank you for confirming your email!
           </h1>
           <p className="text-text-muted text-base mt-2">
-            Welcome to RentView – you're all set to get started.
+            Welcome to RapidRent – you're all set to get started.
           </p>
         </div>
         

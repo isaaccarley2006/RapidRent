@@ -112,12 +112,12 @@ const PropertyDetails: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{property?.title ? `${property.title} - RentView` : 'Property Details - RentView'}</title>
-        <meta name="description" content={property?.description || 'View detailed information about this rental property on RentView.'} />
+        <title>{property?.title ? `${property.title} - RapidRent` : 'Property Details - RapidRent'}</title>
+        <meta name="description" content={property?.description || 'View detailed information about this rental property on RapidRent.'} />
         <link rel="canonical" href={`https://rentview.co.uk/properties/${id}`} />
         <meta property="og:url" content={`https://rentview.co.uk/properties/${id}`} />
-        <meta property="og:title" content={property?.title ? `${property.title} - RentView` : 'Property Details - RentView'} />
-        <meta property="og:description" content={property?.description || 'View detailed information about this rental property on RentView.'} />
+        <meta property="og:title" content={property?.title ? `${property.title} - RapidRent` : 'Property Details - RapidRent'} />
+        <meta property="og:description" content={property?.description || 'View detailed information about this rental property on RapidRent.'} />
       </Helmet>
       <div className="min-h-screen bg-background font-sans">
         <PropertyPageHeader />

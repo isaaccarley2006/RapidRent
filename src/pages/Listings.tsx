@@ -103,8 +103,8 @@ const Listings: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Property Listings - RentView</title>
-        <meta name="description" content="Browse available rental properties on RentView. Filter by location, price, and amenities to find your perfect home." />
+        <title>Property Listings - RapidRent</title>
+        <meta name="description" content="Browse available rental properties on RapidRent. Filter by location, price, and amenities to find your perfect home." />
         <link rel="canonical" href="https://rentview.co.uk/listings" />
         <meta property="og:url" content="https://rentview.co.uk/listings" />
       </Helmet>

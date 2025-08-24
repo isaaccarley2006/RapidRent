@@ -11,7 +11,7 @@ export const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="text-2xl font-bold text-text-primary mb-4">
-              Rent<span className="text-primary">View</span>
+              Rapid<span className="text-primary">Rent</span>
             </div>
             <p className="text-text-muted">
               Making rental property search simple and transparent for everyone.
@@ -117,7 +117,7 @@ export const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-muted pt-8 text-center text-text-muted">
-          <p>&copy; 2024 RentView. All rights reserved.</p>
+          <p>&copy; 2024 RapidRent. All rights reserved.</p>
         </div>
       </div>
     </footer>

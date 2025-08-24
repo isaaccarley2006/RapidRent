@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet-async';
 const CookiePolicy: React.FC = () => {
   return <>
       <Helmet>
-        <title>Cookie Policy - RentView</title>
-        <meta name="description" content="Learn about how RentView uses cookies and similar technologies to enhance your experience on our rental property platform." />
+        <title>Cookie Policy - RapidRent</title>
+        <meta name="description" content="Learn about how RapidRent uses cookies and similar technologies to enhance your experience on our rental property platform." />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="/legal/cookies" />
       </Helmet>
@@ -12,9 +12,9 @@ const CookiePolicy: React.FC = () => {
       <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-6 py-12">
           <header className="mb-12">
-            <h1 className="text-4xl font-bold text-text-primary mb-4">RentView Cookie Policy</h1>
+            <h1 className="text-4xl font-bold text-text-primary mb-4">RapidRent Cookie Policy</h1>
             <p className="text-text-muted text-lg">
-              RentView uses cookies and similar technologies to provide and improve our services.
+              RapidRent uses cookies and similar technologies to provide and improve our services.
             </p>
           </header>
 
@@ -30,7 +30,7 @@ const CookiePolicy: React.FC = () => {
               <h2 className="text-2xl font-semibold text-text-primary mb-4">Types of Cookies We Use</h2>
               <ul className="list-disc pl-6 text-text-muted mb-4 space-y-2">
                 <li><strong>Essential cookies:</strong> Required for the platform to function.</li>
-                <li><strong>Analytics cookies:</strong> Help us understand how users interact with RentView.</li>
+                <li><strong>Analytics cookies:</strong> Help us understand how users interact with RapidRent.</li>
                 <li><strong>Functional cookies:</strong> Remember your preferences and settings.</li>
               </ul>
             </section>

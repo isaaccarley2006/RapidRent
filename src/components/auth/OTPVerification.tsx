@@ -59,7 +59,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
       if (data.session) {
         console.log('✅ OTP verification successful - session created')
         toast({
-          title: "Welcome to RentView! 🎉",
+          title: "Welcome to RapidRent! 🎉",
           description: "Your account has been created successfully.",
         })
         onSuccess()

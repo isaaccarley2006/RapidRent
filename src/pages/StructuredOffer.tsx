@@ -147,7 +147,7 @@ const StructuredOffer: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Submit Offer - {property.title} - RentView</title>
+        <title>Submit Offer - {property.title} - RapidRent</title>
         <meta name="description" content={`Submit a verified offer for ${property.title}`} />
       </Helmet>
       

@@ -97,7 +97,7 @@ export const OnboardingForm: React.FC = () => {
       console.log('Profile updated successfully')
       
       toast({
-        title: "Welcome to RentView! 🎉",
+        title: "Welcome to RapidRent! 🎉",
         description: `Your ${formData.userType} profile has been completed successfully.`
       })
 

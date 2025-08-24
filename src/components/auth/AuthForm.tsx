@@ -156,8 +156,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
           </h1>
           <p className="text-muted text-sm">
             {mode === 'signin' 
-              ? 'Sign in to continue to RentView' 
-              : 'Join RentView to get started'
+              ? 'Sign in to continue to RapidRent' 
+              : 'Join RapidRent to get started'
             }
           </p>
         </div>

@@ -11,7 +11,7 @@ export const Navigation: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-2xl font-bold text-text-primary">
-            Rent<span className="text-primary">View</span>
+            Rapid<span className="text-primary">Rent</span>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <button 

@@ -13,8 +13,8 @@ export interface DemoVerificationState {
   bank_verified: VerificationStatus;
 }
 
-const DEMO_STORAGE_KEY = 'rentview_demo_state';
-const REFERENCE_CHECK_STORAGE_KEY = 'rentview_reference_check';
+const DEMO_STORAGE_KEY = 'rapidrent_demo_state';
+const REFERENCE_CHECK_STORAGE_KEY = 'rapidrent_reference_check';
 
 interface ReferenceCheckState {
   submissionId: string;

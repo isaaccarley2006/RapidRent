@@ -30,7 +30,7 @@ export const Logo: React.FC<LogoProps> = ({ userType }) => {
       className="text-2xl font-bold text-text-primary cursor-pointer"
       onClick={handleLogoClick}
     >
-      Rent<span className="text-primary">View</span>
+      Rapid<span className="text-primary">Rent</span>
     </div>
   )
 }
