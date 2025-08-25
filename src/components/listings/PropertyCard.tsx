@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { MapPin, PoundSterling, Bed, Bath, Home, Check, X, Edit2, Eye } from 'lucide-react'
 import { StatusBadge } from '@/components/property/StatusBadge'
 import { useAuth } from '@/contexts/AuthContext'
+import { formatLocationDisplay } from '@/utils/locationFormatter'
 
 interface Property {
   id: string
@@ -94,7 +95,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, showLandlo
         <div className="flex items-center text-text-muted">
           <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
           <span className="truncate">
-            {property.location || 'Location not specified'}
+            {formatLocationDisplay(property.location)}
           </span>
         </div>
 
