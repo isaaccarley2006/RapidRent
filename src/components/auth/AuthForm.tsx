@@ -122,6 +122,63 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
     }
   }
 
+  const handleTestLogin = async (email: string, password: string) => {
+    setLoading(true)
+    try {
+      // Try to sign in first
+      let { error } = await supabase.auth.signInWithPassword({ email, password })
+      
+      if (error && error.message.includes('Invalid login credentials')) {
+        // Account doesn't exist, create it
+        const userType = email.includes('landlord') ? 'landlord' : 'tenant'
+        const fullName = email.includes('landlord') ? 'Test Landlord' : 'Test Tenant'
+        
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { full_name: fullName }
+          }
+        })
+        
+        if (signUpError) throw signUpError
+        
+        if (data.user) {
+          // Create profile immediately
+          await supabase.from('profiles').upsert({
+            id: data.user.id,
+            email,
+            full_name: fullName,
+            user_type: userType,
+            profile_complete: true,
+            phone: '+44 7700 900123'
+          })
+          
+          // Sign in after account creation
+          const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+          if (signInError) throw signInError
+        }
+      } else if (error) {
+        throw error
+      }
+      
+      toast({
+        title: "Test login successful! 🎉",
+        description: `Logged in as ${email.includes('landlord') ? 'landlord' : 'tenant'}`,
+      })
+      
+      await handleSuccessfulAuth()
+    } catch (error: any) {
+      toast({
+        title: "Test login failed",
+        description: error.message,
+        variant: "destructive"
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleOTPSuccess = async () => {
     setShowOTPVerification(false)
     // Reset form
@@ -227,6 +284,31 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
               mode === 'signin' ? 'Sign in' : 'Send verification code'
             )}
           </Button>
+
+          {/* Quick test login buttons */}
+          <div className="space-y-3 pt-4 border-t border-gray-200">
+            <p className="text-center text-xs text-muted">Quick test login:</p>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="flex-1 text-xs"
+                onClick={() => handleTestLogin('landlord@test.com', 'password123')}
+              >
+                👨‍💼 Landlord
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="flex-1 text-xs"
+                onClick={() => handleTestLogin('tenant@test.com', 'password123')}
+              >
+                🏠 Tenant
+              </Button>
+            </div>
+          </div>
 
           <div className="text-center">
             <button
