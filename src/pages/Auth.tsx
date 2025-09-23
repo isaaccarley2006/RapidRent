@@ -3,13 +3,14 @@ import React, { useState } from 'react'
 import { Navigation } from '@/components/home/Navigation'
 import { Footer } from '@/components/home/Footer'
 import { AuthBrandColumn } from '@/components/auth/AuthBrandColumn'
-import { ModularAuthForm } from '@/components/auth/ModularAuthForm'
+import { SteppedAuthForm } from '@/components/auth/SteppedAuthForm'
 import { useAuthRedirect } from '@/hooks/useAuthRedirect'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 
 const Auth: React.FC = () => {
   const { loading } = useAuthRedirect()
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup')
+  const [currentStep, setCurrentStep] = useState(1)
 
   if (loading) {
     return <LoadingSpinner />
@@ -17,11 +18,14 @@ const Auth: React.FC = () => {
 
   const toggleAuthMode = () => {
     setAuthMode(authMode === 'signin' ? 'signup' : 'signin')
+    setCurrentStep(1) // Reset to first step when switching modes
   }
 
-  // Calculate progress for signup
-  const currentStep = 1
-  const totalSteps = authMode === 'signup' ? 4 : 1
+  const handleStepChange = (step: number) => {
+    setCurrentStep(step)
+  }
+
+  const totalSteps = authMode === 'signup' ? 3 : 1
 
   return (
     <div className="min-h-screen bg-background font-sans flex flex-col">
@@ -36,7 +40,12 @@ const Auth: React.FC = () => {
           />
           
           <div className="flex items-center justify-center p-6 lg:p-8">
-            <ModularAuthForm mode={authMode} onToggleMode={toggleAuthMode} />
+            <SteppedAuthForm 
+              mode={authMode} 
+              onToggleMode={toggleAuthMode}
+              currentStep={currentStep}
+              onStepChange={handleStepChange}
+            />
           </div>
         </div>
       </main>
