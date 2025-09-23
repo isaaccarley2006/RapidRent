@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react'
-import { AuthLayout } from '@/components/layouts/AuthLayout'
-import { AuthForm } from '@/components/auth/AuthForm'
+import { Navigation } from '@/components/home/Navigation'
+import { Footer } from '@/components/home/Footer'
+import { EnhancedAuthForm } from '@/components/auth/EnhancedAuthForm'
 import { useAuthRedirect } from '@/hooks/useAuthRedirect'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
-import { AppLayout } from '@/components/layouts/AppLayout'
 
 const Auth: React.FC = () => {
   const { loading } = useAuthRedirect()
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup')
 
   if (loading) {
     return <LoadingSpinner />
@@ -19,13 +19,17 @@ const Auth: React.FC = () => {
   }
 
   return (
-    <AppLayout showNavigation={false}>
-      <div className="min-h-screen bg-white font-sans">
-        <AuthLayout>
-          <AuthForm mode={authMode} onToggleMode={toggleAuthMode} />
-        </AuthLayout>
-      </div>
-    </AppLayout>
+    <div className="min-h-screen bg-background font-sans flex flex-col">
+      <Navigation />
+      
+      <main className="flex-1 flex items-center justify-center py-12 px-6">
+        <div className="w-full max-w-md">
+          <EnhancedAuthForm mode={authMode} onToggleMode={toggleAuthMode} />
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
   )
 }
 
