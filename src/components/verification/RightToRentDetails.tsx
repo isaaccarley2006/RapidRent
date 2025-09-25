@@ -5,12 +5,29 @@ import { Badge } from '@/components/ui/badge'
 import { Shield, CheckCircle, MapPin, AlertCircle, FileText } from 'lucide-react'
 import { useVerificationStatus } from '@/hooks/useVerificationStatus'
 import { DocumentUploadSection } from './DocumentUploadSection'
+import { VisaInfoCollector } from './VisaInfoCollector'
 import { getVisaRequirements, isPassportAlreadyProvided } from '@/utils/visaRequirements'
+import { useAuth } from '@/contexts/AuthContext'
 import { toast } from '@/hooks/use-toast'
 
 export const RightToRentDetails: React.FC = () => {
+  const { user } = useAuth()
   const { verificationState, refresh } = useVerificationStatus()
   const [uploadedDocuments, setUploadedDocuments] = useState<Record<string, string>>({})
+
+  const handleVisaInfoSave = () => {
+    refresh() // Refresh verification state after saving visa info
+  }
+
+  // If user doesn't have nationality or visa_type, show collector
+  if (!verificationState.nationality || !verificationState.visa_type) {
+    return (
+      <VisaInfoCollector 
+        userId={user?.id || ''} 
+        onSave={handleVisaInfoSave} 
+      />
+    )
+  }
 
   const visaRequirements = getVisaRequirements(verificationState.visa_type)
   const passportAlreadyProvided = isPassportAlreadyProvided(verificationState.identity_verified)

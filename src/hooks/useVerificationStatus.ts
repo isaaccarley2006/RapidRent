@@ -45,6 +45,7 @@ export const useVerificationStatus = () => {
     if (!user?.id) return null;
 
     try {
+      console.log('Fetching verification status for user:', user.id);
       const { data, error } = await supabase
         .from('profiles')
         .select(`
@@ -62,6 +63,8 @@ export const useVerificationStatus = () => {
         `)
         .eq('id', user.id)
         .maybeSingle();
+
+      console.log('Database query result:', { data, error });
 
       if (error) throw error;
       
