@@ -12,6 +12,26 @@ import { RoleIdentityStep } from '@/components/auth/RoleIdentityStep'
 import { VerificationStep } from '@/components/auth/VerificationStep'
 import { OAuthButtons } from '@/components/auth/OAuthButtons'
 
+// Step-specific validation schemas
+const step1Schema = z.object({
+  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  phone: z.string().min(10, 'Please enter a valid phone number'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+})
+
+const step2Schema = z.object({
+  role: z.enum(['tenant', 'agent', 'landlord'], {
+    required_error: 'Please select your role',
+  }),
+  nationality: z.string().min(1, 'Please select your nationality'),
+  visaType: z.string().min(1, 'Please select your visa type'),
+})
+
 const signUpSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
@@ -68,24 +88,39 @@ export const SteppedAuthForm: React.FC<SteppedAuthFormProps> = ({
   const validateCurrentStep = async (): Promise<boolean> => {
     if (mode === 'signin') return true
     
-    let fieldsToValidate: (keyof SignUpFormData)[] = []
+    const currentValues = signUpForm.getValues()
+    console.log('Validating step:', currentStep, 'with values:', currentValues)
     
-    switch (currentStep) {
-      case 1:
-        fieldsToValidate = ['fullName', 'email', 'phone', 'password', 'confirmPassword']
-        break
-      case 2:
-        fieldsToValidate = ['role', 'nationality', 'visaType']
-        break
-      case 3:
-        // ID verification is optional, so always valid
-        return true
-      default:
-        return true
+    try {
+      switch (currentStep) {
+        case 1:
+          await step1Schema.parseAsync({
+            fullName: currentValues.fullName,
+            email: currentValues.email,
+            phone: currentValues.phone,
+            password: currentValues.password,
+            confirmPassword: currentValues.confirmPassword,
+          })
+          return true
+        case 2:
+          await step2Schema.parseAsync({
+            role: currentValues.role,
+            nationality: currentValues.nationality,
+            visaType: currentValues.visaType,
+          })
+          return true
+        case 3:
+          // ID verification is optional, so always valid
+          return true
+        default:
+          return true
+      }
+    } catch (error) {
+      console.log('Validation error:', error)
+      // Trigger form validation to show errors
+      await signUpForm.trigger()
+      return false
     }
-
-    const isValid = await signUpForm.trigger(fieldsToValidate)
-    return isValid
   }
 
   const handleNextStep = async () => {
@@ -183,16 +218,36 @@ export const SteppedAuthForm: React.FC<SteppedAuthFormProps> = ({
     }
   }
 
-  const handleSubmit = async (data: any) => {
+  const handleFormSubmit = async (data: any) => {
+    console.log('Form submitted:', { mode, currentStep, data })
     if (mode === 'signin') {
       onSignIn(data as SignInFormData)
     } else if (currentStep === 3) {
-      const isValid = await validateCurrentStep()
-      if (isValid) {
-        onSignUp(data as SignUpFormData)
-      }
+      onSignUp(data as SignUpFormData)
+    }
+  }
+
+  const handleButtonClick = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    console.log('Button clicked:', { mode, currentStep })
+    
+    if (mode === 'signin' || currentStep === 3) {
+      // For signin and final step, trigger form submission
+      currentForm.handleSubmit(handleFormSubmit)()
     } else {
-      handleNextStep()
+      // For signup steps 1 and 2, handle navigation
+      const isValid = await validateCurrentStep()
+      console.log('Step validation result:', { currentStep, isValid, errors: currentForm.formState.errors })
+      
+      if (isValid) {
+        onStepChange(currentStep + 1)
+      } else {
+        toast({
+          title: "Please complete all required fields",
+          description: "Check the form for any validation errors.",
+          variant: "destructive",
+        })
+      }
     }
   }
 
@@ -258,12 +313,13 @@ export const SteppedAuthForm: React.FC<SteppedAuthFormProps> = ({
           />
         )}
         
-        <form onSubmit={currentForm.handleSubmit(handleSubmit)} className="space-y-8">
+        <form onSubmit={currentForm.handleSubmit(handleFormSubmit)} className="space-y-8">
           {renderCurrentStep()}
           
           <div className="space-y-6">
             <button
-              type="submit"
+              type={mode === 'signin' || currentStep === 3 ? 'submit' : 'button'}
+              onClick={mode === 'signin' || currentStep === 3 ? undefined : handleButtonClick}
               className="w-full h-12 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
               disabled={loading}
             >
