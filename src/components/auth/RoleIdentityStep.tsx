@@ -13,7 +13,32 @@ const nationalities = [
 ]
 
 const visaTypes = [
-  'British Citizen', 'EU Settled Status', 'EU Pre-settled Status', 'Student Visa', 'Work Visa', 'Family Visa', 'Other'
+  'Standard Visitor visa',
+  'Student visa',
+  'Child Student visa',
+  'Skilled Worker visa',
+  'Health & Care Worker visa',
+  'Global Talent visa',
+  'Minister of Religion visa',
+  'Intra-company Transfer visa',
+  'UK Expansion Worker visa',
+  'Secondment Worker visa',
+  'Specialist Worker visa',
+  'Temporary Work visas',
+  'Innovator Founder visa',
+  'Spouse visa',
+  'Civil Partner visa',
+  'Unmarried Partner visa',
+  'Same-sex Partner visa',
+  'Fiancé visa',
+  'Proposed Civil Partner visa',
+  'Child Dependent visa',
+  'Adult Dependent Relative visa',
+  'Frontier Worker permit',
+  'Youth Mobility Scheme visa',
+  'UK Ancestry visa',
+  'British National (Overseas) visa (BNO)',
+  'Electronic Travel Authorisation (ETA)'
 ]
 
 export const RoleIdentityStep: React.FC<RoleIdentityStepProps> = ({ control, errors }) => {
