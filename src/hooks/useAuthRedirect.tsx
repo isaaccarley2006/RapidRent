@@ -20,8 +20,9 @@ export const useAuthRedirect = () => {
 
       // If not logged in, redirect to auth (except if already on auth page)
       if (!user || !session) {
-        if (currentPath !== '/auth') {
-          navigate('/auth', { replace: true })
+        const authRoutes = ['/auth', '/auth/tenant', '/auth/agent']
+        if (!authRoutes.includes(currentPath)) {
+          navigate('/auth/tenant', { replace: true }) // Default to tenant auth
         }
         setRedirecting(false)
         return
@@ -43,7 +44,8 @@ export const useAuthRedirect = () => {
         }
 
         // Always redirect authenticated users to dashboard
-        if (currentPath === '/auth' || currentPath === '/onboarding' || currentPath === '/') {
+        const authRoutes = ['/auth', '/auth/tenant', '/auth/agent']
+        if (authRoutes.includes(currentPath) || currentPath === '/onboarding' || currentPath === '/') {
           navigate('/dashboard', { replace: true })
         }
       } catch (error) {

@@ -28,6 +28,8 @@ export default {
 				primary: {
 					DEFAULT: '#FA6400',
 					dark: '#C14E00',
+					glow: '#FF8C42',
+					variant: '#D85600',
 					foreground: '#FFFFFF'
 				},
 				secondary: {
@@ -36,6 +38,8 @@ export default {
 				},
 				accent: {
 					DEFAULT: '#006F94',
+					dark: '#004A65',
+					variant: '#007BA3',
 					foreground: '#FFFFFF'
 				},
 				surface: '#F9F9F9',

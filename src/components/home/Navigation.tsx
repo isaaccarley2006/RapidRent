@@ -21,13 +21,13 @@ export const Navigation: React.FC = () => {
               Properties
             </button>
             <button 
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth/tenant')}
               className="text-text-muted hover:text-text-primary transition-colors"
             >
               Sign In
             </button>
             <Button 
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth/tenant')}
               className="bg-primary hover:bg-primary-dark text-white rounded-xl"
             >
               Get Started

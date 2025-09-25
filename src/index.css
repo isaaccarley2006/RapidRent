@@ -46,16 +46,20 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Brand palette CSS variables */
-    --primary-hex: #FA6400;
-    --primary-dark-hex: #C14E00;
-    --secondary-hex: #FFE1CC;
-    --accent-hex: #006F94;
-    --background-hex: #FFFFFF;
-    --surface-hex: #F9F9F9;
-    --muted-hex: #E0E0E0;
-    --text-primary-hex: #1F2937;
-    --text-muted-hex: #6B7280;
+      /* Brand palette CSS variables */
+      --primary-hex: #FA6400;
+      --primary-dark-hex: #C14E00;
+      --primary-glow-hex: #FF8C42;
+      --primary-variant-hex: #D85600;
+      --secondary-hex: #FFE1CC;
+      --accent-hex: #006F94;
+      --accent-dark-hex: #004A65;
+      --accent-variant-hex: #007BA3;
+      --background-hex: #FFFFFF;
+      --surface-hex: #F9F9F9;
+      --muted-hex: #E0E0E0;
+      --text-primary-hex: #1F2937;
+      --text-muted-hex: #6B7280;
   }
 
   .dark {

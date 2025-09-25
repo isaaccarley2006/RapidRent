@@ -12,6 +12,8 @@ import { LandlordLayout } from './layouts/LandlordLayout'
 import { AgentLayout } from './layouts/AgentLayout'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
+import TenantAuth from './pages/TenantAuth'
+import AgentAuth from './pages/AgentAuth'
 import EmailConfirmed from './pages/EmailConfirmed'
 import Onboarding from './pages/Onboarding'
 import Dashboard from './pages/Dashboard'
@@ -62,6 +64,8 @@ const App = () => (
               <Route path="/listings" element={<AppLayout><Listings /></AppLayout>} />
               <Route path="/properties/:id" element={<AppLayout><PropertyDetails /></AppLayout>} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/auth/tenant" element={<TenantAuth />} />
+              <Route path="/auth/agent" element={<AgentAuth />} />
               <Route path="/confirmed" element={<EmailConfirmed />} />
               
               {/* Role-based protected routes */}

@@ -1,58 +1,16 @@
 
-import React, { useState } from 'react'
-import { Navigation } from '@/components/home/Navigation'
-import { Footer } from '@/components/home/Footer'
-import { AuthBrandColumn } from '@/components/auth/AuthBrandColumn'
-import { SteppedAuthForm } from '@/components/auth/SteppedAuthForm'
-import { useAuthRedirect } from '@/hooks/useAuthRedirect'
-import { LoadingSpinner } from '@/components/common/LoadingSpinner'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Auth: React.FC = () => {
-  const { loading } = useAuthRedirect()
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup')
-  const [currentStep, setCurrentStep] = useState(1)
+  const navigate = useNavigate()
 
-  if (loading) {
-    return <LoadingSpinner />
-  }
+  useEffect(() => {
+    // Redirect to tenant auth as default
+    navigate('/auth/tenant', { replace: true })
+  }, [navigate])
 
-  const toggleAuthMode = () => {
-    setAuthMode(authMode === 'signin' ? 'signup' : 'signin')
-    setCurrentStep(1) // Reset to first step when switching modes
-  }
-
-  const handleStepChange = (step: number) => {
-    setCurrentStep(step)
-  }
-
-  const totalSteps = authMode === 'signup' ? 3 : 1
-
-  return (
-    <div className="min-h-screen bg-background font-sans flex flex-col">
-      <Navigation />
-      
-      <main className="flex-1">
-        <div className="min-h-full grid lg:grid-cols-2">
-          <AuthBrandColumn 
-            currentStep={currentStep}
-            totalSteps={totalSteps}
-            mode={authMode}
-          />
-          
-          <div className="flex items-center justify-center p-6 lg:p-8">
-            <SteppedAuthForm 
-              mode={authMode} 
-              onToggleMode={toggleAuthMode}
-              currentStep={currentStep}
-              onStepChange={handleStepChange}
-            />
-          </div>
-        </div>
-      </main>
-      
-      <Footer />
-    </div>
-  )
+  return null
 }
 
 export default Auth
