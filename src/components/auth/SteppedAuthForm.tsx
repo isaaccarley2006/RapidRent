@@ -219,7 +219,7 @@ export const SteppedAuthForm: React.FC<SteppedAuthFormProps> = ({
       case 2:
         return (
           <RoleIdentityStep 
-            setValue={signUpForm.setValue}
+            control={signUpForm.control}
             errors={signUpForm.formState.errors}
           />
         )
