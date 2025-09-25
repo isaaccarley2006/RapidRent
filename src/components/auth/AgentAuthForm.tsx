@@ -125,7 +125,10 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
       })
 
       if (authError) {
-        if (authError.message.includes('User already registered')) {
+        console.log('Auth error:', authError)
+        if (authError.message.includes('User already registered') || 
+            authError.message.includes('user_already_exists') ||
+            authError.message.includes('already registered')) {
           toast.error('An account with this email already exists. Please sign in instead.')
           onToggleMode()
           return
