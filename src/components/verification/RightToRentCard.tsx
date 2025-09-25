@@ -10,13 +10,13 @@ export const RightToRentCard: React.FC = () => {
   const { verificationState, refresh } = useVerificationStatus()
   
   const getStatusIcon = () => {
-    if (verificationState.identity_verified) return <CheckCircle className="w-5 h-5 text-green-600" />
+    if (verificationState.right_to_rent_verified) return <CheckCircle className="w-5 h-5 text-green-600" />
     if (verificationState.comprehensive_verification_status === 'in_progress') return <Clock className="w-5 h-5 text-amber-500" />
     return <AlertCircle className="w-5 h-5 text-gray-400" />
   }
 
   const getStatusBadge = () => {
-    if (verificationState.identity_verified) return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Verified</Badge>
+    if (verificationState.right_to_rent_verified) return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Verified</Badge>
     if (verificationState.comprehensive_verification_status === 'in_progress') return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">In Progress</Badge>
     return <Badge variant="secondary">Not Started</Badge>
   }
@@ -53,9 +53,9 @@ export const RightToRentCard: React.FC = () => {
           </div>
           <Button 
             className="w-full bg-primary hover:bg-primary-dark text-white"
-            disabled={verificationState.identity_verified}
+            disabled={verificationState.right_to_rent_verified}
           >
-            {verificationState.identity_verified ? 'Verified' : 'Verify Right to Rent'}
+            {verificationState.right_to_rent_verified ? 'Verified' : 'Verify Right to Rent'}
           </Button>
         </div>
       </CardContent>
