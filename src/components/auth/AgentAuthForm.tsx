@@ -155,7 +155,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
       }
 
       toast.success('Account created! Please check your email to verify your account.')
-      navigate('/dashboard')
+      navigate('/agent/dashboard')
     } catch (error: any) {
       console.error('Signup error:', error)
       toast.error(error.message || 'Failed to create account')
@@ -182,7 +182,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
       }
 
       toast.success('Welcome back!')
-      navigate('/dashboard')
+      navigate('/agent/dashboard')
     } catch (error: any) {
       console.error('Signin error:', error)
       toast.error(error.message || 'Failed to sign in')
