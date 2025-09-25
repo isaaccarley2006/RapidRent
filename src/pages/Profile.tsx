@@ -5,12 +5,13 @@ import { useDemoMode } from '@/hooks/useDemoMode'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CheckCircle2, LogOut, Award, FileText } from 'lucide-react'
-import { PersonalInformationTab } from '@/components/profile/PersonalInformationTab'
-import { EmploymentInformationTab } from '@/components/profile/EmploymentInformationTab'
-import { FinancialInformationTab } from '@/components/profile/FinancialInformationTab'
-import { ReferencesTab } from '@/components/profile/ReferencesTab'
+import { Award, FileText } from 'lucide-react'
+import { PersonalInfoCard } from '@/components/profile/cards/PersonalInfoCard'
+import { AddressCard } from '@/components/profile/cards/AddressCard'
+import { EmploymentCard } from '@/components/profile/cards/EmploymentCard'
+import { FinancialCard } from '@/components/profile/cards/FinancialCard'
+import { PreferencesCard } from '@/components/profile/cards/PreferencesCard'
+import { ReferencesCard } from '@/components/profile/cards/ReferencesCard'
 import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
 import IdentityVerificationCard from '@/components/verification/IdentityVerificationCard'
 import { VerificationDashboard } from '@/components/verification/VerificationDashboard'
@@ -19,7 +20,6 @@ import { ReferenceCheckModal } from '@/components/referenceCheck/ReferenceCheckM
 const Profile: React.FC = () => {
   const { user, signOut } = useAuth()
   const { isDemoMode } = useDemoMode()
-  const [activeTab, setActiveTab] = useState('personal')
   const [showReferenceModal, setShowReferenceModal] = useState(false)
   
   const {
@@ -126,44 +126,39 @@ const Profile: React.FC = () => {
           </>
         )}
 
-        {/* Profile Form Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="personal">Personal</TabsTrigger>
-            <TabsTrigger value="employment">Employment</TabsTrigger>
-            <TabsTrigger value="financial">Financial</TabsTrigger>
-            <TabsTrigger value="references">References</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="personal">
-            <PersonalInformationTab
-              formData={formData}
-              setFormData={setFormData}
-              userEmail={user?.email || ''}
-            />
-          </TabsContent>
-
-          <TabsContent value="employment">
-            <EmploymentInformationTab
-              formData={formData}
-              setFormData={setFormData}
-            />
-          </TabsContent>
-
-          <TabsContent value="financial">
-            <FinancialInformationTab
-              formData={formData}
-              setFormData={setFormData}
-            />
-          </TabsContent>
-
-          <TabsContent value="references">
-            <ReferencesTab
-              references={references}
-              addReference={addReference}
-            />
-          </TabsContent>
-        </Tabs>
+        {/* Profile Cards Grid */}
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <PersonalInfoCard
+            formData={formData}
+            setFormData={setFormData}
+            userEmail={user?.email || ''}
+          />
+          
+          <AddressCard
+            formData={formData}
+            setFormData={setFormData}
+          />
+          
+          <EmploymentCard
+            formData={formData}
+            setFormData={setFormData}
+          />
+          
+          <FinancialCard
+            formData={formData}
+            setFormData={setFormData}
+          />
+          
+          <PreferencesCard
+            formData={formData}
+            setFormData={setFormData}
+          />
+          
+          <ReferencesCard
+            references={references}
+            addReference={addReference}
+          />
+        </div>
 
         {/* Save Button */}
         <div className="flex justify-between items-center mt-8">

@@ -36,10 +36,11 @@ export const useProfile = () => {
         setProfile(data)
         setFormData(data)
       } else {
-        // Create initial profile
+        // Create initial profile with phone from auth metadata
         const initialProfile = {
           id: user.id,
           email: user.email,
+          phone: user.user_metadata?.phone || user.phone || '',
           user_type: 'tenant'
         }
         setFormData(initialProfile)
