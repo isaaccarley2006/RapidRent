@@ -170,18 +170,44 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
   const onSignIn = async (data: SignInFormData) => {
     try {
       setLoading(true)
+      console.log('=== AGENT SIGN IN DEBUG ===')
+      console.log('Email:', data.email)
       
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password
       })
 
+      console.log('Sign in response:', { 
+        user: signInData?.user?.id, 
+        session: !!signInData?.session,
+        error: error?.message 
+      })
+
       if (error) {
+        console.error('Sign in error details:', error)
+        
         if (error.message.includes('Invalid login credentials')) {
-          toast.error('Invalid email or password. Please check your credentials and try again, or use the password reset option below.')
+          toast.error('Invalid email or password. Please try again or use password reset below.')
+          return
+        }
+        if (error.message.includes('Email not confirmed')) {
+          toast.error('Please check your email and click the confirmation link before signing in.')
           return
         }
         throw error
+      }
+
+      // Check user profile after successful sign in
+      const { data: userProfile, error: profileError } = await supabase
+        .from('profiles')
+        .select('user_type, email')
+        .eq('id', signInData?.user?.id)
+        .single()
+      
+      console.log('User profile after sign in:', userProfile)
+      if (profileError) {
+        console.error('Profile fetch error:', profileError)
       }
 
       toast.success('Welcome back!')
