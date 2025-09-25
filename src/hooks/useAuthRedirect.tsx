@@ -28,30 +28,23 @@ export const useAuthRedirect = () => {
       }
 
       try {
-        // If profile doesn't exist, create one and redirect to onboarding
+        // If profile doesn't exist, create one and redirect to dashboard
         if (!profile) {
           await createProfile({
             email: user.email,
-            profile_complete: false
+            profile_complete: true
           })
           
-          if (currentPath !== '/onboarding') {
-            navigate('/onboarding', { replace: true })
+          if (currentPath !== '/dashboard') {
+            navigate('/dashboard', { replace: true })
           }
           setRedirecting(false)
           return
         }
 
-        const isOnboardingComplete = profile.profile_complete || false
-
-        // Redirect based on profile completion status
-        if (!isOnboardingComplete && currentPath !== '/onboarding') {
-          navigate('/onboarding', { replace: true })
-        } else if (isOnboardingComplete) {
-          // Use generic dashboard path for simplicity
-          if (currentPath === '/auth' || currentPath === '/onboarding' || currentPath === '/') {
-            navigate('/dashboard', { replace: true })
-          }
+        // Always redirect authenticated users to dashboard
+        if (currentPath === '/auth' || currentPath === '/onboarding' || currentPath === '/') {
+          navigate('/dashboard', { replace: true })
         }
       } catch (error) {
         console.error('Error in auth redirect logic:', error)
