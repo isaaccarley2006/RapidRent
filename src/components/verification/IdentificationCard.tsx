@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { User, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import { useVerificationStatus } from '@/hooks/useVerificationStatus'
+import idnowLogo from '@/assets/idnow-logo.png'
 
 export const IdentificationCard: React.FC = () => {
   const { verificationState, refresh } = useVerificationStatus()
@@ -45,7 +46,11 @@ export const IdentificationCard: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-4">
+        <div className="pt-4 space-y-3">
+          <div className="flex items-center justify-center gap-2 text-xs text-text-muted">
+            <span>Powered by</span>
+            <img src={idnowLogo} alt="IDnow" className="h-4 object-contain" />
+          </div>
           <Button 
             className="w-full bg-primary hover:bg-primary-dark text-white"
             disabled={verificationState.identity_verified}

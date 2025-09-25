@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import { useVerificationStatus } from '@/hooks/useVerificationStatus'
+import plaidLogo from '@/assets/plaid-logo.png'
 
 export const IncomeVerificationCard: React.FC = () => {
   const { verificationState, refresh } = useVerificationStatus()
@@ -45,7 +46,11 @@ export const IncomeVerificationCard: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-4">
+        <div className="pt-4 space-y-3">
+          <div className="flex items-center justify-center gap-2 text-xs text-text-muted">
+            <span>Powered by</span>
+            <img src={plaidLogo} alt="Plaid" className="h-4 object-contain" />
+          </div>
           <Button 
             className="w-full bg-primary hover:bg-primary-dark text-white"
             disabled={verificationState.income_verified}
