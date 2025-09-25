@@ -6,18 +6,21 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
 import { AuthModeToggle } from './AuthModeToggle'
 import { StepNavigation } from './StepNavigation'
 import { OAuthButtons } from './OAuthButtons'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 
-// Comprehensive schemas for agent flow
+// Business-focused schemas for agent signup
 const baseStep1Schema = z.object({
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
+  agencyName: z.string().min(2, 'Agency name must be at least 2 characters'),
+  legalCompanyName: z.string().min(2, 'Legal company name must be at least 2 characters'),
+  companyRegistrationNumber: z.string().optional(),
+  isSoleTrader: z.boolean().default(false),
+  primaryContactName: z.string().min(2, 'Contact name must be at least 2 characters'),
+  primaryContactEmail: z.string().email('Please enter a valid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
   confirmPassword: z.string()
 })
@@ -28,17 +31,13 @@ const step1Schema = baseStep1Schema.refine((data) => data.password === data.conf
 })
 
 const step2Schema = z.object({
-  nationality: z.string().min(1, 'Please select your nationality'),
-  visaType: z.string().optional()
-})
-
-const step3Schema = z.object({
-  idVerification: z.boolean().refine(val => val === true, {
-    message: "ID verification is required for agents"
+  branchAddress: z.string().min(10, 'Please enter a complete branch address'),
+  termsAccepted: z.boolean().refine(val => val === true, {
+    message: "You must accept the terms and conditions"
   })
 })
 
-const signUpSchema = baseStep1Schema.merge(step2Schema).merge(step3Schema).refine((data) => data.password === data.confirmPassword, {
+const signUpSchema = baseStep1Schema.merge(step2Schema).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"]
 })
@@ -58,16 +57,7 @@ interface AgentAuthFormProps {
   onStepChange: (step: number) => void
 }
 
-const nationalities = [
-  'British', 'Irish', 'American', 'Canadian', 'Australian', 'German', 'French', 'Spanish', 'Italian', 'Dutch',
-  'Swedish', 'Norwegian', 'Danish', 'Finnish', 'Polish', 'Czech', 'Hungarian', 'Romanian', 'Bulgarian',
-  'Greek', 'Portuguese', 'Belgian', 'Austrian', 'Swiss', 'Other'
-]
-
-const visaTypes = [
-  'UK Visa', 'EU Settlement Scheme', 'Tier 2 (General)', 'Tier 1 (Entrepreneur)', 'Student Visa',
-  'Tourist Visa', 'Working Holiday Visa', 'Family Visa', 'Other'
-]
+// No longer needed - removed nationality/visa fields for business signup
 
 export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
   mode,
@@ -92,18 +82,16 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
     if (mode === 'signin') return true
     
     if (currentStep === 1) {
-      return await signUpForm.trigger(['fullName', 'email', 'phone', 'password', 'confirmPassword'])
+      return await signUpForm.trigger(['agencyName', 'legalCompanyName', 'primaryContactName', 'primaryContactEmail', 'password', 'confirmPassword'])
     } else if (currentStep === 2) {
-      return await signUpForm.trigger(['nationality', 'visaType'])
-    } else if (currentStep === 3) {
-      return await signUpForm.trigger(['idVerification'])
+      return await signUpForm.trigger(['branchAddress', 'termsAccepted'])
     }
     
     return true
   }
 
   const handleNextStep = async () => {
-    if (currentStep < 3) {
+    if (currentStep < 2) {
       const isValid = await validateCurrentStep()
       if (isValid) {
         onStepChange(currentStep + 1)
@@ -121,34 +109,52 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
     try {
       setLoading(true)
       
-      const redirectUrl = `${window.location.origin}/`
+      const redirectUrl = `${window.location.origin}/dashboard`
       
-      const { error } = await supabase.auth.signUp({
-        email: data.email,
+      // Create auth user first
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: data.primaryContactEmail,
         password: data.password,
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            full_name: data.fullName,
-            phone: data.phone,
-            role: 'agent',
-            nationality: data.nationality,
-            visa_type: data.visaType
+            full_name: data.primaryContactName,
+            role: 'agent'
           }
         }
       })
 
-      if (error) {
-        if (error.message.includes('User already registered')) {
+      if (authError) {
+        if (authError.message.includes('User already registered')) {
           toast.error('An account with this email already exists. Please sign in instead.')
           onToggleMode()
           return
         }
-        throw error
+        throw authError
+      }
+
+        // Create agent profile using raw SQL since schema is not in types
+        const { error: profileError } = await supabase
+          .rpc('create_agent_profile', {
+            p_user_id: authData.user.id,
+            p_agency_name: data.agencyName,
+            p_legal_company_name: data.legalCompanyName,
+            p_company_registration_number: data.companyRegistrationNumber || null,
+            p_is_sole_trader: data.isSoleTrader,
+            p_primary_contact_name: data.primaryContactName,
+            p_primary_contact_email: data.primaryContactEmail,
+            p_branch_address: data.branchAddress,
+            p_terms_accepted: data.termsAccepted
+          })
+
+        if (profileError) {
+          console.error('Profile creation error:', profileError)
+          // Don't fail the signup for profile errors - user can complete later
+        }
       }
 
       toast.success('Account created! Please check your email to verify your account.')
-      navigate('/agent/dashboard')
+      navigate('/dashboard')
     } catch (error: any) {
       console.error('Signup error:', error)
       toast.error(error.message || 'Failed to create account')
@@ -175,7 +181,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
       }
 
       toast.success('Welcome back!')
-      navigate('/agent/dashboard')
+      navigate('/dashboard')
     } catch (error: any) {
       console.error('Signin error:', error)
       toast.error(error.message || 'Failed to sign in')
@@ -196,7 +202,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
   }
 
   const handleButtonClick = async () => {
-    if (mode === 'signin' || currentStep === 3) {
+    if (mode === 'signin' || currentStep === 2) {
       await handleFormSubmit()
     } else {
       await handleNextStep()
@@ -206,47 +212,90 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
   const getButtonText = () => {
     if (loading) return 'Loading...'
     if (mode === 'signin') return 'Sign In'
-    if (currentStep === 3) return 'Create Agent Account'
+    if (currentStep === 2) return 'Create Agent Account'
     return 'Continue'
   }
 
   const renderStep1 = () => (
     <div className="space-y-4">
+      <h3 className="text-lg font-semibold text-text-primary mb-4">
+        Business Information
+      </h3>
+
       <div className="space-y-2">
-        <Label className="text-text-primary font-medium">Full Name</Label>
+        <Label className="text-text-primary font-medium">Agency Name (Trading Name)</Label>
         <Input
-          {...signUpForm.register('fullName')}
-          placeholder="Enter your full name"
+          {...signUpForm.register('agencyName')}
+          placeholder="e.g. Smith Properties"
           className="h-12 border-muted focus:border-primary focus:ring-primary"
         />
-        {signUpForm.formState.errors.fullName && (
-          <p className="text-sm text-destructive">{signUpForm.formState.errors.fullName.message}</p>
+        {signUpForm.formState.errors.agencyName && (
+          <p className="text-sm text-destructive">{signUpForm.formState.errors.agencyName.message}</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label className="text-text-primary font-medium">Email Address</Label>
+        <Label className="text-text-primary font-medium">Legal Company Name</Label>
         <Input
-          {...signUpForm.register('email')}
+          {...signUpForm.register('legalCompanyName')}
+          placeholder="e.g. Smith Properties Ltd"
+          className="h-12 border-muted focus:border-primary focus:ring-primary"
+        />
+        {signUpForm.formState.errors.legalCompanyName && (
+          <p className="text-sm text-destructive">{signUpForm.formState.errors.legalCompanyName.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2 mb-2">
+          <Controller
+            name="isSoleTrader"
+            control={signUpForm.control}
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="sole-trader"
+              />
+            )}
+          />
+          <Label htmlFor="sole-trader" className="text-sm text-text-primary">I am a sole trader</Label>
+        </div>
+        
+        {!signUpForm.watch('isSoleTrader') && (
+          <>
+            <Label className="text-text-primary font-medium">Company Registration Number</Label>
+            <Input
+              {...signUpForm.register('companyRegistrationNumber')}
+              placeholder="e.g. 12345678"
+              className="h-12 border-muted focus:border-primary focus:ring-primary"
+            />
+          </>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-text-primary font-medium">Primary Contact Name</Label>
+        <Input
+          {...signUpForm.register('primaryContactName')}
+          placeholder="Enter your full name"
+          className="h-12 border-muted focus:border-primary focus:ring-primary"
+        />
+        {signUpForm.formState.errors.primaryContactName && (
+          <p className="text-sm text-destructive">{signUpForm.formState.errors.primaryContactName.message}</p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-text-primary font-medium">Primary Contact Email</Label>
+        <Input
+          {...signUpForm.register('primaryContactEmail')}
           type="email"
           placeholder="Enter your email"
           className="h-12 border-muted focus:border-primary focus:ring-primary"
         />
-        {signUpForm.formState.errors.email && (
-          <p className="text-sm text-destructive">{signUpForm.formState.errors.email.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label className="text-text-primary font-medium">Phone Number</Label>
-        <Input
-          {...signUpForm.register('phone')}
-          type="tel"
-          placeholder="Enter your phone number"
-          className="h-12 border-muted focus:border-primary focus:ring-primary"
-        />
-        {signUpForm.formState.errors.phone && (
-          <p className="text-sm text-destructive">{signUpForm.formState.errors.phone.message}</p>
+        {signUpForm.formState.errors.primaryContactEmail && (
+          <p className="text-sm text-destructive">{signUpForm.formState.errors.primaryContactEmail.message}</p>
         )}
       </div>
 
@@ -281,88 +330,63 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
   const renderStep2 = () => (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-text-primary mb-4">
-        Professional Information
+        Operational Setup
       </h3>
       
       <div className="space-y-2">
-        <Label className="text-text-primary font-medium">Nationality</Label>
-        <Controller
-          name="nationality"
-          control={signUpForm.control}
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="h-12 border-muted focus:border-primary focus:ring-primary">
-                <SelectValue placeholder="Select your nationality" />
-              </SelectTrigger>
-              <SelectContent className="bg-background border-muted z-50">
-                {nationalities.map((nationality) => (
-                  <SelectItem key={nationality} value={nationality}>
-                    {nationality}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+        <Label className="text-text-primary font-medium">Branch Address (Main Office)</Label>
+        <Input
+          {...signUpForm.register('branchAddress')}
+          placeholder="Enter your main office address"
+          className="h-12 border-muted focus:border-primary focus:ring-primary"
         />
-        {signUpForm.formState.errors.nationality && (
-          <p className="text-sm text-destructive">{signUpForm.formState.errors.nationality.message}</p>
+        {signUpForm.formState.errors.branchAddress && (
+          <p className="text-sm text-destructive">{signUpForm.formState.errors.branchAddress.message}</p>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-text-primary font-medium">Visa Type (if applicable)</Label>
-        <Controller
-          name="visaType"
-          control={signUpForm.control}
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="h-12 border-muted focus:border-primary focus:ring-primary">
-                <SelectValue placeholder="Select visa type (optional)" />
-              </SelectTrigger>
-              <SelectContent className="bg-background border-muted z-50">
-                {visaTypes.map((visaType) => (
-                  <SelectItem key={visaType} value={visaType}>
-                    {visaType}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h4 className="font-medium text-blue-900 mb-2">What happens next?</h4>
+        <ul className="text-sm text-blue-800 space-y-1">
+          <li>• Instant account creation with basic dashboard access</li>
+          <li>• Profile completion wizard for VAT, compliance details, and branding</li>
+          <li>• Property listings enabled after profile completion</li>
+        </ul>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-start space-x-3">
+          <Controller
+            name="termsAccepted"
+            control={signUpForm.control}
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="terms-accepted"
+                className="mt-1"
+              />
+            )}
+          />
+          <div>
+            <Label htmlFor="terms-accepted" className="text-sm text-text-primary cursor-pointer">
+              I accept the RapidRent Terms & Conditions, including:
+            </Label>
+            <ul className="text-xs text-text-muted mt-1 space-y-1">
+              <li>• Success-only fee structure</li>
+              <li>• Data handling and GDPR compliance</li>
+              <li>• Platform usage policies</li>
+            </ul>
+          </div>
+        </div>
+        {signUpForm.formState.errors.termsAccepted && (
+          <p className="text-sm text-destructive">{signUpForm.formState.errors.termsAccepted.message}</p>
+        )}
       </div>
     </div>
   )
 
-  const renderStep3 = () => (
-    <div className="text-center space-y-6">
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold text-text-primary mb-2">Identity Verification Required</h3>
-        <p className="text-text-muted">
-          As an agent, you must complete identity verification to ensure platform security and compliance.
-        </p>
-      </div>
-      
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left">
-        <p className="text-sm text-blue-800">
-          <strong>Note:</strong> Identity verification will be completed after account creation through our secure verification partner.
-        </p>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          {...signUpForm.register('idVerification')}
-          className="w-4 h-4 text-primary border-muted rounded focus:ring-primary"
-        />
-        <label className="text-sm text-text-primary">
-          I agree to complete identity verification after account creation
-        </label>
-      </div>
-      {signUpForm.formState.errors.idVerification && (
-        <p className="text-sm text-destructive">{signUpForm.formState.errors.idVerification.message}</p>
-      )}
-    </div>
-  )
+  // Removed Step 3 - now only 2 steps for quick signup
 
   const renderSignIn = () => (
     <div className="space-y-4">
@@ -398,7 +422,6 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
     if (mode === 'signin') return renderSignIn()
     if (currentStep === 1) return renderStep1()
     if (currentStep === 2) return renderStep2()
-    if (currentStep === 3) return renderStep3()
     return null
   }
 
@@ -411,7 +434,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
       {mode === 'signup' && (
         <StepNavigation
           currentStep={currentStep}
-          totalSteps={3}
+          totalSteps={2}
           onPrevStep={handlePrevStep}
           canGoBack={currentStep > 1}
         />
