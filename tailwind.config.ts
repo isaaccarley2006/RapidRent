@@ -37,9 +37,9 @@ export default {
 					foreground: '#1F2937'
 				},
 				accent: {
-					DEFAULT: '#006F94',
-					dark: '#004A65',
-					variant: '#007BA3',
+					DEFAULT: '#FF7A00',
+					dark: '#E55A00',
+					variant: '#FF9533',
 					foreground: '#FFFFFF'
 				},
 				surface: '#F9F9F9',

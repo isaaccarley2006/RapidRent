@@ -346,9 +346,9 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
         )}
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-medium text-blue-900 mb-2">What happens next?</h4>
-        <ul className="text-sm text-blue-800 space-y-1">
+      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+        <h4 className="font-medium text-orange-900 mb-2">What happens next?</h4>
+        <ul className="text-sm text-orange-800 space-y-1">
           <li>• Instant account creation with basic dashboard access</li>
           <li>• Profile completion wizard for VAT, compliance details, and branding</li>
           <li>• Property listings enabled after profile completion</li>
@@ -448,7 +448,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
           type="button"
           onClick={handleButtonClick}
           disabled={loading}
-          className="w-full h-12 bg-accent hover:bg-accent-dark text-white text-lg font-medium rounded-xl"
+          className="w-full h-12 bg-primary hover:bg-primary-dark text-white text-lg font-medium rounded-xl transition-colors"
         >
           {getButtonText()}
         </Button>
@@ -472,7 +472,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
       <div className="mt-6 text-center">
         <button
           onClick={onToggleMode}
-          className="text-sm text-text-muted hover:text-accent transition-colors"
+          className="text-sm text-text-muted hover:text-primary transition-colors"
         >
           {mode === 'signin' ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
         </button>
