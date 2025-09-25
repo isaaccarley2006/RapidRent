@@ -10,9 +10,12 @@ export const Navigation: React.FC = () => {
     <header className="border-b border-muted bg-white">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-text-primary">
+          <button 
+            onClick={() => navigate('/')}
+            className="text-2xl font-bold text-text-primary hover:opacity-80 transition-opacity cursor-pointer"
+          >
             Rapid<span className="text-primary">Rent</span>
-          </div>
+          </button>
           <nav className="hidden md:flex items-center space-x-8">
             <button 
               onClick={() => navigate('/listings')}
