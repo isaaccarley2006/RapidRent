@@ -65,14 +65,12 @@ export const useVerificationStatus = () => {
 
       if (error) throw error;
       
-      // If user has visa_type or nationality from signup, consider right to rent verified
-      const hasVisaData = data?.visa_type && data?.nationality;
-      
       return {
         ...data,
         // Automatically set identity as verified since it was completed during signup
         identity_verified: true,
-        right_to_rent_verified: Boolean(hasVisaData)
+        // Right to rent should only be verified when documents are actually uploaded
+        right_to_rent_verified: false
       };
     } catch (error) {
       console.error('Error fetching verification status:', error);
@@ -164,7 +162,7 @@ export const useVerificationStatus = () => {
         verification_source: 'demo_mode',
         visa_type: dbStatus?.visa_type || null,
         nationality: dbStatus?.nationality || null,
-        right_to_rent_verified: Boolean(dbStatus?.right_to_rent_verified)
+        right_to_rent_verified: false // Only verified when documents are uploaded
       });
     } else if (dbStatus) {
       // Use database status for non-demo mode
@@ -181,7 +179,7 @@ export const useVerificationStatus = () => {
         verification_source: 'database',
         visa_type: dbStatus.visa_type || null,
         nationality: dbStatus.nationality || null,
-        right_to_rent_verified: Boolean(dbStatus.right_to_rent_verified)
+        right_to_rent_verified: false // Only verified when documents are uploaded
       });
     } else {
       // No verification data available
