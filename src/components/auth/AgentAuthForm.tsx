@@ -109,7 +109,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
     try {
       setLoading(true)
       
-      const redirectUrl = `${window.location.origin}/dashboard`
+      const redirectUrl = `${window.location.origin}/agent/dashboard`
       
       // Create auth user first
       const { data: authData, error: authError } = await supabase.auth.signUp({
