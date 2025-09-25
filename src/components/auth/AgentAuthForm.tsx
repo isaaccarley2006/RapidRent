@@ -133,17 +133,18 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
         throw authError
       }
 
-        // Create agent profile using raw SQL since schema is not in types
+      // If user is created, create agent profile
+      if (authData.user) {
         const { error: profileError } = await supabase
           .rpc('create_agent_profile', {
             p_user_id: authData.user.id,
             p_agency_name: data.agencyName,
             p_legal_company_name: data.legalCompanyName,
-            p_company_registration_number: data.companyRegistrationNumber || null,
-            p_is_sole_trader: data.isSoleTrader,
             p_primary_contact_name: data.primaryContactName,
             p_primary_contact_email: data.primaryContactEmail,
             p_branch_address: data.branchAddress,
+            p_company_registration_number: data.companyRegistrationNumber || null,
+            p_is_sole_trader: data.isSoleTrader,
             p_terms_accepted: data.termsAccepted
           })
 

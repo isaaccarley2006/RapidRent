@@ -29,35 +29,24 @@ export const AgentAuthBrandColumn: React.FC<AgentAuthBrandColumnProps> = ({
     switch (currentStep) {
       case 1:
         return {
-          title: "Join RapidRent as an Agent",
-          description: "Create your professional account to connect with verified tenants and manage properties efficiently.",
+          title: "Setup Your Agency",
+          description: "Create your professional agent account with business information to get started quickly.",
           features: [
-            "Access verified tenant profiles",
-            "Streamlined reference checking",
-            "Professional dashboard",
-            "Compliance management tools"
+            "Quick business setup",
+            "Agency profile creation", 
+            "Instant account activation",
+            "Professional dashboard access"
           ]
         }
       case 2:
         return {
-          title: "Professional Information",
-          description: "We need to verify your professional status and collect identity information for compliance.",
+          title: "Complete Your Setup",
+          description: "Finalize your account with operational details and accept terms to start using RapidRent.",
           features: [
-            "Regulatory compliance",
-            "Build tenant trust",
-            "Professional verification",
-            "Secure platform access"
-          ]
-        }
-      case 3:
-        return {
-          title: "Identity Verification",
-          description: "Complete your verification to access all agent features and ensure platform security.",
-          features: [
-            "Full platform access",
-            "Enhanced security",
-            "Tenant confidence",
-            "Compliance assurance"
+            "Set main office address",
+            "Accept terms & conditions",
+            "Success-only fee structure",
+            "GDPR compliant platform"
           ]
         }
       default:

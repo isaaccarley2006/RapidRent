@@ -24,7 +24,7 @@ const AgentAuth: React.FC = () => {
     setCurrentStep(step)
   }
 
-  const totalSteps = authMode === 'signup' ? 3 : 1
+  const totalSteps = authMode === 'signup' ? 2 : 1
 
   return (
     <div className="min-h-screen bg-background font-sans flex flex-col">

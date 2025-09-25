@@ -838,7 +838,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_agent_profile: {
+        Args: {
+          p_agency_name: string
+          p_branch_address: string
+          p_company_registration_number?: string
+          p_is_sole_trader?: boolean
+          p_legal_company_name: string
+          p_primary_contact_email: string
+          p_primary_contact_name: string
+          p_terms_accepted?: boolean
+          p_user_id: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
