@@ -43,31 +43,6 @@ export const IncomeVerificationCard: React.FC = () => {
             <span className="text-sm font-medium text-text-primary">Status</span>
             {getStatusBadge()}
           </div>
-          
-          <div className="text-sm text-text-muted">
-            {verificationState.income_verified 
-              ? 'Your income and employment details have been verified.'
-              : 'Verify your income to demonstrate your ability to pay rent.'
-            }
-          </div>
-        </div>
-
-        <div className="space-y-3 pt-4 border-t border-gray-100">
-          <h4 className="font-medium text-text-primary text-sm">What's included:</h4>
-          <ul className="space-y-2 text-sm text-text-muted">
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Employment status confirmation
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Salary verification
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Payslip validation
-            </li>
-          </ul>
         </div>
 
         <div className="pt-4">

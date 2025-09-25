@@ -43,31 +43,6 @@ export const IdentificationCard: React.FC = () => {
             <span className="text-sm font-medium text-text-primary">Status</span>
             {getStatusBadge()}
           </div>
-          
-          <div className="text-sm text-text-muted">
-            {verificationState.identity_verified 
-              ? 'Your identity has been successfully verified.'
-              : 'Verify your identity with a government-issued photo ID.'
-            }
-          </div>
-        </div>
-
-        <div className="space-y-3 pt-4 border-t border-gray-100">
-          <h4 className="font-medium text-text-primary text-sm">What's included:</h4>
-          <ul className="space-y-2 text-sm text-text-muted">
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Photo ID document scan
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Facial recognition match
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Document authenticity check
-            </li>
-          </ul>
         </div>
 
         <div className="pt-4">

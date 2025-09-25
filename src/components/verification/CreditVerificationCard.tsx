@@ -43,31 +43,6 @@ export const CreditVerificationCard: React.FC = () => {
             <span className="text-sm font-medium text-text-primary">Status</span>
             {getStatusBadge()}
           </div>
-          
-          <div className="text-sm text-text-muted">
-            {verificationState.credit_verified 
-              ? 'Your credit check has been completed and verified.'
-              : 'Complete your credit verification to strengthen your rental application.'
-            }
-          </div>
-        </div>
-
-        <div className="space-y-3 pt-4 border-t border-gray-100">
-          <h4 className="font-medium text-text-primary text-sm">What's included:</h4>
-          <ul className="space-y-2 text-sm text-text-muted">
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Soft credit check (no impact on credit score)
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Financial history assessment
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-              Affordability calculation
-            </li>
-          </ul>
         </div>
 
         <div className="pt-4">
