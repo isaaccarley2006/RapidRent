@@ -43,10 +43,15 @@ export const useAuthRedirect = () => {
           return
         }
 
-        // Always redirect authenticated users to dashboard
+        // Redirect authenticated users based on their role
         const authRoutes = ['/auth', '/auth/tenant', '/auth/agent']
         if (authRoutes.includes(currentPath) || currentPath === '/onboarding' || currentPath === '/') {
-          navigate('/dashboard', { replace: true })
+          // Route based on user type
+          if (profile.user_type === 'agent') {
+            navigate('/agent/dashboard', { replace: true })
+          } else {
+            navigate('/dashboard', { replace: true })
+          }
         }
       } catch (error) {
         console.error('Error in auth redirect logic:', error)

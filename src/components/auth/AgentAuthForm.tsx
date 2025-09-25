@@ -178,7 +178,7 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
 
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
-          toast.error('Invalid email or password. Please check your credentials.')
+          toast.error('Invalid email or password. Please check your credentials and try again, or use the password reset option below.')
           return
         }
         throw error
@@ -472,13 +472,37 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
         )}
       </form>
 
-      <div className="mt-6 text-center">
+      <div className="mt-6 text-center space-y-2">
         <button
           onClick={onToggleMode}
-          className="text-sm text-text-muted hover:text-primary transition-colors"
+          className="text-sm text-text-muted hover:text-primary transition-colors block mx-auto"
         >
           {mode === 'signin' ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
         </button>
+        
+        {mode === 'signin' && (
+          <button
+            onClick={async () => {
+              const email = signInForm.getValues('email')
+              if (!email) {
+                toast.error('Please enter your email address first')
+                return
+              }
+              try {
+                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                  redirectTo: `${window.location.origin}/auth/agent`
+                })
+                if (error) throw error
+                toast.success('Password reset email sent! Check your inbox.')
+              } catch (error: any) {
+                toast.error(error.message || 'Failed to send reset email')
+              }
+            }}
+            className="text-sm text-primary hover:text-primary-dark transition-colors underline block mx-auto"
+          >
+            Forgot your password?
+          </button>
+        )}
       </div>
     </div>
   )
