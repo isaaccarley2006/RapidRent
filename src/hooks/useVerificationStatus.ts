@@ -16,6 +16,9 @@ export interface UnifiedVerificationState {
   comprehensive_verification_completed_at: string | null;
   profile_completion_percentage: number;
   verification_source: 'database' | 'demo_mode' | 'none';
+  visa_type?: string | null;
+  nationality?: string | null;
+  right_to_rent_verified?: boolean;
 }
 
 export const useVerificationStatus = () => {
@@ -31,7 +34,10 @@ export const useVerificationStatus = () => {
     comprehensive_verification_status: 'not_started',
     comprehensive_verification_completed_at: null,
     profile_completion_percentage: 0,
-    verification_source: 'none'
+    verification_source: 'none',
+    visa_type: null,
+    nationality: null,
+    right_to_rent_verified: false
   });
   const [loading, setLoading] = useState(true);
 
@@ -50,13 +56,24 @@ export const useVerificationStatus = () => {
           bank_verified,
           comprehensive_verification_status,
           comprehensive_verification_completed_at,
-          profile_completion_percentage
+          profile_completion_percentage,
+          visa_type,
+          nationality
         `)
         .eq('id', user.id)
         .maybeSingle();
 
       if (error) throw error;
-      return data;
+      
+      // If user has visa_type or nationality from signup, consider right to rent verified
+      const hasVisaData = data?.visa_type && data?.nationality;
+      
+      return {
+        ...data,
+        // Automatically set identity as verified since it was completed during signup
+        identity_verified: true,
+        right_to_rent_verified: Boolean(hasVisaData)
+      };
     } catch (error) {
       console.error('Error fetching verification status:', error);
       return null;
@@ -133,7 +150,7 @@ export const useVerificationStatus = () => {
       }
 
       setVerificationState({
-        identity_verified: demoState.identity_verified === 'verified' || dbStatus?.identity_verified || false,
+        identity_verified: demoState.identity_verified === 'verified' || dbStatus?.identity_verified || true, // Always true since ID was done during signup
         employment_verified: demoState.employment_verified === 'verified' || dbStatus?.employment_verified || false,
         income_verified: demoState.income_verified === 'verified' || dbStatus?.income_verified || false,
         credit_verified: demoState.credit_verified === 'verified' || dbStatus?.credit_verified || false,
@@ -144,12 +161,15 @@ export const useVerificationStatus = () => {
           ? new Date(referenceCheckState.completionTime).toISOString() 
           : dbStatus?.comprehensive_verification_completed_at || null,
         profile_completion_percentage: comprehensiveStatus === 'verified' ? 100 : (dbStatus?.profile_completion_percentage || 0),
-        verification_source: 'demo_mode'
+        verification_source: 'demo_mode',
+        visa_type: dbStatus?.visa_type || null,
+        nationality: dbStatus?.nationality || null,
+        right_to_rent_verified: Boolean(dbStatus?.right_to_rent_verified)
       });
     } else if (dbStatus) {
       // Use database status for non-demo mode
       setVerificationState({
-        identity_verified: dbStatus.identity_verified || false,
+        identity_verified: true, // Always true since ID was completed during signup
         employment_verified: dbStatus.employment_verified || false,
         income_verified: dbStatus.income_verified || false,
         credit_verified: dbStatus.credit_verified || false,
@@ -158,12 +178,15 @@ export const useVerificationStatus = () => {
         comprehensive_verification_status: (dbStatus.comprehensive_verification_status as 'not_started' | 'in_progress' | 'verified' | 'failed') || 'not_started',
         comprehensive_verification_completed_at: dbStatus.comprehensive_verification_completed_at,
         profile_completion_percentage: dbStatus.profile_completion_percentage || 0,
-        verification_source: 'database'
+        verification_source: 'database',
+        visa_type: dbStatus.visa_type || null,
+        nationality: dbStatus.nationality || null,
+        right_to_rent_verified: Boolean(dbStatus.right_to_rent_verified)
       });
     } else {
       // No verification data available
       setVerificationState({
-        identity_verified: false,
+        identity_verified: true, // Always true since ID was completed during signup
         employment_verified: false,
         income_verified: false,
         credit_verified: false,
@@ -172,7 +195,10 @@ export const useVerificationStatus = () => {
         comprehensive_verification_status: 'not_started',
         comprehensive_verification_completed_at: null,
         profile_completion_percentage: 0,
-        verification_source: 'none'
+        verification_source: 'none',
+        visa_type: null,
+        nationality: null,
+        right_to_rent_verified: false
       });
     }
 

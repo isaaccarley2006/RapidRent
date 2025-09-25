@@ -178,6 +178,7 @@ export type Database = {
           job_title: string | null
           move_in_date: string | null
           national_insurance_number: string | null
+          nationality: string | null
           pet_details: string | null
           phone: string | null
           previous_address: string | null
@@ -190,6 +191,7 @@ export type Database = {
           time_at_current_address: string | null
           updated_at: string
           user_type: string | null
+          visa_type: string | null
         }
         Insert: {
           account_holder_name?: string | null
@@ -228,6 +230,7 @@ export type Database = {
           job_title?: string | null
           move_in_date?: string | null
           national_insurance_number?: string | null
+          nationality?: string | null
           pet_details?: string | null
           phone?: string | null
           previous_address?: string | null
@@ -240,6 +243,7 @@ export type Database = {
           time_at_current_address?: string | null
           updated_at?: string
           user_type?: string | null
+          visa_type?: string | null
         }
         Update: {
           account_holder_name?: string | null
@@ -278,6 +282,7 @@ export type Database = {
           job_title?: string | null
           move_in_date?: string | null
           national_insurance_number?: string | null
+          nationality?: string | null
           pet_details?: string | null
           phone?: string | null
           previous_address?: string | null
@@ -290,6 +295,7 @@ export type Database = {
           time_at_current_address?: string | null
           updated_at?: string
           user_type?: string | null
+          visa_type?: string | null
         }
         Relationships: [
           {

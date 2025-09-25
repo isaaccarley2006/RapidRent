@@ -5,18 +5,24 @@ import { useDemoMode } from '@/hooks/useDemoMode'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Award, FileText } from 'lucide-react'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { ChevronDown } from 'lucide-react'
 import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
-import { ReferenceCheckModal } from '@/components/referenceCheck/ReferenceCheckModal'
 import { CreditVerificationCard } from '@/components/verification/CreditVerificationCard'
 import { IncomeVerificationCard } from '@/components/verification/IncomeVerificationCard'
 import { RightToRentCard } from '@/components/verification/RightToRentCard'
 import { IdentificationCard } from '@/components/verification/IdentificationCard'
+import { CreditVerificationDetails } from '@/components/verification/CreditVerificationDetails'
+import { IncomeVerificationDetails } from '@/components/verification/IncomeVerificationDetails'
+import { RightToRentDetails } from '@/components/verification/RightToRentDetails'
+import { IdentityVerificationDetails } from '@/components/verification/IdentityVerificationDetails'
+
+type VerificationSection = 'credit' | 'income' | 'rightToRent' | 'identity' | null
 
 const Profile: React.FC = () => {
   const { user, signOut } = useAuth()
   const { isDemoMode } = useDemoMode()
-  const [showReferenceModal, setShowReferenceModal] = useState(false)
+  const [expandedSection, setExpandedSection] = useState<VerificationSection>(null)
   
   const {
     profile,
@@ -38,7 +44,7 @@ const Profile: React.FC = () => {
 
   if (isLandlord) {
     return (
-      <>
+          <>
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="mb-8">
             <h1 className="text-3xl font-semibold text-text-primary">Landlord Profile</h1>
@@ -67,13 +73,27 @@ const Profile: React.FC = () => {
             </Button>
           </div>
         </div>
-
-        <ReferenceCheckModal 
-          open={showReferenceModal} 
-          onOpenChange={setShowReferenceModal} 
-        />
       </>
     )
+  }
+
+  const handleCardClick = (section: VerificationSection) => {
+    setExpandedSection(expandedSection === section ? null : section)
+  }
+
+  const renderDetailSection = () => {
+    switch (expandedSection) {
+      case 'credit':
+        return <CreditVerificationDetails />
+      case 'income':
+        return <IncomeVerificationDetails />
+      case 'rightToRent':
+        return <RightToRentDetails />
+      case 'identity':
+        return <IdentityVerificationDetails />
+      default:
+        return null
+    }
   }
 
   return (
@@ -88,38 +108,64 @@ const Profile: React.FC = () => {
 
         {/* 4-Column Verification Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-          <CreditVerificationCard />
-          <IncomeVerificationCard />
-          <RightToRentCard />
-          <IdentificationCard />
+          <div 
+            className={`cursor-pointer transition-all duration-200 ${
+              expandedSection === 'credit' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+            }`}
+            onClick={() => handleCardClick('credit')}
+          >
+            <CreditVerificationCard />
+          </div>
+          <div 
+            className={`cursor-pointer transition-all duration-200 ${
+              expandedSection === 'income' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+            }`}
+            onClick={() => handleCardClick('income')}
+          >
+            <IncomeVerificationCard />
+          </div>
+          <div 
+            className={`cursor-pointer transition-all duration-200 ${
+              expandedSection === 'rightToRent' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+            }`}
+            onClick={() => handleCardClick('rightToRent')}
+          >
+            <RightToRentCard />
+          </div>
+          <div 
+            className={`cursor-pointer transition-all duration-200 ${
+              expandedSection === 'identity' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+            }`}
+            onClick={() => handleCardClick('identity')}
+          >
+            <IdentificationCard />
+          </div>
         </div>
 
-        {/* Reference Check CTA */}
-        <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                  <Award className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-text-primary mb-1">Complete Reference Check</h3>
-                  <p className="text-sm text-text-muted mb-3">
-                    Submit a comprehensive reference check to landlords. This includes identity verification, 
-                    employment details, landlord references, and financial history.
-                  </p>
-                  <Button 
-                    onClick={() => setShowReferenceModal(true)} 
-                    className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white"
+        {/* Expandable Details Section */}
+        <Collapsible open={expandedSection !== null} onOpenChange={() => setExpandedSection(null)}>
+          <CollapsibleContent className="space-y-0">
+            {expandedSection && (
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold text-text-primary capitalize">
+                    {expandedSection === 'rightToRent' ? 'Right to Rent' : expandedSection} Details
+                  </h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setExpandedSection(null)}
+                    className="text-text-muted hover:text-text-primary"
                   >
-                    <FileText className="w-4 h-4" />
-                    Start Reference Check
+                    <ChevronDown className="w-4 h-4 rotate-180" />
+                    Collapse
                   </Button>
                 </div>
+                {renderDetailSection()}
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            )}
+          </CollapsibleContent>
+        </Collapsible>
 
         {/* Sign Out Button */}
         <div className="flex justify-center mt-8">
@@ -132,11 +178,6 @@ const Profile: React.FC = () => {
           </Button>
         </div>
       </div>
-
-      <ReferenceCheckModal 
-        open={showReferenceModal} 
-        onOpenChange={setShowReferenceModal} 
-      />
     </>
   )
 }
