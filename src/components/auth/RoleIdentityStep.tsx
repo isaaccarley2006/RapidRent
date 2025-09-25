@@ -72,9 +72,9 @@ export const RoleIdentityStep: React.FC<RoleIdentityStepProps> = ({ control, err
       </div>
 
       <div className="space-y-2">
-        <Label className="text-text-primary font-medium">
-          Visa Type / Right to Rent
-        </Label>
+          <Label className="text-text-primary font-medium">
+            Visa Type
+          </Label>
         <Controller
           name="visaType"
           control={control}
