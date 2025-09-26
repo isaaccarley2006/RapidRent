@@ -24,8 +24,8 @@ export const useUser = (): UseUserReturn => {
   const fetchProfile = async (userId: string): Promise<UserProfile | null> => {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('id, user_type')
+        .from('users')
+        .select('id, role')
         .eq('id', userId)
         .single()
 
@@ -36,7 +36,7 @@ export const useUser = (): UseUserReturn => {
 
       return {
         id: data.id,
-        role: data.user_type
+        role: data.role
       }
     } catch (error) {
       console.error('Error fetching profile:', error)
