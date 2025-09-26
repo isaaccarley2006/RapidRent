@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { ChevronDown } from 'lucide-react'
 import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
+import { AgentProfileContent } from '@/components/profile/AgentProfileContent'
 import { CreditVerificationCard } from '@/components/verification/CreditVerificationCard'
 import { IncomeVerificationCard } from '@/components/verification/IncomeVerificationCard'
 import { RightToRentCard } from '@/components/verification/RightToRentCard'
@@ -39,8 +40,44 @@ const Profile: React.FC = () => {
     return <LoadingSpinner />
   }
 
-  // Check if user is a landlord
+  // Check user type
   const isLandlord = formData.user_type === 'landlord'
+  const isAgent = formData.user_type === 'agent'
+
+  if (isAgent) {
+    return (
+      <>
+        <div className="max-w-6xl mx-auto px-6 py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-semibold text-text-primary">Agency Profile</h1>
+            <p className="text-text-muted mt-2">
+              Complete your agency profile to start managing properties and tenants
+            </p>
+          </div>
+
+          <AgentProfileContent
+            formData={formData}
+            setFormData={setFormData}
+            userEmail={user?.email || ''}
+          />
+
+          {/* Save Button */}
+          <div className="flex justify-between items-center mt-8">
+            <Button
+              variant="outline"
+              onClick={signOut}
+              className="text-red-600 hover:text-red-700"
+            >
+              Sign Out
+            </Button>
+            <Button onClick={saveProfile} disabled={saving} size="lg">
+              {saving ? <LoadingSpinner /> : 'Save Profile'}
+            </Button>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   if (isLandlord) {
     return (

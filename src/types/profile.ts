@@ -7,6 +7,16 @@ export interface TenantProfile {
   national_insurance_number: string | null
   user_type: string | null
   
+  // Agent-specific fields
+  agency_name?: string | null
+  vat_number?: string | null
+  aml_registration?: string | null
+  professional_membership?: string | null
+  coverage_areas?: string | null
+  negotiator_emails?: string | null
+  crm_preferences?: string | null
+  stripe_connected?: boolean
+  
   // Address Info
   current_address: string | null
   previous_address: string | null
