@@ -125,9 +125,7 @@ const App = () => (
               <Route 
                 path="/profile" 
                 element={
-                  <ProtectedRoute>
-                    <AppLayout><Profile /></AppLayout>
-                  </ProtectedRoute>
+                  <AppLayout><Profile /></AppLayout>
                 } 
               />
               <Route 

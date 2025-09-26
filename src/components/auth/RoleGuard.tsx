@@ -65,7 +65,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({ children, requiredRole }) 
   if (profile.role !== requiredRole) {
     const correctPath = profile.role === 'tenant' ? '/dashboard' : 
                        profile.role === 'landlord' ? '/dashboard' : 
-                       profile.role === 'agent' ? '/agent/dashboard' : '/dashboard'
+                       profile.role === 'agent' ? '/profile' : '/dashboard'
     return <Navigate to={correctPath} replace />
   }
 

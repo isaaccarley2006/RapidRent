@@ -48,7 +48,7 @@ export const useAuthRedirect = () => {
         if (authRoutes.includes(currentPath) || currentPath === '/onboarding' || currentPath === '/') {
           // Route based on user type
           if (profile.user_type === 'agent') {
-            navigate('/agent/dashboard', { replace: true })
+            navigate('/profile', { replace: true })
           } else {
             navigate('/dashboard', { replace: true })
           }
