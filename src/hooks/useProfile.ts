@@ -24,6 +24,16 @@ export const useProfile = () => {
     if (!user) return
 
     try {
+      // First, get the user's role from the users table
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      if (userError) throw userError
+
+      // Then get the profile data
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -36,12 +46,12 @@ export const useProfile = () => {
         setProfile(data)
         setFormData(data)
       } else {
-        // Create initial profile with phone from auth metadata
+        // Create initial profile with phone from auth metadata and user type from users table
         const initialProfile = {
           id: user.id,
           email: user.email,
           phone: user.user_metadata?.phone || user.phone || '',
-          user_type: 'tenant'
+          user_type: userData.role // Use the role from users table
         }
         setFormData(initialProfile)
       }
@@ -101,16 +111,16 @@ export const useProfile = () => {
         .upsert({
           ...formData,
           id: user.id,
-          user_type: 'tenant',
           profile_completion_percentage: completionPercentage,
           updated_at: new Date().toISOString()
         })
 
       if (error) throw error
 
+      const profileType = formData.user_type === 'agent' ? 'agent' : 'tenant'
       toast({
         title: "Profile updated successfully",
-        description: "Your tenant profile has been saved."
+        description: `Your ${profileType} profile has been saved.`
       })
 
       fetchProfile()
