@@ -41,8 +41,10 @@ const Profile: React.FC = () => {
   }
 
   // Check user type
+  console.log('Profile page - formData.user_type:', formData.user_type)
   const isLandlord = formData.user_type === 'landlord'
   const isAgent = formData.user_type === 'agent'
+  console.log('Profile page - isAgent:', isAgent, 'isLandlord:', isLandlord)
 
   if (isAgent) {
     return (

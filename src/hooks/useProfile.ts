@@ -32,6 +32,8 @@ export const useProfile = () => {
         .single()
 
       if (userError) throw userError
+      
+      console.log('Fetched user role from users table:', userData?.role)
 
       // Then get the profile data
       const { data, error } = await supabase
@@ -43,6 +45,8 @@ export const useProfile = () => {
       if (error && error.code !== 'PGRST116') throw error
 
       if (data) {
+        console.log('Found existing profile data:', data)
+        console.log('Profile user_type from database:', data.user_type)
         setProfile(data)
         setFormData(data)
       } else {
@@ -53,6 +57,7 @@ export const useProfile = () => {
           phone: user.user_metadata?.phone || user.phone || '',
           user_type: userData.role // Use the role from users table
         }
+        console.log('Creating initial profile with user_type:', initialProfile.user_type)
         setFormData(initialProfile)
       }
     } catch (error) {
