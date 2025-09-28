@@ -83,10 +83,10 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
 
   return (
     <>
-      <Card className="group hover:shadow-lg transition-all duration-300 border-border bg-card overflow-hidden">
-        <CardContent className="p-0">
+      <Card className="group hover:shadow-lg transition-all duration-300 border-border bg-card overflow-hidden h-full">
+        <CardContent className="p-0 h-full flex flex-col">
           {/* Header with nationality and verification */}
-          <div className="p-4 pb-3">
+          <div className="p-[5px] pb-2">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">
@@ -121,7 +121,7 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
           </div>
 
           {/* Key Details */}
-          <div className="px-4 pb-3 space-y-2">
+          <div className="px-[5px] pb-2 space-y-2 flex-1">
             {/* Preferred Areas */}
             {profile.preferred_areas && profile.preferred_areas.length > 0 && (
               <div className="mb-2">
@@ -164,7 +164,7 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
           </div>
 
           {/* Lifestyle Icons */}
-          <div className="px-4 pb-3">
+          <div className="px-[5px] pb-2">
             <div className="flex items-center gap-3">
               {profile.gender_preference && (
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -189,7 +189,7 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
 
 
           {/* Connect Button */}
-          <div className="p-4 pt-0">
+          <div className="p-[5px] mt-auto">
             <Button 
               onClick={handleConnect}
               disabled={isOwnProfile}
