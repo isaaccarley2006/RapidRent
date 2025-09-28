@@ -51,14 +51,14 @@ const getStatusBadgeVariant = (status: string) => {
 }
 
 const COMMUNITY_GROUPS = [
-  { id: 'spanish', label: 'Spanish', flag: '🇪🇸' },
-  { id: 'french', label: 'French', flag: '🇫🇷' },
-  { id: 'german', label: 'German', flag: '🇩🇪' },
-  { id: 'british', label: 'British', flag: '🇬🇧' },
-  { id: 'italian', label: 'Italian', flag: '🇮🇹' },
-  { id: 'portuguese', label: 'Portuguese', flag: '🇵🇹' },
-  { id: 'dutch', label: 'Dutch', flag: '🇳🇱' },
-  { id: 'polish', label: 'Polish', flag: '🇵🇱' },
+  { id: 'Spanish', label: 'Spanish', flag: '🇪🇸' },
+  { id: 'French', label: 'French', flag: '🇫🇷' },
+  { id: 'German', label: 'German', flag: '🇩🇪' },
+  { id: 'British', label: 'British', flag: '🇬🇧' },
+  { id: 'Italian', label: 'Italian', flag: '🇮🇹' },
+  { id: 'Portuguese', label: 'Portuguese', flag: '🇵🇹' },
+  { id: 'Dutch', label: 'Dutch', flag: '🇳🇱' },
+  { id: 'Polish', label: 'Polish', flag: '🇵🇱' },
 ]
 
 const getNationalityFromGroups = (communityGroups: string[] = []) => {
