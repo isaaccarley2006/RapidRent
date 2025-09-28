@@ -53,7 +53,7 @@ const COMMUNITY_GROUPS = [
   { id: 'Shoreditch', label: 'Shoreditch', flag: '🏙️' },
 ]
 
-export const TenantCommunities: React.FC = () => {
+const TenantCommunities: React.FC = () => {
   const { user } = useUser()
   const [profiles, setProfiles] = useState<CommunityProfile[]>([])
   const [loading, setLoading] = useState(true)
@@ -259,3 +259,5 @@ export const TenantCommunities: React.FC = () => {
     </div>
   )
 }
+
+export default TenantCommunities
