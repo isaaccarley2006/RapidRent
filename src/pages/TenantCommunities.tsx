@@ -82,7 +82,7 @@ const TenantCommunities: React.FC = () => {
         .from('community_profile_cards')
         .select(`
           *,
-          profiles!inner(nationality, identity_verified)
+          profiles(nationality, identity_verified)
         `)
         .eq('status', 'active')
         .order('created_at', { ascending: false })
@@ -91,7 +91,7 @@ const TenantCommunities: React.FC = () => {
 
       const formattedProfiles = data?.map((profile: any) => ({
         ...profile,
-        nationality: profile.profiles?.nationality,
+        nationality: profile.profiles?.nationality || undefined,
         identity_verified: profile.profiles?.identity_verified || false,
       })) || []
 
