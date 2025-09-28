@@ -23,6 +23,7 @@ import PropertyDetails from './pages/PropertyDetails'
 import MakeOffer from './pages/MakeOffer'
 import RenterProfile from './pages/RenterProfile'
 import TenantCommunities from './pages/TenantCommunities'
+import CommunityProfileDetail from './pages/CommunityProfileDetail'
 import StructuredOffer from './pages/StructuredOffer'
 import CreateListing from './pages/CreateListing'
 import BulkUpload from './pages/BulkUpload'
@@ -143,6 +144,16 @@ const App = () => (
                   <ProtectedRoute>
                     <RenterLayout>
                       <TenantCommunities />
+                    </RenterLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/tenant/communities/:profileId" 
+                element={
+                  <ProtectedRoute>
+                    <RenterLayout>
+                      <CommunityProfileDetail />
                     </RenterLayout>
                   </ProtectedRoute>
                 } 

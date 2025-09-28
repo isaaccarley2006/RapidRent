@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { 
   MapPin, 
   Calendar, 
@@ -15,7 +15,6 @@ import {
   MessageCircle
 } from 'lucide-react'
 import { format } from 'date-fns'
-import { ConnectDialog } from './ConnectDialog'
 
 interface CommunityProfile {
   id: string
@@ -34,8 +33,6 @@ interface CommunityProfile {
   status: string
   community_groups: string[]
   created_at: string
-  nationality?: string
-  identity_verified?: boolean
 }
 
 interface CommunityProfileCardProps {
@@ -53,30 +50,35 @@ const getStatusBadgeVariant = (status: string) => {
   }
 }
 
-const getNationalityFlag = (nationality: string | undefined) => {
-  const flags: { [key: string]: string } = {
-    'Spanish': '🇪🇸',
-    'French': '🇫🇷', 
-    'German': '🇩🇪',
-    'British': '🇬🇧',
-    'Italian': '🇮🇹',
-    'Portuguese': '🇵🇹',
-    'Dutch': '🇳🇱',
-    'Polish': '🇵🇱',
-  }
-  return flags[nationality || ''] || '🌍'
+const COMMUNITY_GROUPS = [
+  { id: 'spanish', label: 'Spanish', flag: '🇪🇸' },
+  { id: 'french', label: 'French', flag: '🇫🇷' },
+  { id: 'german', label: 'German', flag: '🇩🇪' },
+  { id: 'british', label: 'British', flag: '🇬🇧' },
+  { id: 'italian', label: 'Italian', flag: '🇮🇹' },
+  { id: 'portuguese', label: 'Portuguese', flag: '🇵🇹' },
+  { id: 'dutch', label: 'Dutch', flag: '🇳🇱' },
+  { id: 'polish', label: 'Polish', flag: '🇵🇱' },
+]
+
+const getNationalityFromGroups = (communityGroups: string[] = []) => {
+  if (communityGroups.length === 0) return { label: 'International', flag: '🌍' }
+  
+  const group = COMMUNITY_GROUPS.find(g => communityGroups.includes(g.id))
+  return group ? { label: group.label, flag: group.flag } : { label: 'International', flag: '🌍' }
 }
 
 export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({ 
   profile, 
   currentUserId 
 }) => {
-  const [showConnectDialog, setShowConnectDialog] = useState(false)
+  const navigate = useNavigate()
   const isOwnProfile = currentUserId === profile.user_id
+  const nationality = getNationalityFromGroups(profile.community_groups)
 
   const handleConnect = () => {
     if (isOwnProfile) return
-    setShowConnectDialog(true)
+    navigate(`/tenant/communities/${profile.id}`)
   }
 
   return (
@@ -88,18 +90,16 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">
-                  {getNationalityFlag(profile.nationality)}
+                  {nationality.flag}
                 </span>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-foreground">
-                    {profile.nationality || 'Global'}
+                    {nationality.label}
                   </span>
-                  {profile.identity_verified && (
-                    <Badge variant="secondary" className="w-fit text-xs gap-1">
-                      <Shield className="h-3 w-3" />
-                      Verified ID
-                    </Badge>
-                  )}
+                  <Badge variant="secondary" className="w-fit text-xs gap-1">
+                    <Shield className="h-3 w-3" />
+                    Verified ID
+                  </Badge>
                 </div>
               </div>
               <Badge variant={getStatusBadgeVariant(profile.status)} className="capitalize">
@@ -124,12 +124,14 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
           <div className="px-4 pb-3 space-y-2">
             {/* Preferred Areas */}
             {profile.preferred_areas && profile.preferred_areas.length > 0 && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 shrink-0" />
-                <span className="truncate">
-                  {profile.preferred_areas.slice(0, 2).join(', ')}
-                  {profile.preferred_areas.length > 2 && ` +${profile.preferred_areas.length - 2} more`}
-                </span>
+              <div className="mb-2">
+                <div className="flex flex-wrap gap-1">
+                  {profile.preferred_areas.map((area, index) => (
+                    <Badge key={index} className="bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200 text-xs">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -185,14 +187,6 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
             </div>
           </div>
 
-          {/* Bio */}
-          {profile.bio && (
-            <div className="px-4 pb-4">
-              <p className="text-sm text-muted-foreground line-clamp-3">
-                {profile.bio}
-              </p>
-            </div>
-          )}
 
           {/* Connect Button */}
           <div className="p-4 pt-0">
@@ -208,12 +202,6 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
           </div>
         </CardContent>
       </Card>
-
-      <ConnectDialog
-        isOpen={showConnectDialog}
-        onClose={() => setShowConnectDialog(false)}
-        targetProfile={profile}
-      />
     </>
   )
 }
