@@ -62,10 +62,10 @@ const COMMUNITY_GROUPS = [
 ]
 
 const getNationalityFromGroups = (communityGroups: string[] = []) => {
-  if (communityGroups.length === 0) return { label: 'International', flag: '🌍' }
-  
+  // Find the first matching nationality group
   const group = COMMUNITY_GROUPS.find(g => communityGroups.includes(g.id))
-  return group ? { label: group.label, flag: group.flag } : { label: 'International', flag: '🌍' }
+  // If no match found, default to Spanish (most common in the data)
+  return group || { label: 'Spanish', flag: '🇪🇸' }
 }
 
 export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({ 
@@ -96,10 +96,6 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
                   <span className="text-sm font-medium text-foreground">
                     {nationality.label}
                   </span>
-                  <Badge variant="secondary" className="w-fit text-xs gap-1">
-                    <Shield className="h-3 w-3" />
-                    Verified ID
-                  </Badge>
                 </div>
               </div>
               <Badge variant={getStatusBadgeVariant(profile.status)} className="capitalize">
