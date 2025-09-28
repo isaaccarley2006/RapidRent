@@ -77,13 +77,10 @@ const TenantCommunities: React.FC = () => {
     try {
       setLoading(true)
       
-      // Fetch community profiles with user profile data for nationality and verification
+      // Fetch community profiles - no JOIN since user_ids are dummy values
       const { data, error } = await supabase
         .from('community_profile_cards')
-        .select(`
-          *,
-          profiles(nationality, identity_verified)
-        `)
+        .select('*')
         .eq('status', 'active')
         .order('created_at', { ascending: false })
 
@@ -91,8 +88,8 @@ const TenantCommunities: React.FC = () => {
 
       const formattedProfiles = data?.map((profile: any) => ({
         ...profile,
-        nationality: profile.profiles?.nationality || undefined,
-        identity_verified: profile.profiles?.identity_verified || false,
+        nationality: undefined, // Default since no profiles relationship
+        identity_verified: false, // Default since no profiles relationship
       })) || []
 
       setProfiles(formattedProfiles)
