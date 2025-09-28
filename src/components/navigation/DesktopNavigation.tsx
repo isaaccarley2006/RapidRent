@@ -67,6 +67,19 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({ userType }
             Profile
           </button>
 
+          {userType === 'tenant' && (
+            <button 
+              onClick={() => navigate('/tenant/communities')}
+              className={`px-3 py-2 text-sm font-medium transition-colors ${
+                isActivePath('/tenant/communities') 
+                  ? 'text-primary font-semibold' 
+                  : 'text-text-primary hover:text-primary'
+              }`}
+            >
+              Communities
+            </button>
+          )}
+
           {userType === 'landlord' && (
             <button 
               onClick={() => navigate('/create-listing')}

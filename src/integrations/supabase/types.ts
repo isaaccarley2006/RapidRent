@@ -50,6 +50,96 @@ export type Database = {
         }
         Relationships: []
       }
+      community_connections: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          requester_id: string
+          status: string
+          target_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          requester_id: string
+          status?: string
+          target_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          requester_id?: string
+          status?: string
+          target_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      community_profile_cards: {
+        Row: {
+          bio: string | null
+          budget_per_person: number | null
+          community_groups: string[] | null
+          created_at: string
+          duration_months: number | null
+          gender_preference: string | null
+          has_pets: boolean | null
+          headline: string
+          id: string
+          is_smoker: boolean | null
+          move_in_date: string | null
+          occupation: string | null
+          preferred_areas: string[] | null
+          status: string
+          updated_at: string
+          user_id: string
+          work_pattern: string | null
+        }
+        Insert: {
+          bio?: string | null
+          budget_per_person?: number | null
+          community_groups?: string[] | null
+          created_at?: string
+          duration_months?: number | null
+          gender_preference?: string | null
+          has_pets?: boolean | null
+          headline: string
+          id?: string
+          is_smoker?: boolean | null
+          move_in_date?: string | null
+          occupation?: string | null
+          preferred_areas?: string[] | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          work_pattern?: string | null
+        }
+        Update: {
+          bio?: string | null
+          budget_per_person?: number | null
+          community_groups?: string[] | null
+          created_at?: string
+          duration_months?: number | null
+          gender_preference?: string | null
+          has_pets?: boolean | null
+          headline?: string
+          id?: string
+          is_smoker?: boolean | null
+          move_in_date?: string | null
+          occupation?: string | null
+          preferred_areas?: string[] | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          work_pattern?: string | null
+        }
+        Relationships: []
+      }
       offers: {
         Row: {
           created_at: string
