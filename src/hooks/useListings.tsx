@@ -6,7 +6,7 @@ function useListings({ search = "", location = "", minPrice, maxPrice }) {
     queryKey: ["listings", minPrice, maxPrice, search, location],
     queryFn: () =>
       fetcher({
-        url: `/api/public/listings?search=${search}&location=${location}&minPrice=${minPrice}&maxPrice=${maxPrice}&status=active&limit=1&cursor`,
+        url: `/api/public/listings?search=${search}&location=${location}&minPrice=${minPrice}&maxPrice=${maxPrice}&status=active&limit=20&cursor`,
         method: "GET",
       }),
   });
