@@ -1,45 +1,44 @@
-
-import React from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Search } from 'lucide-react'
+import React from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 
 interface Filters {
-  location: string
-  minPrice: string
-  maxPrice: string
-  status: string
+  location: string;
+  minPrice: string;
+  maxPrice: string;
+  status: string;
 }
 
 interface SearchFiltersProps {
-  filters: Filters
-  searchQuery: string
-  onFiltersChange: (filters: Filters) => void
-  onSearchChange: (query: string) => void
+  filters: Filters;
+  searchQuery: string;
+  onFiltersChange: (filters: Filters) => void;
+  onSearchChange: (query: string) => void;
 }
 
 export const SearchFilters: React.FC<SearchFiltersProps> = ({
   filters,
   searchQuery,
   onFiltersChange,
-  onSearchChange
+  onSearchChange,
 }) => {
   const handleFilterChange = (key: keyof Filters, value: string) => {
     onFiltersChange({
       ...filters,
-      [key]: value
-    })
-  }
+      [key]: value,
+    });
+  };
 
   const clearFilters = () => {
     onFiltersChange({
-      location: '',
-      minPrice: '',
-      maxPrice: '',
-      status: 'listed'
-    })
-    onSearchChange('')
-  }
+      location: "",
+      minPrice: "",
+      maxPrice: "",
+      status: "listed",
+    });
+    onSearchChange("");
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-muted p-6 mb-8">
@@ -64,7 +63,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             type="text"
             placeholder="Location"
             value={filters.location}
-            onChange={(e) => handleFilterChange('location', e.target.value)}
+            onChange={(e) => handleFilterChange("location", e.target.value)}
           />
         </div>
 
@@ -74,13 +73,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             type="number"
             placeholder="Min price"
             value={filters.minPrice}
-            onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+            onChange={(e) => handleFilterChange("minPrice", e.target.value)}
           />
           <Input
             type="number"
             placeholder="Max price"
             value={filters.maxPrice}
-            onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+            onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
           />
         </div>
 
@@ -88,7 +87,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         <div className="lg:w-32">
           <select
             value={filters.status}
-            onChange={(e) => handleFilterChange('status', e.target.value)}
+            onChange={(e) => handleFilterChange("status", e.target.value)}
             className="w-full h-10 px-3 py-2 text-sm bg-white border border-muted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-text-primary"
           >
             <option value="listed">Listed</option>
@@ -107,5 +106,5 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};

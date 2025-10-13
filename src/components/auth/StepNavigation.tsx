@@ -1,24 +1,24 @@
-import React from 'react'
-import { ChevronLeft } from 'lucide-react'
+import React from "react";
+import { ChevronLeft } from "lucide-react";
 
 interface StepNavigationProps {
-  currentStep: number
-  totalSteps: number
-  onPrevStep: () => void
-  canGoBack: boolean
+  currentStep: number;
+  totalSteps: number;
+  onPrevStep: () => void;
+  canGoBack: boolean;
 }
 
 const stepTitles = {
-  1: 'Personal Details',
-  2: 'Role & Identity', 
-  3: 'Verification'
-}
+  1: "Personal Details",
+  2: "Verification Code",
+  3: "Verification",
+};
 
 export const StepNavigation: React.FC<StepNavigationProps> = ({
   currentStep,
   totalSteps,
   onPrevStep,
-  canGoBack
+  canGoBack,
 }) => {
   return (
     <div className="space-y-6">
@@ -30,10 +30,10 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                   step === currentStep
-                    ? 'bg-primary text-white'
+                    ? "bg-primary text-white"
                     : step < currentStep
-                    ? 'bg-primary-light text-primary'
-                    : 'bg-muted text-text-muted'
+                    ? "bg-primary-light text-primary"
+                    : "bg-muted text-text-muted"
                 }`}
               >
                 {step}
@@ -41,28 +41,28 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
               {step < totalSteps && (
                 <div
                   className={`w-8 h-0.5 transition-colors ${
-                    step < currentStep ? 'bg-primary' : 'bg-muted'
+                    step < currentStep ? "bg-primary" : "bg-muted"
                   }`}
                 />
               )}
             </div>
           ))}
         </div>
-        
+
         <span className="text-sm text-text-muted">
           Step {currentStep} of {totalSteps}
         </span>
       </div>
 
       {/* Step Title and Back Button */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center pb-5 justify-between">
         <div>
           <h2 className="text-xl font-semibold text-text-primary">
             {stepTitles[currentStep as keyof typeof stepTitles]}
           </h2>
           <p className="text-sm text-text-muted mt-1">
             {currentStep === 1 && "Enter your basic information"}
-            {currentStep === 2 && "Tell us about your role and identity"}
+            {currentStep === 2 && "Enter your verification code"}
             {currentStep === 3 && "Verify your identity (optional)"}
           </p>
         </div>
@@ -79,5 +79,5 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
         )}
       </div>
     </div>
-  )
-}
+  );
+};
