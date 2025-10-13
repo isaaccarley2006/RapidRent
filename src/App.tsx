@@ -1,5 +1,4 @@
 import React from "react";
-import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -28,8 +27,6 @@ import StructuredOffer from "./pages/StructuredOffer";
 import CreateListing from "./pages/CreateListing";
 import BulkUpload from "./pages/BulkUpload";
 import PropertyOffers from "./pages/PropertyOffers";
-
-import AppRoutes from "@/AppRoutes";
 import AgentDashboard from "@/pages/AgentDashboard";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
@@ -37,6 +34,7 @@ import NotFound from "@/pages/NotFound";
 import CookiePolicy from "@/pages/CookiePolicy";
 import { store } from "@/store";
 import { Provider } from "react-redux";
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -79,11 +79,11 @@ function RegisterTenant({ currentStep, onStepChange }) {
   // Step 1: Registration Form
   const registrationFormik = useFormik({
     initialValues: {
-      firstName: "John",
-      lastName: "Doe",
-      email: "thernloven16578@outlook.com",
-      password: "password123",
-      confirmPassword: "password123",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
       isAgency: true,
     },
     validationSchema: registrationValidationSchema,
@@ -108,8 +108,8 @@ function RegisterTenant({ currentStep, onStepChange }) {
         // Move to step 2
         onStepChange(2);
       } catch (error: any) {
-        verifyEmailFormik.setFieldValue("email", values.email);
-        onStepChange(2);
+        // verifyEmailFormik.setFieldValue("email", values.email);
+        // onStepChange(2);
         toast.error(error.message || "Failed to register");
       } finally {
         setLoading(false);
@@ -173,7 +173,6 @@ function RegisterTenant({ currentStep, onStepChange }) {
             </p>
           )}
       </div>
-
       <div className="space-y-2">
         <Label className="text-text-primary font-medium">Last Name</Label>
         <Input
@@ -191,7 +190,6 @@ function RegisterTenant({ currentStep, onStepChange }) {
             </p>
           )}
       </div>
-
       <div className="space-y-2">
         <Label className="text-text-primary font-medium">Email Address</Label>
         <Input
@@ -210,7 +208,6 @@ function RegisterTenant({ currentStep, onStepChange }) {
             </p>
           )}
       </div>
-
       <div className="space-y-2">
         <Label className="text-text-primary font-medium">Is Agency?</Label>
         <select
@@ -230,7 +227,6 @@ function RegisterTenant({ currentStep, onStepChange }) {
             </p>
           )}
       </div>
-
       <div className="space-y-2">
         <Label className="text-text-primary font-medium">Password</Label>
         <Input
@@ -249,7 +245,6 @@ function RegisterTenant({ currentStep, onStepChange }) {
             </p>
           )}
       </div>
-
       <div className="space-y-2">
         <Label className="text-text-primary font-medium">
           Confirm Password
@@ -270,6 +265,14 @@ function RegisterTenant({ currentStep, onStepChange }) {
             </p>
           )}
       </div>
+      <Button
+        type="button"
+        onClick={() => toast("Failed to register")}
+        className="w-full h-12 bg-primary hover:bg-primary-dark text-white text-lg font-medium rounded-xl"
+      >
+        TOATSJ
+      </Button>
+
       <Button
         type="button"
         onClick={() => registrationFormik.handleSubmit()}
