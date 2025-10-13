@@ -44,9 +44,7 @@ export const LoginPage: React.FC<Props> = () => {
 
         localStorage.setItem("token", data.token);
         // Store token and user in redux
-        dispatch(
-          setAuth({ token: userData.data.token, user: userData.data.user })
-        );
+        dispatch(setAuth({ token: data.token, user: data.user }));
 
         toast.success("Logged in successfully!");
         navigate("/listings");
