@@ -82,6 +82,19 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
               Profile
             </button>
 
+            {userType === 'tenant' && (
+              <button 
+                onClick={() => handleNavigation('/tenant/communities')}
+                className={`px-3 py-2 text-left text-sm font-medium transition-colors ${
+                  isActivePath('/tenant/communities') 
+                    ? 'text-primary font-semibold' 
+                    : 'text-text-primary hover:text-primary'
+                }`}
+              >
+                Communities
+              </button>
+            )}
+
             {userType === 'landlord' && (
               <button 
                 onClick={() => handleNavigation('/create-listing')}

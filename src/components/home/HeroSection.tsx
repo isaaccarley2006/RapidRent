@@ -12,10 +12,10 @@ export const HeroSection: React.FC = () => {
     }
   };
   const handleRenterClick = () => {
-    navigate("/listings");
+    navigate("/auth/tenant");
   };
   const handleLandlordClick = () => {
-    navigate("/auth");
+    navigate("/auth/agent");
   };
   return (
     <section className="py-20 px-6 bg-white">

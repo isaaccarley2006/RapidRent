@@ -24,6 +24,18 @@ export const useProfile = () => {
     if (!user) return
 
     try {
+      // First, get the user's role from the users table
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      if (userError) throw userError
+      
+      console.log('Fetched user role from users table:', userData?.role)
+
+      // Then get the profile data
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -33,15 +45,19 @@ export const useProfile = () => {
       if (error && error.code !== 'PGRST116') throw error
 
       if (data) {
+        console.log('Found existing profile data:', data)
+        console.log('Profile user_type from database:', data.user_type)
         setProfile(data)
         setFormData(data)
       } else {
-        // Create initial profile
+        // Create initial profile with phone from auth metadata and user type from users table
         const initialProfile = {
           id: user.id,
           email: user.email,
-          user_type: 'tenant'
+          phone: user.user_metadata?.phone || user.phone || '',
+          user_type: userData.role // Use the role from users table
         }
+        console.log('Creating initial profile with user_type:', initialProfile.user_type)
         setFormData(initialProfile)
       }
     } catch (error) {
@@ -100,16 +116,16 @@ export const useProfile = () => {
         .upsert({
           ...formData,
           id: user.id,
-          user_type: 'tenant',
           profile_completion_percentage: completionPercentage,
           updated_at: new Date().toISOString()
         })
 
       if (error) throw error
 
+      const profileType = formData.user_type === 'agent' ? 'agent' : 'tenant'
       toast({
         title: "Profile updated successfully",
-        description: "Your tenant profile has been saved."
+        description: `Your ${profileType} profile has been saved.`
       })
 
       fetchProfile()

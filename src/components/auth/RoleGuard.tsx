@@ -31,6 +31,11 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({ children, requiredRole }) 
 
   // Show error state if profile missing or no role
   if (!profile || !profile.role) {
+    // For agents, redirect directly to profile completion instead of showing a dialog
+    if (requiredRole === 'agent') {
+      return <Navigate to="/profile" replace />
+    }
+    
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="max-w-md">
@@ -65,7 +70,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({ children, requiredRole }) 
   if (profile.role !== requiredRole) {
     const correctPath = profile.role === 'tenant' ? '/dashboard' : 
                        profile.role === 'landlord' ? '/dashboard' : 
-                       profile.role === 'agent' ? '/agent/dashboard' : '/dashboard'
+                       profile.role === 'agent' ? '/profile' : '/dashboard'
     return <Navigate to={correctPath} replace />
   }
 

@@ -1,5 +1,4 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.50.1";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const CC_API_KEY = Deno.env.get("CC_API_KEY")!;

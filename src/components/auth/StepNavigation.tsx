@@ -26,7 +26,7 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
-            <React.Fragment key={step}>
+            <div key={step} className="flex items-center">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                   step === currentStep
@@ -45,7 +45,7 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
                   }`}
                 />
               )}
-            </React.Fragment>
+            </div>
           ))}
         </div>
         

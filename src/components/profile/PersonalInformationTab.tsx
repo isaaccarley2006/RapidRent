@@ -4,7 +4,7 @@ import { User } from 'lucide-react'
 import { TenantProfile } from '@/types/profile'
 import { BasicInformationSection } from './sections/BasicInformationSection'
 import { AddressInformationSection } from './sections/AddressInformationSection'
-import { EmergencyContactSection } from './sections/EmergencyContactSection'
+
 import { AdditionalInformationSection } from './sections/AdditionalInformationSection'
 
 interface PersonalInformationTabProps {
@@ -38,10 +38,6 @@ export const PersonalInformationTab: React.FC<PersonalInformationTabProps> = ({
           setFormData={setFormData}
         />
 
-        <EmergencyContactSection
-          formData={formData}
-          setFormData={setFormData}
-        />
 
         <AdditionalInformationSection
           formData={formData}

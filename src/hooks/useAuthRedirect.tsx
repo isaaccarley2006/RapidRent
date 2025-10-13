@@ -20,36 +20,36 @@ export const useAuthRedirect = () => {
 
       // If not logged in, redirect to auth (except if already on auth page)
       if (!user || !session) {
-        if (currentPath !== '/auth') {
-          navigate('/auth', { replace: true })
+        const authRoutes = ['/auth', '/auth/tenant', '/auth/agent']
+        if (!authRoutes.includes(currentPath)) {
+          navigate('/auth/tenant', { replace: true }) // Default to tenant auth
         }
         setRedirecting(false)
         return
       }
 
       try {
-        // If profile doesn't exist, create one and redirect to onboarding
+        // If profile doesn't exist, create one and redirect to dashboard
         if (!profile) {
           await createProfile({
             email: user.email,
-            profile_complete: false
+            profile_complete: true
           })
           
-          if (currentPath !== '/onboarding') {
-            navigate('/onboarding', { replace: true })
+          if (currentPath !== '/dashboard') {
+            navigate('/dashboard', { replace: true })
           }
           setRedirecting(false)
           return
         }
 
-        const isOnboardingComplete = profile.profile_complete || false
-
-        // Redirect based on profile completion status
-        if (!isOnboardingComplete && currentPath !== '/onboarding') {
-          navigate('/onboarding', { replace: true })
-        } else if (isOnboardingComplete) {
-          // Use generic dashboard path for simplicity
-          if (currentPath === '/auth' || currentPath === '/onboarding' || currentPath === '/') {
+        // Redirect authenticated users based on their role
+        const authRoutes = ['/auth', '/auth/tenant', '/auth/agent']
+        if (authRoutes.includes(currentPath) || currentPath === '/onboarding' || currentPath === '/') {
+          // Route based on user type
+          if (profile.user_type === 'agent') {
+            navigate('/profile', { replace: true })
+          } else {
             navigate('/dashboard', { replace: true })
           }
         }

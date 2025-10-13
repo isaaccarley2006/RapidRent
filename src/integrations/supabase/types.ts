@@ -50,6 +50,96 @@ export type Database = {
         }
         Relationships: []
       }
+      community_connections: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          requester_id: string
+          status: string
+          target_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          requester_id: string
+          status?: string
+          target_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          requester_id?: string
+          status?: string
+          target_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      community_profile_cards: {
+        Row: {
+          bio: string | null
+          budget_per_person: number | null
+          community_groups: string[] | null
+          created_at: string
+          duration_months: number | null
+          gender_preference: string | null
+          has_pets: boolean | null
+          headline: string
+          id: string
+          is_smoker: boolean | null
+          move_in_date: string | null
+          occupation: string | null
+          preferred_areas: string[] | null
+          status: string
+          updated_at: string
+          user_id: string
+          work_pattern: string | null
+        }
+        Insert: {
+          bio?: string | null
+          budget_per_person?: number | null
+          community_groups?: string[] | null
+          created_at?: string
+          duration_months?: number | null
+          gender_preference?: string | null
+          has_pets?: boolean | null
+          headline: string
+          id?: string
+          is_smoker?: boolean | null
+          move_in_date?: string | null
+          occupation?: string | null
+          preferred_areas?: string[] | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          work_pattern?: string | null
+        }
+        Update: {
+          bio?: string | null
+          budget_per_person?: number | null
+          community_groups?: string[] | null
+          created_at?: string
+          duration_months?: number | null
+          gender_preference?: string | null
+          has_pets?: boolean | null
+          headline?: string
+          id?: string
+          is_smoker?: boolean | null
+          move_in_date?: string | null
+          occupation?: string | null
+          preferred_areas?: string[] | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          work_pattern?: string | null
+        }
+        Relationships: []
+      }
       offers: {
         Row: {
           created_at: string
@@ -178,6 +268,7 @@ export type Database = {
           job_title: string | null
           move_in_date: string | null
           national_insurance_number: string | null
+          nationality: string | null
           pet_details: string | null
           phone: string | null
           previous_address: string | null
@@ -190,6 +281,7 @@ export type Database = {
           time_at_current_address: string | null
           updated_at: string
           user_type: string | null
+          visa_type: string | null
         }
         Insert: {
           account_holder_name?: string | null
@@ -228,6 +320,7 @@ export type Database = {
           job_title?: string | null
           move_in_date?: string | null
           national_insurance_number?: string | null
+          nationality?: string | null
           pet_details?: string | null
           phone?: string | null
           previous_address?: string | null
@@ -240,6 +333,7 @@ export type Database = {
           time_at_current_address?: string | null
           updated_at?: string
           user_type?: string | null
+          visa_type?: string | null
         }
         Update: {
           account_holder_name?: string | null
@@ -278,6 +372,7 @@ export type Database = {
           job_title?: string | null
           move_in_date?: string | null
           national_insurance_number?: string | null
+          nationality?: string | null
           pet_details?: string | null
           phone?: string | null
           previous_address?: string | null
@@ -290,6 +385,7 @@ export type Database = {
           time_at_current_address?: string | null
           updated_at?: string
           user_type?: string | null
+          visa_type?: string | null
         }
         Relationships: [
           {
@@ -832,7 +928,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_agent_profile: {
+        Args: {
+          p_agency_name: string
+          p_branch_address: string
+          p_company_registration_number?: string
+          p_is_sole_trader?: boolean
+          p_legal_company_name: string
+          p_primary_contact_email: string
+          p_primary_contact_name: string
+          p_terms_accepted?: boolean
+          p_user_id: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
