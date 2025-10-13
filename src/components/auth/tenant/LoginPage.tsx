@@ -37,6 +37,12 @@ export const LoginPage: React.FC<Props> = () => {
         setLoading(true);
         const userData: any = await authLogin(values);
 
+        const data = {
+          token: userData.data.token,
+          user: userData.data.user,
+        };
+
+        localStorage.setItem("token", data.token);
         // Store token and user in redux
         dispatch(
           setAuth({ token: userData.data.token, user: userData.data.user })
