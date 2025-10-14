@@ -489,6 +489,44 @@ export const AgentAuthForm: React.FC<AgentAuthFormProps> = ({
                 <span className="w-full border-t border-muted" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-text-muted">Quick test login</span>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={async () => {
+                  signInForm.setValue('email', 'tenant@test.com')
+                  signInForm.setValue('password', 'password123')
+                  await onSignIn({ email: 'tenant@test.com', password: 'password123' })
+                }}
+                className="flex-1 h-10"
+                disabled={loading}
+              >
+                Tenant Demo
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={async () => {
+                  signInForm.setValue('email', 'landlord@test.com')
+                  signInForm.setValue('password', 'password123')
+                  await onSignIn({ email: 'landlord@test.com', password: 'password123' })
+                }}
+                className="flex-1 h-10"
+                disabled={loading}
+              >
+                Agent Demo
+              </Button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-muted" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-text-muted">Or continue with</span>
               </div>
             </div>
