@@ -11,7 +11,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   const navigate = useNavigate()
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md mx-auto px-6">
         <button
           onClick={() => navigate('/')}

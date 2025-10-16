@@ -9,7 +9,7 @@ export const TestimonialsSection: React.FC = () => {
           What our users say
         </Heading>
         <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
+          <Card className="bg-card rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
@@ -29,7 +29,7 @@ export const TestimonialsSection: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
+          <Card className="bg-card rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
@@ -49,7 +49,7 @@ export const TestimonialsSection: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white rounded-xl shadow-sm border border-muted p-6">
+          <Card className="bg-card rounded-xl shadow-sm border border-muted p-6">
             <CardContent className="pt-0">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}

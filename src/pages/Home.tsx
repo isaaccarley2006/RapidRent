@@ -19,7 +19,7 @@ const Home: React.FC = () => {
         <meta property="og:title" content="RapidRent - Find Your Perfect Rental Property" />
         <meta property="og:description" content="Discover quality rental properties with RapidRent. Browse verified listings, connect with landlords, and find your ideal home." />
       </Helmet>
-      <div className="min-h-screen bg-white font-sans">
+      <div className="min-h-screen bg-background font-sans">
         <HeroSection />
         <FeaturesSection />
         <TestimonialsSection />
