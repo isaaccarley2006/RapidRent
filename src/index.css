@@ -7,13 +7,13 @@
 
 @layer base {
   :root {
-    --background: 36 100% 98%;
+    --background: 24 100% 97%;
     --foreground: 210 14% 20%;
 
-    --card: 36 100% 98%;
+    --card: 24 100% 97%;
     --card-foreground: 210 14% 20%;
 
-    --popover: 36 100% 98%;
+    --popover: 24 100% 97%;
     --popover-foreground: 210 14% 20%;
 
     --primary: 21 100% 49%;
@@ -55,7 +55,7 @@
       --accent-hex: #FF7A00;
       --accent-dark-hex: #E55A00;
       --accent-variant-hex: #FF9533;
-      --background-hex: #FFFBF5;
+      --background-hex: #FFF6F0;
       --surface-hex: #F9F9F9;
       --muted-hex: #E0E0E0;
       --text-primary-hex: #1F2937;
