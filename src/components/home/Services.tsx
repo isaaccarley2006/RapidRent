@@ -1,4 +1,5 @@
 import { MdOutlineHomeWork } from "react-icons/md";
+import { motion } from "framer-motion";
 
 export default function Services() {
   const services = [
@@ -48,25 +49,35 @@ export default function Services() {
         </h6>
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="bg-white p-8 flex flex-col gap-4 rounded-lg "
-            >
-              <div className="flex">
-                <div className=" bg-accent text-white p-4 rounded-full">
-                  <service.icon size={22} />
-                </div>
-              </div>
-              <h3 className="text-xl font-plus-jakarta-sans font-bold text-gray-900 ">
-                {service.title}
-              </h3>
-              <p className="text-gray-400 text-sm font-poppins">
-                {service.description}
-              </p>
-            </div>
+            <ServiceCard index={index} service={service} />
           ))}
         </div>
       </div>
     </section>
   );
 }
+
+const ServiceCard = ({ service, index }: { service: any; index: number }) => {
+  return (
+    <motion.div
+      key={index}
+      className="bg-white p-8 flex flex-col gap-4 rounded-lg"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.2 }}
+    >
+      <div className="flex">
+        <div className="bg-accent text-white p-4 rounded-full">
+          <service.icon size={22} />
+        </div>
+      </div>
+      <h3 className="text-xl font-plus-jakarta-sans font-bold text-gray-900">
+        {service.title}
+      </h3>
+      <p className="text-gray-400 text-sm font-poppins">
+        {service.description}
+      </p>
+    </motion.div>
+  );
+};

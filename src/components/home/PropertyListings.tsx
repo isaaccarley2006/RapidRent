@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { MdArrowForward } from "react-icons/md";
 import { LiaBathSolid, LiaBedSolid } from "react-icons/lia";
 import { CiRuler } from "react-icons/ci";
+import { motion } from "framer-motion";
 
 export default function PropertyListings() {
   const properties = [
@@ -34,7 +35,13 @@ export default function PropertyListings() {
   return (
     <section className=" py-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-12">
+        <motion.div
+          className="flex items-center justify-between mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <div className=" flex flex-col ">
             <h2 className="text-4xl font-semibold pb-2 font-plus-jakarta-sans text-gray-900">
               Latest property listings
@@ -50,12 +57,30 @@ export default function PropertyListings() {
           >
             View All Listings <MdArrowForward />
           </Button>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {properties.map((property) => (
-            <div
-              key={property.id}
+        </motion.div>
+
+        <motion.div
+          className="grid md:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.3, delayChildren: 0.4 } }, // header finishes first
+          }}
+        >
+          {properties.map((property, index) => (
+            <motion.div
+              key={index}
               className="bg-white rounded-2xl overflow-hidden"
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6, ease: "easeOut" },
+                },
+              }}
             >
               <div className="relative">
                 <img
@@ -93,9 +118,9 @@ export default function PropertyListings() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

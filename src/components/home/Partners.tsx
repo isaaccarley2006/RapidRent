@@ -4,7 +4,7 @@ export default function Partners() {
   return (
     <section className="bg-white py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 items-center gap-20">
+        <div className="grid md:grid-cols-2 items-center gap-20">
           <div>
             <h2 className="text-4xl font-plus-jakarta-sans font-semibold text-gray-900 mb-6">
               Our Trusted Partners

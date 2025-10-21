@@ -31,6 +31,7 @@ const Home: React.FC = () => {
           content="Discover quality rental properties with RapidRent. Browse verified listings, connect with landlords, and find your ideal home."
         />
       </Helmet>
+      {/* max-w-7xl */}
       <div className="min-h-screen bg-white font-sans">
         <HeroSection />
         <ValueProposition />

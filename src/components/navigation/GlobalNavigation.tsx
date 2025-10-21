@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { DesktopNavigation } from "./DesktopNavigation";
 import { MobileNavigation } from "./MobileNavigation";
 import { MobileMenuToggle } from "./MobileMenuToggle";
+import clsx from "clsx";
 
 interface NavigationProps {
   userType?: "tenant" | "landlord";
@@ -10,6 +11,7 @@ interface NavigationProps {
 
 export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -19,12 +21,30 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
     setIsMobileMenuOpen(false);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="bg-white border-b border-muted shadow-sm sticky top-0 z-50">
+    <header
+      className={clsx(
+        `sticky top-0 z-50 shadow-sm transition-all duration-300`,
+        scrolled ? "bg-white/10 backdrop-blur" : "bg-transparent"
+      )}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Logo userType={userType} />
-          <DesktopNavigation userType={userType} />
+          <Logo scrolled={scrolled} userType={userType} />
+          <DesktopNavigation scrolled={scrolled} userType={userType} />
           <MobileMenuToggle
             isOpen={isMobileMenuOpen}
             onToggle={toggleMobileMenu}

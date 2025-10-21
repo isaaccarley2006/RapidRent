@@ -19,7 +19,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
     <div className="min-h-screen font-sans bg-transparent flex flex-col">
       {shouldShowNavigation && <NavigationWrapper />}
       <div className="flex-1">
-        <div className="mx-auto max-w-7xl">{children}</div>
+        <div className="mx-auto">{children}</div>
       </div>
       <Footer />
     </div>
