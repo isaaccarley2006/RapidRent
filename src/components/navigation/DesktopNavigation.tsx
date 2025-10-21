@@ -1,92 +1,93 @@
-
-import React from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { useAuth } from '@/contexts/AuthContext'
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DesktopNavigationProps {
-  userType?: 'tenant' | 'landlord'
+  userType?: "tenant" | "landlord";
 }
 
-export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({ userType }) => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { user, signOut } = useAuth()
+export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
+  userType,
+}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const handleSignOut = async () => {
-    await signOut()
-    navigate('/')
-  }
+    await signOut();
+    navigate("/");
+  };
 
   const isActivePath = (path: string) => {
-    if (path === '/dashboard' && userType) {
-      return location.pathname === `/dashboard/${userType}`
+    if (path === "/dashboard" && userType) {
+      return location.pathname === `/dashboard/${userType}`;
     }
-    return location.pathname === path
-  }
+    return location.pathname === path;
+  };
 
   const getDashboardPath = () => {
-    return userType ? `/dashboard/${userType}` : '/dashboard'
-  }
+    return userType ? `/dashboard/${userType}` : "/dashboard";
+  };
 
   return (
     <nav className="hidden md:flex items-center space-x-6">
       {user ? (
         <>
           {/* Authenticated User Links - No Home button */}
-          <button 
+          <button
             onClick={() => navigate(getDashboardPath())}
             className={`px-3 py-2 text-sm font-medium transition-colors ${
-              isActivePath('/dashboard') 
-                ? 'text-primary font-semibold' 
-                : 'text-text-primary hover:text-primary'
+              isActivePath("/dashboard")
+                ? "text-primary font-semibold"
+                : "text-text-primary hover:text-primary"
             }`}
           >
             Dashboard
           </button>
 
-          <button 
-            onClick={() => navigate('/listings')}
+          <button
+            onClick={() => navigate("/listings")}
             className={`px-3 py-2 text-sm font-medium transition-colors ${
-              isActivePath('/listings') 
-                ? 'text-primary font-semibold' 
-                : 'text-text-primary hover:text-primary'
+              isActivePath("/listings")
+                ? "text-primary font-semibold"
+                : "text-text-primary hover:text-primary"
             }`}
           >
-            {userType === 'landlord' ? 'Listings' : 'Properties'}
+            {userType === "landlord" ? "Listings" : "Properties"}
           </button>
 
-          <button 
-            onClick={() => navigate('/profile')}
+          <button
+            onClick={() => navigate("/profile")}
             className={`px-3 py-2 text-sm font-medium transition-colors ${
-              isActivePath('/profile') 
-                ? 'text-primary font-semibold' 
-                : 'text-text-primary hover:text-primary'
+              isActivePath("/profile")
+                ? "text-primary font-semibold"
+                : "text-text-primary hover:text-primary"
             }`}
           >
             Profile
           </button>
 
-          {userType === 'tenant' && (
-            <button 
-              onClick={() => navigate('/tenant/communities')}
+          {userType === "tenant" && (
+            <button
+              onClick={() => navigate("/tenant/communities")}
               className={`px-3 py-2 text-sm font-medium transition-colors ${
-                isActivePath('/tenant/communities') 
-                  ? 'text-primary font-semibold' 
-                  : 'text-text-primary hover:text-primary'
+                isActivePath("/tenant/communities")
+                  ? "text-primary font-semibold"
+                  : "text-text-primary hover:text-primary"
               }`}
             >
               Communities
             </button>
           )}
 
-          {userType === 'landlord' && (
-            <button 
-              onClick={() => navigate('/create-listing')}
+          {userType === "landlord" && (
+            <button
+              onClick={() => navigate("/create-listing")}
               className={`px-3 py-2 text-sm font-medium transition-colors ${
-                isActivePath('/create-listing') 
-                  ? 'text-primary font-semibold' 
-                  : 'text-text-primary hover:text-primary'
+                isActivePath("/create-listing")
+                  ? "text-primary font-semibold"
+                  : "text-text-primary hover:text-primary"
               }`}
             >
               Create Listing
@@ -104,37 +105,37 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({ userType }
       ) : (
         <>
           {/* Public User Links */}
-          <button 
-            onClick={() => navigate('/')}
+          <button
+            onClick={() => navigate("/")}
             className={`px-3 py-2 text-sm font-medium transition-colors ${
-              isActivePath('/') 
-                ? 'text-primary font-semibold' 
-                : 'text-text-primary hover:text-primary'
+              isActivePath("/")
+                ? "text-primary font-semibold"
+                : "text-text-primary hover:text-primary"
             }`}
           >
             Home
           </button>
 
-          <button 
-            onClick={() => navigate('/listings')}
+          <button
+            onClick={() => navigate("/listings")}
             className={`px-3 py-2 text-sm font-medium transition-colors ${
-              isActivePath('/listings') 
-                ? 'text-primary font-semibold' 
-                : 'text-text-primary hover:text-primary'
+              isActivePath("/listings")
+                ? "text-primary font-semibold"
+                : "text-text-primary hover:text-primary"
             }`}
           >
             Listings
           </button>
 
-          <button 
-            onClick={() => navigate('/auth')}
+          <button
+            onClick={() => navigate("/auth")}
             className="px-3 py-2 text-sm font-medium text-text-primary hover:text-primary transition-colors"
           >
             Sign In
           </button>
 
-          <Button 
-            onClick={() => navigate('/auth')}
+          <Button
+            onClick={() => navigate("/auth")}
             className="bg-primary hover:bg-primary-dark text-white rounded-xl font-medium"
           >
             Get Started
@@ -142,5 +143,5 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({ userType }
         </>
       )}
     </nav>
-  )
-}
+  );
+};

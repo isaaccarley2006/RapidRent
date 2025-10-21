@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import homeHero from "@/assets/home-hero.png";
+import { MdOutlineHomeWork } from "react-icons/md";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+
 export const HeroSection: React.FC = () => {
   const navigate = useNavigate();
   const [searchLocation, setSearchLocation] = useState("");
@@ -18,56 +19,47 @@ export const HeroSection: React.FC = () => {
     navigate("/auth/agent");
   };
   return (
-    <section className="py-20 px-6 bg-white">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-6">
-          <h1 className="text-6xl md:text-7xl font-bold text-text-primary leading-tight">
-            Find your perfect
-          </h1>
-          <h1 className="text-6xl md:text-7xl font-bold text-primary mt-2 leading-tight">
-            place to call home.
-          </h1>
-        </div>
-        <p className="text-2xl text-text-muted mb-12 max-w-2xl mx-auto">
-          One platform for your entire rental journey – verified profiles,
-          centralised listings, eligibility checks, and a secure, faster process
-          for renters, landlords, and agents.
-        </p>
-
-        {/* Search Input */}
-        <div className="max-w-2xl mx-auto mb-8">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-muted w-5 h-5" />
-            <Input
-              type="text"
-              placeholder="Where do you want to live?"
-              value={searchLocation}
-              onChange={(e) => setSearchLocation(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-              className="pl-12 pr-4 py-4 text-lg rounded-xl border-2 border-muted focus:border-primary focus:ring-primary bg-white"
-            />
-          </div>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-          <Button
-            onClick={handleRenterClick}
-            size="lg"
-            className="bg-primary hover:bg-primary-dark text-white px-8 py-4 text-lg rounded-xl"
-          >
-            I'm a Renter
-          </Button>
-          <Button
-            onClick={handleLandlordClick}
-            variant="outline"
-            size="lg"
-            className="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 text-lg rounded-xl"
-          >
-            I'm a Landlord
-          </Button>
-        </div>
+    <section
+      className="relative h-[70vh] bg-cover   bg-center"
+      style={{
+        backgroundImage: `url(${homeHero})`,
+      }}
+    >
+      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
+        <h1 className="text-5xl md:text-7xl  text-white mb-4 text-balance font-poppins font-medium">
+          Find Your Next
+          <br />
+          Home Sweet Home
+        </h1>
       </div>
+      <Search />
     </section>
+  );
+};
+
+const Search = () => {
+  return (
+    <div className="flex gap-4  -mt-10 mx-auto z-10 relative  shadow-lg shadow-gray-100   items-center bg-white rounded-3xl p-4 w-9/12">
+      <div className="flex gap-4 border-r flex-1 items-center">
+        <MdOutlineHomeWork className=" text-gray-400" />
+        <input
+          type="text"
+          placeholder="Enter an address, neighborhood, city, or  postcode"
+          className="flex-1 font-plus-jakarta-sans text-sm  outline-none  py-3 rounded-lg text-gray-900"
+        />
+      </div>
+
+      <Button
+        size="icon"
+        variant="ghost"
+        className="hover:bg-gray-50 hover:text-black"
+      >
+        <MdOutlineHomeWork className="text-gray-400" />
+      </Button>
+      <Button size="lg" className="rounded-xl font-plus-jakarta-sans">
+        Search Property
+      </Button>
+    </div>
   );
 };

@@ -1,40 +1,39 @@
-
-import React, { useEffect, useState } from 'react'
-import { GlobalNavigation } from './GlobalNavigation'
-import { useAuth } from '@/contexts/AuthContext'
-import { supabase } from '@/lib/supabase'
+import React, { useEffect, useState } from "react";
+import { GlobalNavigation } from "./GlobalNavigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 export const NavigationWrapper: React.FC = () => {
-  const { user } = useAuth()
-  const [userType, setUserType] = useState<'tenant' | 'landlord' | undefined>()
-  const [loading, setLoading] = useState(true)
+  const { user } = useAuth();
+  const [userType, setUserType] = useState<"tenant" | "landlord" | undefined>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
-      setUserType(undefined)
-      setLoading(false)
-      return
+      setUserType(undefined);
+      setLoading(false);
+      return;
     }
 
     // Debounce the profile fetch to avoid multiple calls
     const timeoutId = setTimeout(async () => {
       try {
         const { data: profile } = await supabase
-          .from('profiles')
-          .select('user_type')
-          .eq('id', user.id)
-          .maybeSingle()
+          .from("profiles")
+          .select("user_type")
+          .eq("id", user.id)
+          .maybeSingle();
 
-        setUserType(profile?.user_type as 'tenant' | 'landlord' | undefined)
+        setUserType(profile?.user_type as "tenant" | "landlord" | undefined);
       } catch (error) {
-        console.error('Error fetching user type:', error)
+        console.error("Error fetching user type:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }, 100) // Small delay to debounce
+    }, 100); // Small delay to debounce
 
-    return () => clearTimeout(timeoutId)
-  }, [user])
+    return () => clearTimeout(timeoutId);
+  }, [user]);
 
   if (loading && user) {
     return (
@@ -51,8 +50,8 @@ export const NavigationWrapper: React.FC = () => {
           </div>
         </div>
       </header>
-    )
+    );
   }
 
-  return <GlobalNavigation userType={userType} />
-}
+  return <GlobalNavigation userType={userType} />;
+};

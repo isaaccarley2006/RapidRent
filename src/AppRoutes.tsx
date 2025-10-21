@@ -3,7 +3,7 @@ import { AppLayout } from "@/components/layouts/AppLayout";
 import { RenterLayout } from "./layouts/RenterLayout";
 import { LandlordLayout } from "./layouts/LandlordLayout";
 import { AgentLayout } from "./layouts/AgentLayout";
-import Home from "./pages/Home";
+import Home from "./pages/Home-old";
 import Auth from "./pages/Auth";
 import EmailConfirmed from "./pages/EmailConfirmed";
 import Onboarding from "./pages/Onboarding";
