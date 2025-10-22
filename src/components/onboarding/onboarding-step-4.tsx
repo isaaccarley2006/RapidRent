@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -40,11 +40,12 @@ export default function OnboardingStep4() {
                     : ""
                 }`}
               />
-              {formik.touched.firstName && formik.errors.firstName && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.firstName}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="firstName"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
 
             <div>
@@ -61,11 +62,12 @@ export default function OnboardingStep4() {
                     : ""
                 }`}
               />
-              {formik.touched.lastName && formik.errors.lastName && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.lastName}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="lastName"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
 
             <div>
@@ -82,11 +84,12 @@ export default function OnboardingStep4() {
                     : ""
                 }`}
               />
-              {formik.touched.phone && formik.errors.phone && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.phone}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="phone"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
 
             <div>
@@ -103,11 +106,12 @@ export default function OnboardingStep4() {
                     : ""
                 }`}
               />
-              {formik.touched.address && formik.errors.address && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.address}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="address"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -125,11 +129,12 @@ export default function OnboardingStep4() {
                       : ""
                   }`}
                 />
-                {formik.touched.city && formik.errors.city && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {formik.errors.city}
-                  </p>
-                )}
+
+                <ErrorMessage
+                  component={"p"}
+                  name="city"
+                  className="text-red-500 text-sm mt-1"
+                />
               </div>
               <div>
                 <label className="block text-sm  font-normal text-black mb-2">
@@ -145,11 +150,12 @@ export default function OnboardingStep4() {
                       : ""
                   }`}
                 />
-                {formik.touched.postalCode && formik.errors.postalCode && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {formik.errors.postalCode}
-                  </p>
-                )}
+
+                <ErrorMessage
+                  component={"p"}
+                  name="postalCode"
+                  className="text-red-500 text-sm mt-1"
+                />
               </div>
             </div>
 
@@ -167,11 +173,12 @@ export default function OnboardingStep4() {
                     : ""
                 }`}
               />
-              {formik.touched.country && formik.errors.country && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.country}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="country"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
             <Button
               onClick={() => formik.handleSubmit()}

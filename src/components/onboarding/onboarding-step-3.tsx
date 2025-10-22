@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -67,25 +67,24 @@ export default function OnboardingStep3() {
                 onChange={(e) => handleDigitChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 placeholder="0"
-                className={`w-16 h-16 text-center text-4xl font-semibold font-plus-jakarta-sans border rounded-lg ${
+                className={`w-16 h-16 text-center md:text-xl  font-plus-jakarta-sans border rounded-lg ${
                   codeDigits[index]
-                    ? "border-orange-500 bg-orange-50"
-                    : "border-gray-300"
+                    ? "border-orange-500 bg-orange-50 "
+                    : "border-gray-300 "
                 }`}
               />
             ))}
           </div>
 
-          {formik.touched.verificationCode &&
-            formik.errors.verificationCode && (
-              <p className="text-red-500 text-sm text-center mb-4">
-                {formik.errors.verificationCode}
-              </p>
-            )}
+          <ErrorMessage
+            component={"p"}
+            name="verificationCode"
+            className="text-red-500 text-sm text-center mb-8"
+          />
 
           <div className="max-w-[240px] w-full mx-auto">
             <Button
-              onClick={formik.handleSubmit}
+              onClick={() => formik.handleSubmit()}
               className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
             >
               Continue

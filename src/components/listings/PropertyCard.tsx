@@ -61,7 +61,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer bg-white">
+    <Card className="hover:shadow transition-shadow duration-200 cursor-pointer bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <CardTitle className="text-lg font-semibold text-text-primary min-h-[3.5rem] leading-relaxed">

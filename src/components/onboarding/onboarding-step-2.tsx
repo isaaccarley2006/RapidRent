@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormik, useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IoLogoGoogle } from "react-icons/io";
@@ -11,9 +11,9 @@ export default function OnboardingStep2() {
 
   return (
     <div className="w-full h-full  rounded-lg shadow overflow-hidden">
-      <div className="grid h-full grid-cols-2 gap-0">
+      <div className="grid h-full w-full grid-cols-2 gap-0">
         {/* Left Side - Form */}
-        <div className="p-12 max-w-md w-full mx-auto items-center flex flex-col justify-center">
+        <div className="p-12  max-w-md w-full mx-auto items-center flex flex-col justify-center">
           <div className="mb-8 ">
             <h1 className="text-2xl font-bold">
               <span className="text-black">Rapid</span>
@@ -25,7 +25,7 @@ export default function OnboardingStep2() {
             Create your account
           </h2>
 
-          <div>
+          <div className="w-full space-y-4">
             <div className="font-poppins">
               <label className="block text-sm  font-normal text-black mb-2">
                 Email
@@ -40,14 +40,15 @@ export default function OnboardingStep2() {
                     : ""
                 }`}
               />
-              {formik.touched.email && formik.errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.email}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="email"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
 
-            <div>
+            <div className="">
               <label className="block text-sm font-normal text-black mb-2">
                 Password
               </label>
@@ -61,11 +62,12 @@ export default function OnboardingStep2() {
                     : ""
                 }`}
               />
-              {formik.touched.password && formik.errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.password}
-                </p>
-              )}
+
+              <ErrorMessage
+                component={"p"}
+                name="password"
+                className="text-red-500 text-sm mt-1"
+              />
             </div>
 
             <Button
@@ -75,8 +77,7 @@ export default function OnboardingStep2() {
               Continue
             </Button>
           </div>
-
-          <div className="text-center text-xs text-gray-400 mb-4">OR</div>
+          <div className="text-center text-xs text-gray-400 my-4">OR</div>
 
           <Button
             variant="outline"

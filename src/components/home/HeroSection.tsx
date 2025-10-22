@@ -54,7 +54,7 @@ const Search = () => {
       transition={{ duration: 1, ease: "easeOut" }}
       className="w-full -mt-10"
     >
-      <div className="flex gap-4   mx-auto z-10 relative  shadow-lg shadow-gray-100   items-center bg-white rounded-3xl p-4 w-9/12">
+      <div className="flex gap-4   mx-auto z-10 relative  shadow shadow-gray-100   items-center bg-white rounded-3xl p-4 w-9/12">
         <div className="flex gap-4 border-r flex-1 items-center">
           <MdOutlineHomeWork className=" text-gray-400" />
           <input

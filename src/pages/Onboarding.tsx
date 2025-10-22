@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { AuthLayout } from "@/components/layouts/AuthLayout";
-import { OnboardingForm } from "@/components/onboarding/OnboardingFormOld";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import { AppLayout } from "@/components/layouts/AppLayout";
+import { useState } from "react";
 
-import Step1 from "@/components/onboarding/step-1";
-import Step2 from "@/components/onboarding/step-2";
-import Step3 from "@/components/onboarding/step-3";
-import Step4 from "@/components/onboarding/step-4";
-import Step5 from "@/components/onboarding/step-5";
 import Step6 from "@/components/onboarding/step-6";
+import OnboardingStep1 from "@/components/onboarding/onboarding-step-1";
+import OnboardingStep2 from "@/components/onboarding/onboarding-step-2";
+import OnboardingStep3 from "@/components/onboarding/onboarding-step-3";
+import OnboardingStep4 from "@/components/onboarding/onboarding-step-4";
+import OnboardingStep5 from "@/components/onboarding/onboarding-step-5";
+import { Form, Formik } from "formik";
+import {
+  step1ValidationSchema,
+  step2ValidationSchema,
+  step3ValidationSchema,
+  step4ValidationSchema,
+} from "@/components/onboarding/validation-schemas";
 
 // const Onboarding: React.FC = () => {
 //   const { loading } = useAuthRedirect();
@@ -33,7 +35,7 @@ import Step6 from "@/components/onboarding/step-6";
 // export default Onboarding;
 
 export default function OnboardingPage() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
     setCurrentStep((prev) => Math.min(prev + 1, 6));
@@ -43,29 +45,66 @@ export default function OnboardingPage() {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
+  const validationSchema = [
+    null,
+    step1ValidationSchema,
+    step2ValidationSchema,
+    step3ValidationSchema,
+    step4ValidationSchema,
+  ];
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <Step1 onNext={handleNextStep} />;
+        return <OnboardingStep1 />;
       case 2:
-        return <Step2 onNext={handleNextStep} />;
+        return <OnboardingStep2 />;
+
       case 3:
-        return <Step3 onNext={handleNextStep} />;
+        return <OnboardingStep3 />;
       case 4:
-        return <Step4 onNext={handleNextStep} />;
+        return <OnboardingStep4 />;
       case 5:
-        return <Step5 onNext={handleNextStep} />;
+        return <OnboardingStep5 />;
       case 6:
         return <Step6 />;
       default:
-        return <Step1 onNext={handleNextStep} />;
+        return <OnboardingStep1 />;
     }
   };
-
-  // flex items-center justify-center
   return (
-    <div className="w-screen h-screen bg-[#F7F7F7] flex items-center justify-center p-0">
-      {renderStep()}
-    </div>
+    <Formik
+      initialValues={{
+        // Step 1
+        userType: "",
+
+        // Step 2
+        email: "",
+        password: "",
+        // Step 3
+        verificationCode: "",
+        // Step 4
+        firstName: "",
+        lastName: "",
+        phone: "",
+        address: "",
+        city: "",
+        postalCode: "",
+        country: "",
+      }}
+      onSubmit={(values) => {
+        console.log(values, "valuesvalues");
+        handleNextStep();
+      }}
+      validateOnChange
+      validateOnBlur
+      validationSchema={validationSchema[currentStep]}
+    >
+      {() => (
+        <Form className="w-screen h-screen bg-[#F7F7F7] flex items-center justify-center p-0">
+          {renderStep()}
+        </Form>
+      )}
+    </Formik>
   );
 }

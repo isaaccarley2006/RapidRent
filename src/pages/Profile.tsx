@@ -1,30 +1,40 @@
-import React, { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
-import { useProfile } from '@/hooks/useProfile'
-import { useDemoMode } from '@/hooks/useDemoMode'
-import { LoadingSpinner } from '@/components/common/LoadingSpinner'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { ChevronDown } from 'lucide-react'
-import { LandlordProfileContent } from '@/components/profile/LandlordProfileContent'
-import { AgentProfileContent } from '@/components/profile/AgentProfileContent'
-import { CreditVerificationCard } from '@/components/verification/CreditVerificationCard'
-import { IncomeVerificationCard } from '@/components/verification/IncomeVerificationCard'
-import { RightToRentCard } from '@/components/verification/RightToRentCard'
-import { IdentificationCard } from '@/components/verification/IdentificationCard'
-import { CreditVerificationDetails } from '@/components/verification/CreditVerificationDetails'
-import { IncomeVerificationDetails } from '@/components/verification/IncomeVerificationDetails'
-import { RightToRentDetails } from '@/components/verification/RightToRentDetails'
-import { IdentityVerificationDetails } from '@/components/verification/IdentityVerificationDetails'
+import React, { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useProfile } from "@/hooks/useProfile";
+import { useDemoMode } from "@/hooks/useDemoMode";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
+import { LandlordProfileContent } from "@/components/profile/LandlordProfileContent";
+import { AgentProfileContent } from "@/components/profile/AgentProfileContent";
+import { CreditVerificationCard } from "@/components/verification/CreditVerificationCard";
+import { IncomeVerificationCard } from "@/components/verification/IncomeVerificationCard";
+import { RightToRentCard } from "@/components/verification/RightToRentCard";
+import { IdentificationCard } from "@/components/verification/IdentificationCard";
+import { CreditVerificationDetails } from "@/components/verification/CreditVerificationDetails";
+import { IncomeVerificationDetails } from "@/components/verification/IncomeVerificationDetails";
+import { RightToRentDetails } from "@/components/verification/RightToRentDetails";
+import { IdentityVerificationDetails } from "@/components/verification/IdentityVerificationDetails";
 
-type VerificationSection = 'credit' | 'income' | 'rightToRent' | 'identity' | null
+type VerificationSection =
+  | "credit"
+  | "income"
+  | "rightToRent"
+  | "identity"
+  | null;
 
 const Profile: React.FC = () => {
-  const { user, signOut } = useAuth()
-  const { isDemoMode } = useDemoMode()
-  const [expandedSection, setExpandedSection] = useState<VerificationSection>(null)
-  
+  const { user, signOut } = useAuth();
+  const { isDemoMode } = useDemoMode();
+  const [expandedSection, setExpandedSection] =
+    useState<VerificationSection>(null);
+
   const {
     profile,
     references,
@@ -33,34 +43,37 @@ const Profile: React.FC = () => {
     formData,
     setFormData,
     saveProfile,
-    addReference
-  } = useProfile()
+    addReference,
+  } = useProfile();
 
   if (loading) {
-    return <LoadingSpinner />
+    return <LoadingSpinner />;
   }
 
   // Check user type
-  console.log('Profile page - formData.user_type:', formData.user_type)
-  const isLandlord = formData.user_type === 'landlord'
-  const isAgent = formData.user_type === 'agent'
-  console.log('Profile page - isAgent:', isAgent, 'isLandlord:', isLandlord)
+  console.log("Profile page - formData.user_type:", formData.user_type);
+  const isLandlord = formData.user_type === "landlord";
+  const isAgent = formData.user_type === "agent";
+  console.log("Profile page - isAgent:", isAgent, "isLandlord:", isLandlord);
 
   if (isAgent) {
     return (
       <>
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-semibold text-text-primary">Agency Profile</h1>
+            <h1 className="text-3xl font-semibold text-text-primary">
+              Agency Profile
+            </h1>
             <p className="text-text-muted mt-2">
-              Complete your agency profile to start managing properties and tenants
+              Complete your agency profile to start managing properties and
+              tenants
             </p>
           </div>
 
           <AgentProfileContent
             formData={formData}
             setFormData={setFormData}
-            userEmail={user?.email || ''}
+            userEmail={user?.email || ""}
           />
 
           {/* Save Button */}
@@ -73,20 +86,22 @@ const Profile: React.FC = () => {
               Sign Out
             </Button>
             <Button onClick={saveProfile} disabled={saving} size="lg">
-              {saving ? <LoadingSpinner /> : 'Save Profile'}
+              {saving ? <LoadingSpinner /> : "Save Profile"}
             </Button>
           </div>
         </div>
       </>
-    )
+    );
   }
 
   if (isLandlord) {
     return (
-          <>
+      <>
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-semibold text-text-primary">Landlord Profile</h1>
+            <h1 className="text-3xl font-semibold text-text-primary">
+              Landlord Profile
+            </h1>
             <p className="text-text-muted mt-2">
               Complete your landlord profile to manage your properties
             </p>
@@ -95,7 +110,7 @@ const Profile: React.FC = () => {
           <LandlordProfileContent
             formData={formData}
             setFormData={setFormData}
-            userEmail={user?.email || ''}
+            userEmail={user?.email || ""}
           />
 
           {/* Save Button */}
@@ -108,38 +123,40 @@ const Profile: React.FC = () => {
               Sign Out
             </Button>
             <Button onClick={saveProfile} disabled={saving} size="lg">
-              {saving ? <LoadingSpinner /> : 'Save Profile'}
+              {saving ? <LoadingSpinner /> : "Save Profile"}
             </Button>
           </div>
         </div>
       </>
-    )
+    );
   }
 
   const handleCardClick = (section: VerificationSection) => {
-    setExpandedSection(expandedSection === section ? null : section)
-  }
+    setExpandedSection(expandedSection === section ? null : section);
+  };
 
   const renderDetailSection = () => {
     switch (expandedSection) {
-      case 'credit':
-        return <CreditVerificationDetails />
-      case 'income':
-        return <IncomeVerificationDetails />
-      case 'rightToRent':
-        return <RightToRentDetails />
-      case 'identity':
-        return <IdentityVerificationDetails />
+      case "credit":
+        return <CreditVerificationDetails />;
+      case "income":
+        return <IncomeVerificationDetails />;
+      case "rightToRent":
+        return <RightToRentDetails />;
+      case "identity":
+        return <IdentityVerificationDetails />;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <>
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-semibold text-text-primary">Verification Journey</h1>
+          <h1 className="text-3xl font-semibold text-text-primary">
+            Verification Journey
+          </h1>
           <p className="text-text-muted mt-2">
             Complete your verification to strengthen your rental applications
           </p>
@@ -147,48 +164,62 @@ const Profile: React.FC = () => {
 
         {/* 4-Column Verification Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-          <div 
+          <div
             className={`cursor-pointer transition-all duration-200 ${
-              expandedSection === 'credit' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+              expandedSection === "credit"
+                ? "ring-2 ring-primary"
+                : "hover:shadow"
             }`}
-            onClick={() => handleCardClick('credit')}
+            onClick={() => handleCardClick("credit")}
           >
             <CreditVerificationCard />
           </div>
-          <div 
+          <div
             className={`cursor-pointer transition-all duration-200 ${
-              expandedSection === 'income' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+              expandedSection === "income"
+                ? "ring-2 ring-primary"
+                : "hover:shadow"
             }`}
-            onClick={() => handleCardClick('income')}
+            onClick={() => handleCardClick("income")}
           >
             <IncomeVerificationCard />
           </div>
-          <div 
+          <div
             className={`cursor-pointer transition-all duration-200 ${
-              expandedSection === 'rightToRent' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+              expandedSection === "rightToRent"
+                ? "ring-2 ring-primary"
+                : "hover:shadow"
             }`}
-            onClick={() => handleCardClick('rightToRent')}
+            onClick={() => handleCardClick("rightToRent")}
           >
             <RightToRentCard />
           </div>
-          <div 
+          <div
             className={`cursor-pointer transition-all duration-200 ${
-              expandedSection === 'identity' ? 'ring-2 ring-primary' : 'hover:shadow-lg'
+              expandedSection === "identity"
+                ? "ring-2 ring-primary"
+                : "hover:shadow"
             }`}
-            onClick={() => handleCardClick('identity')}
+            onClick={() => handleCardClick("identity")}
           >
             <IdentificationCard />
           </div>
         </div>
 
         {/* Expandable Details Section */}
-        <Collapsible open={expandedSection !== null} onOpenChange={() => setExpandedSection(null)}>
+        <Collapsible
+          open={expandedSection !== null}
+          onOpenChange={() => setExpandedSection(null)}
+        >
           <CollapsibleContent className="space-y-0">
             {expandedSection && (
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold text-text-primary capitalize">
-                    {expandedSection === 'rightToRent' ? 'Right to Rent' : expandedSection} Details
+                    {expandedSection === "rightToRent"
+                      ? "Right to Rent"
+                      : expandedSection}{" "}
+                    Details
                   </h2>
                   <Button
                     variant="ghost"
@@ -218,7 +249,7 @@ const Profile: React.FC = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

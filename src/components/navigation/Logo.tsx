@@ -6,9 +6,14 @@ import clsx from "clsx";
 interface LogoProps {
   userType?: "tenant" | "landlord";
   scrolled?: boolean;
+  isTransparentRoute?: boolean;
 }
 
-export const Logo: React.FC<LogoProps> = ({ userType, scrolled }) => {
+export const Logo: React.FC<LogoProps> = ({
+  userType,
+  scrolled,
+  isTransparentRoute,
+}) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -30,7 +35,7 @@ export const Logo: React.FC<LogoProps> = ({ userType, scrolled }) => {
     <div
       className={clsx(
         `text-2xl font-bold  cursor-pointer`,
-        scrolled ? "text-text-primary" : "text-white"
+        isTransparentRoute && !scrolled ? "text-white" : "text-text-primary"
       )}
       onClick={handleLogoClick}
     >

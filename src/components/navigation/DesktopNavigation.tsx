@@ -7,11 +7,13 @@ import clsx from "clsx";
 interface DesktopNavigationProps {
   userType?: "tenant" | "landlord";
   scrolled?: boolean;
+  isTransparentRoute?: boolean;
 }
 
 export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   userType,
   scrolled,
+  isTransparentRoute,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -132,9 +134,9 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 
                   isActivePath(link.link)
                     ? "text-primary font-semibold"
-                    : scrolled
-                    ? "text-text-primary hover:text-primary"
-                    : "text-white"
+                    : isTransparentRoute && !scrolled
+                    ? "text-white"
+                    : "text-text-primary hover:text-primary"
                 )}
               >
                 {link.label}
@@ -142,7 +144,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
             );
           })}
 
-          <Button onClick={() => navigate("/auth")} className=" rounded-xl">
+          <Button onClick={() => navigate("/listings")} className=" rounded-xl">
             Login In
           </Button>
         </>

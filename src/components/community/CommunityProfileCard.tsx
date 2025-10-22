@@ -1,104 +1,110 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { 
-  MapPin, 
-  Calendar, 
-  Clock, 
-  Briefcase, 
-  Users, 
-  PawPrint, 
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  MapPin,
+  Calendar,
+  Clock,
+  Briefcase,
+  Users,
+  PawPrint,
   Cigarette,
   Shield,
-  MessageCircle
-} from 'lucide-react'
-import { format } from 'date-fns'
+  MessageCircle,
+} from "lucide-react";
+import { format } from "date-fns";
 
 interface CommunityProfile {
-  id: string
-  user_id: string
-  headline: string
-  bio: string | null
-  budget_per_person: number | null
-  preferred_areas: string[] | null
-  move_in_date: string | null
-  duration_months: number | null
-  gender_preference: string | null
-  occupation: string | null
-  work_pattern: string | null
-  has_pets: boolean
-  is_smoker: boolean
-  status: string
-  community_groups: string[]
-  created_at: string
+  id: string;
+  user_id: string;
+  headline: string;
+  bio: string | null;
+  budget_per_person: number | null;
+  preferred_areas: string[] | null;
+  move_in_date: string | null;
+  duration_months: number | null;
+  gender_preference: string | null;
+  occupation: string | null;
+  work_pattern: string | null;
+  has_pets: boolean;
+  is_smoker: boolean;
+  status: string;
+  community_groups: string[];
+  created_at: string;
 }
 
 interface CommunityProfileCardProps {
-  profile: CommunityProfile
-  currentUserId?: string
+  profile: CommunityProfile;
+  currentUserId?: string;
 }
 
 const getStatusBadgeVariant = (status: string) => {
   switch (status) {
-    case 'active': return 'default'
-    case 'paused': return 'secondary'
-    case 'filled': return 'outline'
-    case 'expired': return 'destructive'
-    default: return 'secondary'
+    case "active":
+      return "default";
+    case "paused":
+      return "secondary";
+    case "filled":
+      return "outline";
+    case "expired":
+      return "destructive";
+    default:
+      return "secondary";
   }
-}
+};
 
 const COMMUNITY_GROUPS = [
-  { id: 'Spanish', label: 'Spanish', flag: '🇪🇸' },
-  { id: 'French', label: 'French', flag: '🇫🇷' },
-  { id: 'German', label: 'German', flag: '🇩🇪' },
-  { id: 'British', label: 'British', flag: '🇬🇧' },
-  { id: 'Italian', label: 'Italian', flag: '🇮🇹' },
-  { id: 'Portuguese', label: 'Portuguese', flag: '🇵🇹' },
-  { id: 'Dutch', label: 'Dutch', flag: '🇳🇱' },
-  { id: 'Polish', label: 'Polish', flag: '🇵🇱' },
-]
+  { id: "Spanish", label: "Spanish", flag: "🇪🇸" },
+  { id: "French", label: "French", flag: "🇫🇷" },
+  { id: "German", label: "German", flag: "🇩🇪" },
+  { id: "British", label: "British", flag: "🇬🇧" },
+  { id: "Italian", label: "Italian", flag: "🇮🇹" },
+  { id: "Portuguese", label: "Portuguese", flag: "🇵🇹" },
+  { id: "Dutch", label: "Dutch", flag: "🇳🇱" },
+  { id: "Polish", label: "Polish", flag: "🇵🇱" },
+];
 
 const getNationalityFromGroups = (communityGroups: string[] = []) => {
   // Find the first matching nationality group
-  const group = COMMUNITY_GROUPS.find(g => communityGroups.includes(g.id))
+  const group = COMMUNITY_GROUPS.find((g) => communityGroups.includes(g.id));
   // If no match found, default to Spanish (most common in the data)
-  return group || { label: 'Spanish', flag: '🇪🇸' }
-}
+  return group || { label: "Spanish", flag: "🇪🇸" };
+};
 
-export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({ 
-  profile, 
-  currentUserId 
+export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
+  profile,
+  currentUserId,
 }) => {
-  const navigate = useNavigate()
-  const isOwnProfile = currentUserId === profile.user_id
-  const nationality = getNationalityFromGroups(profile.community_groups)
+  const navigate = useNavigate();
+  const isOwnProfile = currentUserId === profile.user_id;
+  const nationality = getNationalityFromGroups(profile.community_groups);
 
   const handleConnect = () => {
-    if (isOwnProfile) return
-    navigate(`/tenant/communities/${profile.id}`)
-  }
+    if (isOwnProfile) return;
+    navigate(`/tenant/communities/${profile.id}`);
+  };
 
   return (
     <>
-      <Card className="group hover:shadow-lg transition-all duration-300 border-border bg-card overflow-hidden h-full">
+      <Card className="group hover:shadow transition-all duration-300 border-border bg-card overflow-hidden h-full">
         <CardContent className="p-0 h-full flex flex-col">
           {/* Header with nationality and verification */}
           <div className="p-[10px] pb-2">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-2xl">
-                  {nationality.flag}
-                </span>
+                <span className="text-2xl">{nationality.flag}</span>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-foreground">
                     {nationality.label}
                   </span>
                 </div>
               </div>
-              <Badge variant={getStatusBadgeVariant(profile.status)} className="capitalize">
+              <Badge
+                variant={getStatusBadgeVariant(profile.status)}
+                className="capitalize"
+              >
                 {profile.status}
               </Badge>
             </div>
@@ -123,7 +129,10 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
               <div className="mb-2">
                 <div className="flex flex-wrap gap-1">
                   {profile.preferred_areas.map((area, index) => (
-                    <Badge key={index} className="bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200 text-xs">
+                    <Badge
+                      key={index}
+                      className="bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200 text-xs"
+                    >
                       {area}
                     </Badge>
                   ))}
@@ -136,7 +145,9 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
               {profile.move_in_date && (
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
-                  <span>{format(new Date(profile.move_in_date), 'MMM yyyy')}</span>
+                  <span>
+                    {format(new Date(profile.move_in_date), "MMM yyyy")}
+                  </span>
                 </div>
               )}
               {profile.duration_months && (
@@ -165,7 +176,9 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
               {profile.gender_preference && (
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Users className="h-3 w-3" />
-                  <span className="capitalize">{profile.gender_preference}</span>
+                  <span className="capitalize">
+                    {profile.gender_preference}
+                  </span>
                 </div>
               )}
               {profile.has_pets && (
@@ -183,21 +196,20 @@ export const CommunityProfileCard: React.FC<CommunityProfileCardProps> = ({
             </div>
           </div>
 
-
           {/* Connect Button */}
           <div className="p-[10px] mt-auto">
-            <Button 
+            <Button
               onClick={handleConnect}
               disabled={isOwnProfile}
               className="w-full gap-2"
               variant={isOwnProfile ? "outline" : "default"}
             >
               <MessageCircle className="h-4 w-4" />
-              {isOwnProfile ? 'Your Profile' : 'Connect'}
+              {isOwnProfile ? "Your Profile" : "Connect"}
             </Button>
           </div>
         </CardContent>
       </Card>
     </>
-  )
-}
+  );
+};

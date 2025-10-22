@@ -5,9 +5,11 @@ import { useState } from "react";
 
 export default function OnboardingStep1() {
   const { setFieldValue, values, handleSubmit } = useFormikContext();
-  const handleSelect = (userType: string) => {
-    setFieldValue("userType", userType);
-    handleSubmit();
+  const handleSelect = async (userType: string) => {
+    await setFieldValue("userType", userType);
+    setTimeout(() => {
+      handleSubmit();
+    }, 300);
   };
   return (
     <div className="w-full max-w-4xl bg-white rounded-lg shadow p-12">
