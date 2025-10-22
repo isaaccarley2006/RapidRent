@@ -102,9 +102,9 @@ const AppRoutes = () => {
       <Route
         path="/onboarding"
         element={
-          <ProtectedRoute>
-            <Onboarding />
-          </ProtectedRoute>
+          // <ProtectedRoute>
+          <Onboarding />
+          // </ProtectedRoute>
         }
       />
       <Route
