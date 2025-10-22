@@ -46,9 +46,9 @@ const Profile: React.FC = () => {
     addReference,
   } = useProfile();
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  // if (loading) {
+  //   return <LoadingSpinner />;
+  // }
 
   // Check user type
   console.log("Profile page - formData.user_type:", formData.user_type);

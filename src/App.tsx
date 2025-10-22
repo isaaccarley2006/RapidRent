@@ -35,6 +35,7 @@ import CookiePolicy from "@/pages/CookiePolicy";
 import { store } from "@/store";
 import { Provider } from "react-redux";
 import { Toaster } from "sonner";
+import NewProfile from "@/pages/NewProfile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -91,7 +92,6 @@ const App = () => (
                 <Route path="/auth/tenant" element={<TenantAuth />} />
                 <Route path="/auth/agent" element={<AgentAuth />} />
                 <Route path="/confirmed" element={<EmailConfirmed />} />
-
                 {/* Role-based protected routes */}
                 <Route
                   path="/renter/*"
@@ -134,7 +134,6 @@ const App = () => (
                     </AgentLayout>
                   }
                 />
-
                 {/* General protected routes */}
                 <Route
                   path="/onboarding"
@@ -160,6 +159,15 @@ const App = () => (
                 <Route
                   path="/dashboard/landlord"
                   element={<Navigate to="/dashboard" replace />}
+                />
+
+                <Route
+                  path="/new-profile"
+                  element={
+                    <AppLayout>
+                      <NewProfile />
+                    </AppLayout>
+                  }
                 />
                 <Route
                   path="/profile"
@@ -246,7 +254,6 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Legal Pages */}
                 <Route
                   path="/legal/privacy"
@@ -272,7 +279,6 @@ const App = () => (
                     </AppLayout>
                   }
                 />
-
                 <Route
                   path="*"
                   element={

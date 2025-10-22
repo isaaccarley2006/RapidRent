@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 export const Footer: React.FC = () => {
   const navigate = useNavigate();
@@ -33,54 +33,62 @@ export const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Middle Left Column */}
-            <div className="flex-1">
-              <h4 className="font-bold mb-6 text-base">Benefits</h4>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    Offices
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    Services
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    Testimonials
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    Newsletter
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Middle Right Column */}
-            <div className="flex-1">
-              <h4 className="font-bold mb-6 text-base">Home</h4>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    About us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    Listings
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:opacity-80 transition">
-                    Agents
-                  </a>
-                </li>
-              </ul>
-            </div>
+            {[
+              {
+                title: "Benefits",
+                links: [
+                  {
+                    label: "Offices",
+                    route: "/offices",
+                  },
+                  {
+                    label: "Services",
+                    route: "/services",
+                  },
+                  {
+                    label: "Testimonials",
+                    route: "/testimonials",
+                  },
+                  {
+                    label: "Newsletter",
+                    route: "/newsletter",
+                  },
+                ],
+              },
+              {
+                title: "Home",
+                links: [
+                  {
+                    label: "About us",
+                    route: "/about",
+                  },
+                  {
+                    label: "Listings",
+                    route: "/listings",
+                  },
+                  {
+                    label: "Agents",
+                    route: "/agents",
+                  },
+                ],
+              },
+            ].map((route, index) => (
+              <div className="flex-1" key={index}>
+                <h4 className="font-bold mb-6 text-base">{route.title}</h4>
+                <ul className="space-y-3 text-sm">
+                  {route?.links.map((link, idx) => (
+                    <li key={idx}>
+                      <Link
+                        to={link.route}
+                        className="hover:opacity-80 transition"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
             {/* Spacer for layout */}
             <div className="hidden md:block"></div>
