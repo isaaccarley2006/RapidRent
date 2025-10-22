@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Step6() {
   return (
-    <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-12">
+    <div className="w-full max-w-2xl bg-white rounded-lg shadow p-12">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">
           <span className="text-black">Rapid</span>

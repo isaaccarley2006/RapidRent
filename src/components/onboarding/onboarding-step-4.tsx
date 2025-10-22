@@ -1,37 +1,19 @@
 "use client";
 
-import { useFormik } from "formik";
+import { useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { step2ValidationSchema } from "@/components/onboarding/validation-schemas";
 
-interface Step2Props {
-  onNext: () => void;
-}
+import { IoCheckmarkSharp } from "react-icons/io5";
 
-export default function Step2({ onNext }: Step2Props) {
-  const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      phone: "",
-      address: "",
-      city: "",
-      postalCode: "",
-      country: "",
-    },
-    validationSchema: step2ValidationSchema,
-    onSubmit: (values) => {
-      console.log("[v0] Step 2 submitted:", values);
-      onNext();
-    },
-  });
+export default function OnboardingStep4() {
+  const formik = useFormikContext();
 
   return (
-    <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="w-full h-full  rounded-lg shadow overflow-hidden">
       <div className="grid grid-cols-2 gap-0">
         {/* Left Side - Form */}
-        <div className="p-12 flex flex-col justify-center">
+        <div className="p-12 max-w-md w-full mx-auto items-center flex flex-col justify-center">
           <div className="mb-8">
             <h1 className="text-2xl font-bold">
               <span className="text-black">Rapid</span>
@@ -39,13 +21,13 @@ export default function Step2({ onNext }: Step2Props) {
             </h1>
           </div>
 
-          <h2 className="text-2xl font-bold mb-8 text-black">
+          <h2 className="text-2xl font-plus-jakarta-sans font-semibold mb-8 text-black">
             Tell us about yourself
           </h2>
 
-          <form onSubmit={formik.handleSubmit} className="space-y-4 mb-6">
+          <div className="space-y-4 mb-6 font-poppins">
             <div>
-              <label className="block text-sm font-semibold text-black mb-2">
+              <label className="block text-sm  font-normal text-black mb-2">
                 First Name
               </label>
               <Input
@@ -66,7 +48,7 @@ export default function Step2({ onNext }: Step2Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-black mb-2">
+              <label className="block text-sm  font-normal text-black mb-2">
                 Last Name
               </label>
               <Input
@@ -87,7 +69,7 @@ export default function Step2({ onNext }: Step2Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-black mb-2">
+              <label className="block text-sm  font-normal text-black mb-2">
                 Phone Number
               </label>
               <Input
@@ -108,7 +90,7 @@ export default function Step2({ onNext }: Step2Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-black mb-2">
+              <label className="block text-sm  font-normal text-black mb-2">
                 Address
               </label>
               <Input
@@ -130,7 +112,7 @@ export default function Step2({ onNext }: Step2Props) {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-black mb-2">
+                <label className="block text-sm  font-normal text-black mb-2">
                   City
                 </label>
                 <Input
@@ -150,7 +132,7 @@ export default function Step2({ onNext }: Step2Props) {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-semibold text-black mb-2">
+                <label className="block text-sm  font-normal text-black mb-2">
                   Postal code
                 </label>
                 <Input
@@ -172,7 +154,7 @@ export default function Step2({ onNext }: Step2Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-black mb-2">
+              <label className="block text-sm  font-normal text-black mb-2">
                 Country
               </label>
               <Input
@@ -191,108 +173,70 @@ export default function Step2({ onNext }: Step2Props) {
                 </p>
               )}
             </div>
-
             <Button
-              type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded"
+              onClick={() => formik.handleSubmit()}
+              className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
             >
               Create Account
             </Button>
-          </form>
+          </div>
 
-          <div className="mt-8 text-xs text-gray-500 text-center">
+          <div className=" text-xs font-poppins text-gray-400 text-center">
             By creating an account, you agree to the <br />
             Terms of Service and Privacy Policy
           </div>
         </div>
 
         {/* Right Side - Features */}
-        <div className="bg-gray-50 p-12 flex flex-col justify-center">
+        <div className="bg-white p-12 flex font-poppins  flex-col justify-around">
           <div className="text-right mb-4">
-            <span className="text-sm text-orange-500 font-semibold cursor-pointer">
-              Want to learn more? Schedule a demo
+            <span className="text-sm text-gray-400  cursor-pointer">
+              Want to learn more?{" "}
+              <span className=" text-orange-500">Schedule a demo</span>
             </span>
           </div>
 
-          <h3 className="text-3xl font-bold mb-8 text-black">
-            Smart. Secure.{" "}
-            <span className="text-orange-500">Stress-Free Renting</span>
-          </h3>
+          <div className="flex flex-col justify-center">
+            <h3 className="text-3xl font-medium mb-8 text-black">
+              Smart. Secure.{" "}
+              <span className="text-orange-500">Stress-Free Renting</span>
+            </h3>
 
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <svg
-                className="w-6 h-6 text-orange-500 flex-shrink-0 mt-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-gray-700">
-                Find and apply for homes in minutes, not days
-              </span>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <svg
-                className="w-6 h-6 text-orange-500 flex-shrink-0 mt-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-gray-700">
-                Verified listings and background-checked landlords
-              </span>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <svg
-                className="w-6 h-6 text-orange-500 flex-shrink-0 mt-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-gray-700">
-                AI-powered match system for your ideal home
-              </span>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <svg
-                className="w-6 h-6 text-orange-500 flex-shrink-0 mt-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-gray-700">Paperless, and hassle-free</span>
+            <div className="space-y-4">
+              {[
+                "Find and apply for homes in minutes, not days",
+                "Verified listings and background-checked landlords",
+                "AI-powered match system for your ideal home",
+                "Paperless, and hassle-free",
+              ].map((content, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <div className="bg-accent/20 rounded p-0.5 ">
+                    <IoCheckmarkSharp size={14} className="text-accent" />
+                  </div>
+                  <span className="text-gray-700">{content}</span>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="mt-12">
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-400 mb-4">
               Powered by industry leading companies
             </p>
             <div className="flex items-center gap-6">
-              <span className="text-sm font-bold text-black">amazon</span>
+              <svg className="w-24 h-8" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M.5 0h24v24H.5z" opacity="0" />
+                <path fill="currentColor" d="M6.5 6h11v12h-11z" opacity="0.1" />
+                <text
+                  x="50%"
+                  y="50%"
+                  textAnchor="middle"
+                  dy=".3em"
+                  className="text-xs font-bold fill-black"
+                >
+                  amazon
+                </text>
+              </svg>
               <span className="text-sm font-semibold text-black">GOV.UK</span>
             </div>
           </div>

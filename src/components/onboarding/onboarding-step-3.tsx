@@ -2,26 +2,12 @@
 
 import type React from "react";
 
-import { useFormik } from "formik";
+import { useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { step5ValidationSchema } from "@/components/onboarding/validation-schemas";
 
-interface Step5Props {
-  onNext: () => void;
-}
-
-export default function Step5({ onNext }: Step5Props) {
-  const formik = useFormik({
-    initialValues: {
-      verificationCode: "",
-    },
-    validationSchema: step5ValidationSchema,
-    onSubmit: (values) => {
-      console.log("[v0] Step 5 submitted:", values);
-      onNext();
-    },
-  });
+export default function OnboardingStep3() {
+  const formik = useFormikContext();
 
   const handleDigitChange = (index: number, value: string) => {
     if (value.length > 1 || !/^[0-9]*$/.test(value)) return;
@@ -56,7 +42,7 @@ export default function Step5({ onNext }: Step5Props) {
   const codeDigits = formik.values.verificationCode.split("");
 
   return (
-    <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-12">
+    <div className="w-full max-w-2xl bg-white rounded-lg shadow p-12">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">
           <span className="text-black">Rapid</span>
@@ -65,11 +51,10 @@ export default function Step5({ onNext }: Step5Props) {
       </div>
 
       <div className="flex flex-col items-center justify-center py-12">
-        <h2 className="text-2xl font-bold mb-8 text-black text-center">
+        <h2 className="text-3xl font-medium mb-12  font-poppins text-center text-black">
           Verify your email
         </h2>
-
-        <form onSubmit={formik.handleSubmit} className="w-full">
+        <div className="w-full">
           <div className="flex gap-4 mb-8 justify-center">
             {[0, 1, 2, 3].map((index) => (
               <Input
@@ -81,7 +66,8 @@ export default function Step5({ onNext }: Step5Props) {
                 value={codeDigits[index] || ""}
                 onChange={(e) => handleDigitChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`w-16 h-16 text-center text-2xl font-bold border-2 rounded-lg ${
+                placeholder="0"
+                className={`w-16 h-16 text-center text-4xl font-semibold font-plus-jakarta-sans border rounded-lg ${
                   codeDigits[index]
                     ? "border-orange-500 bg-orange-50"
                     : "border-gray-300"
@@ -97,13 +83,15 @@ export default function Step5({ onNext }: Step5Props) {
               </p>
             )}
 
-          <Button
-            type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded"
-          >
-            Continue
-          </Button>
-        </form>
+          <div className="max-w-[240px] w-full mx-auto">
+            <Button
+              onClick={formik.handleSubmit}
+              className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

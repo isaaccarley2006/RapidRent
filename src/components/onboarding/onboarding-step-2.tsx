@@ -1,30 +1,16 @@
 "use client";
 
-import { useFormik } from "formik";
+import { useFormik, useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { step1ValidationSchema } from "@/components/onboarding/validation-schemas";
 import { IoLogoGoogle } from "react-icons/io";
 import { IoCheckmarkSharp } from "react-icons/io5";
-interface Step1Props {
-  onNext: () => void;
-}
 
-export default function Step1({ onNext }: Step1Props) {
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: step1ValidationSchema,
-    onSubmit: (values) => {
-      console.log("[v0] Step 1 submitted:", values);
-      onNext();
-    },
-  });
+export default function OnboardingStep2() {
+  const formik = useFormikContext();
 
   return (
-    <div className="w-full h-full  rounded-lg shadow-lg overflow-hidden">
+    <div className="w-full h-full  rounded-lg shadow overflow-hidden">
       <div className="grid h-full grid-cols-2 gap-0">
         {/* Left Side - Form */}
         <div className="p-12 max-w-md w-full mx-auto items-center flex flex-col justify-center">
@@ -39,10 +25,7 @@ export default function Step1({ onNext }: Step1Props) {
             Create your account
           </h2>
 
-          <form
-            onSubmit={formik.handleSubmit}
-            className="space-y-4 mb-6 w-full"
-          >
+          <div>
             <div className="font-poppins">
               <label className="block text-sm  font-normal text-black mb-2">
                 Email
@@ -86,12 +69,12 @@ export default function Step1({ onNext }: Step1Props) {
             </div>
 
             <Button
-              type="submit"
+              onClick={() => formik.handleSubmit()}
               className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
             >
               Continue
             </Button>
-          </form>
+          </div>
 
           <div className="text-center text-xs text-gray-400 mb-4">OR</div>
 

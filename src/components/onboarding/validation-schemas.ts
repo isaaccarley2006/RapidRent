@@ -1,7 +1,12 @@
 import * as Yup from "yup";
 
 // Step 1: Create Account Validation
+
 export const step1ValidationSchema = Yup.object().shape({
+  userType: Yup.string().required("user type is required"),
+});
+
+export const step2ValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email address")
     .required("Email is required"),
@@ -13,7 +18,7 @@ export const step1ValidationSchema = Yup.object().shape({
 });
 
 // Step 2: Personal Information Validation
-export const step2ValidationSchema = Yup.object().shape({
+export const step4ValidationSchema = Yup.object().shape({
   firstName: Yup.string()
     .min(2, "First name must be at least 2 characters")
     .required("First name is required"),
@@ -34,7 +39,7 @@ export const step2ValidationSchema = Yup.object().shape({
 });
 
 // Step 5: Email Verification Validation
-export const step5ValidationSchema = Yup.object().shape({
+export const step3ValidationSchema = Yup.object().shape({
   verificationCode: Yup.string()
     .length(4, "Verification code must be 4 digits")
     .matches(/^[0-9]+$/, "Verification code must contain only numbers")
