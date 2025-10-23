@@ -85,7 +85,7 @@ const Listings: React.FC = () => {
         <link rel="canonical" href="https://rentview.co.uk/listings" />
         <meta property="og:url" content="https://rentview.co.uk/listings" />
       </Helmet>
-      <div className="px-6 py-8">
+      <div className="px-6 py-8 max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-text-primary">
             Property Listings

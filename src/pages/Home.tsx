@@ -32,7 +32,7 @@ const Home: React.FC = () => {
         />
       </Helmet>
       {/* max-w-7xl */}
-      <div className="min-h-screen bg-white font-sans">
+      <div className="min-h-screen bg-white  font-sans">
         <HeroSection />
         <ValueProposition />
         <PropertyListings />

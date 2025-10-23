@@ -52,9 +52,9 @@ const Search = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
-      className="w-full -mt-10"
+      className="w-full -mt-10 max-w-7xl mx-auto"
     >
-      <div className="flex gap-4   mx-auto z-10 relative  shadow shadow-gray-100   items-center bg-white rounded-3xl p-4 w-9/12">
+      <div className="flex gap-4   z-10 relative  shadow shadow-gray-100   items-center bg-white rounded-3xl p-4">
         <div className="flex gap-4 border-r flex-1 items-center">
           <MdOutlineHomeWork className=" text-gray-400" />
           <input

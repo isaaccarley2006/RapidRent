@@ -1,12 +1,5 @@
 import type React from "react";
-import {
-  FolderOpen,
-  TrendingUp,
-  Shield,
-  User,
-  Info,
-  CheckCircle,
-} from "lucide-react";
+import { FolderOpen, TrendingUp, Shield, User, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
