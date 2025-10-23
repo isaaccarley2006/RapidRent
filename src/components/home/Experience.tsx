@@ -8,7 +8,7 @@ export default function Experience() {
           <h2 className="text-4xl font-plus-jakarta-sans font-semibold text-gray-900 mb-12 text-balance flex-1">
             Experience Our Properties and Services in Action
           </h2>
-          <p className="flex-1 max-w-md text-gray-400 font-poppins">
+          <p className="flex-1 max-w-md text-slate-500 font-inter">
             Explore our collection of videos showcasing our stunning properties,
             client testimonials, virtual tours, and expert advice.
           </p>

@@ -35,7 +35,7 @@ import {
 // export default Onboarding;
 
 export default function OnboardingPage() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
     setCurrentStep((prev) => Math.min(prev + 1, 6));
@@ -87,10 +87,7 @@ export default function OnboardingPage() {
         firstName: "",
         lastName: "",
         phone: "",
-        address: "",
-        city: "",
-        postalCode: "",
-        country: "",
+        citizenshipStatus: "",
       }}
       onSubmit={(values) => {
         console.log(values, "valuesvalues");
@@ -100,11 +97,7 @@ export default function OnboardingPage() {
       validateOnBlur
       validationSchema={validationSchema[currentStep]}
     >
-      {() => (
-        <Form className="w-screen h-screen bg-[#F7F7F7] flex items-center justify-center p-0">
-          {renderStep()}
-        </Form>
-      )}
+      {() => <Form>{renderStep()}</Form>}
     </Formik>
   );
 }

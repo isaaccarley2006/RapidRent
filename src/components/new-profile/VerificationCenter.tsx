@@ -64,15 +64,17 @@ export default function VerificationCenter() {
         {verifications.map((verification) => (
           <div
             key={verification.id}
-            className="bg-white col-span-1 font-poppins rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+            className="col-span-1 font-poppins rounded-xl border border-gray-200 p-6
+bg-white hover:bg-gradient-to-t hover:from-accent/10 hover:to-white
+hover:shadow-md transition-all duration-500 ease-in-out"
           >
             {/* Header with icon and info button */}
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between mb-4 border-b border-gray-100 pb-4">
               <div className="flex items-start gap-4">
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="text-gray-400 bg-accent/10 hover:bg-accent/10 hover:text-gray-600"
+                  className="text-gray-500 bg-accent/10 hover:bg-accent/10 hover:text-gray-600"
                 >
                   {verification.icon}
                 </Button>
@@ -80,7 +82,7 @@ export default function VerificationCenter() {
                   <h3 className="text-md font-medium text-gray-900">
                     {verification.title}
                   </h3>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     {verification.description}
                   </p>
                 </div>
@@ -88,7 +90,7 @@ export default function VerificationCenter() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="text-gray-400 hover:bg-gray-400/10 hover:text-gray-600"
+                className="text-slate-500 hover:bg-slate-400/10 hover:text-slate-600"
               >
                 <Info className="w-5 h-5" />
               </Button>
@@ -103,14 +105,14 @@ export default function VerificationCenter() {
             </div>
 
             {/* Powered by */}
-            <p className="text-xs text-center font-medium text-gray-400 mb-4">
+            <p className="text-xs text-center  text-slate-500 mb-4">
               Powered by {verification.poweredBy}
             </p>
 
             {/* Button */}
             <Button
               onClick={() => setIdVerificationsModal(true)}
-              className="w-full rounded-xl"
+              className="w-full rounded-xl "
             >
               {verification.buttonText}
             </Button>

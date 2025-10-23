@@ -70,14 +70,14 @@ const Listings: React.FC = () => {
     setSearchQuery(query);
   };
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
 
   return (
     <>
       <Helmet>
-        <title>Property Listings - RapidRent</title>
+        <title>Listings - RapidRent</title>
         <meta
           name="description"
           content="Browse available rental properties on RapidRent. Filter by location, price, and amenities to find your perfect home."
@@ -85,12 +85,14 @@ const Listings: React.FC = () => {
         <link rel="canonical" href="https://rentview.co.uk/listings" />
         <meta property="og:url" content="https://rentview.co.uk/listings" />
       </Helmet>
-      <div className="px-6 py-8 max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-text-primary">
-            Property Listings
+      <div className="py-8 max-w-7xl mx-auto">
+        <div className="mb-8 space-y-2">
+          <h1 className="text-3xl font-semibold font-plus-jakarta-sans text-text-primary">
+            Listings
           </h1>
-          <p className="text-text-muted">Find your perfect rental property</p>
+          <p className="text-slate-400 font-inter text-sm">
+            Find your perfect rental property
+          </p>
         </div>
 
         <SearchFilters

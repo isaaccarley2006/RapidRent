@@ -4,9 +4,25 @@ import ID_VERIFICATION_3 from "./icons/id-verification-3.png";
 import ID_VERIFICATION_4 from "./icons/id-verification-4.png";
 import ID_VERIFICATION_5 from "./icons/id-verification-5.png";
 import ID_VERIFICATION_6 from "./icons/id-verification-6.png";
+import HMRC from "./icons/HMRC.png";
 import FACIAL_RECOGNITION from "./facial-recognition.png";
 
+import LOGO_BLACK from "./logo-black.png";
+import LOGO_PRIMARY from "./logo-primary.png";
+import LOGO_WHITE from "./logo-white.png";
+import HOUSING_HAND from "./icons/housing-hand.png";
+import EXPERIAN_LOGO from "./experian-logo.png";
+import GOV_UK from "./gov-uk.png";
+
 export const IMAGES = {
+  HMRC,
+  HOUSING_HAND,
+  EXPERIAN_LOGO,
+  GOV_UK,
+  LOGO_BLACK,
+  LOGO_PRIMARY,
+  LOGO_WHITE,
+
   ID_VERIFICATION_1,
   ID_VERIFICATION_2,
   ID_VERIFICATION_3,

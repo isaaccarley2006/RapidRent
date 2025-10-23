@@ -28,14 +28,9 @@ export const step4ValidationSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(/^[0-9\s\-+$$$$]+$/, "Please enter a valid phone number")
     .required("Phone number is required"),
-  address: Yup.string()
-    .min(5, "Address must be at least 5 characters")
-    .required("Address is required"),
-  city: Yup.string()
-    .min(2, "City must be at least 2 characters")
-    .required("City is required"),
-  postalCode: Yup.string().required("Postal code is required"),
-  country: Yup.string().required("Country is required"),
+  citizenshipStatus: Yup.string().required(
+    "Citizenship or Visa Status is required"
+  ),
 });
 
 // Step 5: Email Verification Validation

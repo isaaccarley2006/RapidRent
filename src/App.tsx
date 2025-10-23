@@ -36,6 +36,7 @@ import { store } from "@/store";
 import { Provider } from "react-redux";
 import { Toaster } from "sonner";
 import NewProfile from "@/pages/NewProfile";
+import About from "@/pages/About";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,6 +73,15 @@ const App = () => (
                     </AppLayout>
                   }
                 />
+                <Route
+                  path="/about"
+                  element={
+                    <AppLayout>
+                      <About />
+                    </AppLayout>
+                  }
+                />
+
                 <Route
                   path="/listings"
                   element={
@@ -160,7 +170,6 @@ const App = () => (
                   path="/dashboard/landlord"
                   element={<Navigate to="/dashboard" replace />}
                 />
-
                 <Route
                   path="/new-profile"
                   element={

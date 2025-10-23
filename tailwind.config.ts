@@ -87,6 +87,7 @@ export default {
           "sans-serif",
         ],
         poppins: ["Poppins", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
         "plus-jakarta-sans": ["Plus Jakarta Sans", "sans-serif"],
       },
       borderRadius: {

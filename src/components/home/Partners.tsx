@@ -10,11 +10,12 @@ export default function Partners() {
               Our Trusted Partners
             </h2>
             <div>
-              <p className="text-gray-400 font-poppins text-sm mb-6">
+              <p className=" text-slate-500 font-inter mb-6">
                 We believe in the power of strong partnerships. Our trusted
                 partners include some of the most respected names in the real
                 estate and related industries.
               </p>
+
               <Button className=" rounded-xl" size="lg">
                 Learn More
               </Button>

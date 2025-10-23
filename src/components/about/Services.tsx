@@ -75,7 +75,7 @@ const ServiceCard = ({ service, index }: { service: any; index: number }) => {
       <h3 className="text-xl font-plus-jakarta-sans font-bold text-gray-900">
         {service.title}
       </h3>
-      <p className="text-gray-400 text-sm font-poppins">
+      <p className="text-gray-500 text-sm font-poppins">
         {service.description}
       </p>
     </motion.div>

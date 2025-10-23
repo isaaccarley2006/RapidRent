@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import clsx from "clsx";
+import { IMAGES } from "@/assets";
 
 interface LogoProps {
   userType?: "tenant" | "landlord";
@@ -34,12 +35,22 @@ export const Logo: React.FC<LogoProps> = ({
   return (
     <div
       className={clsx(
-        `text-2xl font-bold  cursor-pointer`,
+        `text-2xl font-bold  cursor-pointer flex items-center gap-2`,
         isTransparentRoute && !scrolled ? "text-white" : "text-text-primary"
       )}
       onClick={handleLogoClick}
     >
-      Rapid<span className="text-primary">Rent</span>
+      <img
+        className="w-8"
+        src={
+          isTransparentRoute && !scrolled
+            ? IMAGES.LOGO_WHITE
+            : IMAGES.LOGO_PRIMARY
+        }
+      />
+      <div className="mt-2">
+        Rapid<span className="text-primary">Rent</span>
+      </div>
     </div>
   );
 };

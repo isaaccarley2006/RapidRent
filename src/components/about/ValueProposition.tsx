@@ -1,6 +1,6 @@
 export default function ValueProposition() {
   return (
-    <section className="bg-white py-20 px-4 font-plus-jakarta-sans">
+    <section className="bg-white py-16 px-4 font-plus-jakarta-sans">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -13,7 +13,7 @@ export default function ValueProposition() {
             {/* Text Card */}
             <div className="flex-1 flex items-center justify-center bg-gray-100 rounded-xl p-10 text-center aspect-square md:aspect-auto">
               <div>
-                <p className="text-gray-400 text-sm">Property Investments</p>
+                <p className="text-gray-500 text-sm">Property Investments</p>
                 <div className="text-6xl font-semibold text-black">$1B+</div>
               </div>
             </div>

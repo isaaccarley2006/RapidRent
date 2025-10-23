@@ -143,7 +143,7 @@ export default function IDVerificationModal({
                 <img className="w-32 h-32" src={IMAGES.FACIAL_RECOGNITION} />
               </div>
 
-              <p className="text-gray-400 text-sm mb-8">
+              <p className="text-gray-500 text-sm mb-8">
                 In order to improve the success rate of face recognition, please
                 follow these requirements below
               </p>

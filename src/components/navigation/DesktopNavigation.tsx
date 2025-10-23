@@ -117,11 +117,15 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
               link: "/",
             },
             {
+              label: "Dashboard",
+              link: "/dashboard",
+            },
+            {
               label: "About Us",
               link: "/about",
             },
             {
-              label: "Listing",
+              label: "Listings",
               link: "/listings",
             },
           ].map((link, index) => {
@@ -144,8 +148,11 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
             );
           })}
 
-          <Button onClick={() => navigate("/listings")} className=" rounded-xl">
-            Login In
+          <Button
+            onClick={() => navigate("/onboarding")}
+            className=" rounded-xl"
+          >
+            Log In
           </Button>
         </>
       )}

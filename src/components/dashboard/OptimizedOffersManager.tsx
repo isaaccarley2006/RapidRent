@@ -1,35 +1,44 @@
-import React, { useState, useMemo, useCallback } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useOptimizedAuth } from '@/hooks/useOptimizedAuth'
-import { useToast } from '@/hooks/use-toast'
-import { Loader2, Home } from 'lucide-react'
-import { OfferCard } from './OfferCard'
-import { fetchOptimizedOffers, batchUpdateOffers } from '@/lib/data/optimizedOffers'
-import { useOptimizedOffersRealtime } from '@/hooks/useOptimizedOffersRealtime'
-import { supabase } from '@/lib/supabase'
+import React, { useState, useMemo, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useOptimizedAuth } from "@/hooks/useOptimizedAuth";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2, Home } from "lucide-react";
+import { OfferCard } from "./OfferCard";
+import {
+  fetchOptimizedOffers,
+  batchUpdateOffers,
+} from "@/lib/data/optimizedOffers";
+import { useOptimizedOffersRealtime } from "@/hooks/useOptimizedOffersRealtime";
+import { supabase } from "@/lib/supabase";
 
 interface OptimizedOffersManagerProps {
-  propertyId?: string
-  limit?: number
+  propertyId?: string;
+  limit?: number;
 }
 
-export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({ 
-  propertyId, 
-  limit = 25 
+export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
+  propertyId,
+  limit = 25,
 }) => {
-  const { user } = useOptimizedAuth()
-  const { toast } = useToast()
-  const queryClient = useQueryClient()
-  const [selectedOffer, setSelectedOffer] = useState<any>(null)
+  const { user } = useOptimizedAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [selectedOffer, setSelectedOffer] = useState<any>(null);
 
-  const offersQueryKey = ['offers', user?.id, propertyId, limit]
+  const offersQueryKey = ["offers", user?.id, propertyId, limit];
 
   const {
     data: offersData = [],
     isLoading,
     error,
-    refetch
+    refetch,
   } = useQuery({
     queryKey: offersQueryKey,
     queryFn: () => fetchOptimizedOffers(user!.id, propertyId, limit),
@@ -37,12 +46,12 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
     staleTime: 30 * 1000, // 30 seconds - offers change frequently
     gcTime: 2 * 60 * 1000, // 2 minutes
     refetchOnMount: false,
-    refetchOnWindowFocus: false
-  })
+    refetchOnWindowFocus: false,
+  });
 
   // Transform optimized data back to expected format for OfferCard
   const offers = useMemo(() => {
-    return offersData.map(offer => ({
+    return offersData.map((offer) => ({
       id: offer.id,
       offer_price: offer.offer_price,
       status: offer.status,
@@ -52,7 +61,7 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
       properties: {
         title: offer.property_title,
         location: offer.property_location,
-        price: offer.property_price
+        price: offer.property_price,
       },
       profiles: {
         full_name: offer.profile_full_name,
@@ -80,7 +89,8 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
         additional_notes: offer.profile_additional_notes,
         emergency_contact_name: offer.profile_emergency_contact_name,
         emergency_contact_phone: offer.profile_emergency_contact_phone,
-        emergency_contact_relationship: offer.profile_emergency_contact_relationship,
+        emergency_contact_relationship:
+          offer.profile_emergency_contact_relationship,
         identity_verified: offer.profile_identity_verified,
         employment_verified: offer.profile_employment_verified,
         income_verified: offer.profile_income_verified,
@@ -88,55 +98,64 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
         references_verified: offer.profile_references_verified,
         bank_verified: offer.profile_bank_verified,
         profile_completion_percentage: offer.profile_completion_percentage,
-        current_rental_situation: offer.profile_current_rental_situation
-      }
-    }))
-  }, [offersData])
+        current_rental_situation: offer.profile_current_rental_situation,
+      },
+    }));
+  }, [offersData]);
 
   const updateOfferMutation = useMutation({
-    mutationFn: async ({ offerId, status }: { offerId: string; status: 'shortlisted' | 'accepted' }) => {
+    mutationFn: async ({
+      offerId,
+      status,
+    }: {
+      offerId: string;
+      status: "shortlisted" | "accepted";
+    }) => {
       const { error } = await supabase
-        .from('offers')
+        .from("offers")
         .update({ status })
-        .eq('id', offerId)
+        .eq("id", offerId);
 
-      if (error) throw error
+      if (error) throw error;
     },
     onSuccess: (_, { status }) => {
       toast({
         title: `Offer ${status}`,
-        description: `The offer has been ${status} successfully.`
-      })
+        description: `The offer has been ${status} successfully.`,
+      });
       // Invalidate and refetch offers
-      queryClient.invalidateQueries({ queryKey: offersQueryKey })
+      queryClient.invalidateQueries({ queryKey: offersQueryKey });
     },
     onError: (error) => {
-      console.error('Error updating offer:', error)
+      console.error("Error updating offer:", error);
       toast({
         title: "Error updating offer",
         description: "Please try again.",
-        variant: "destructive"
-      })
-    }
-  })
+        variant: "destructive",
+      });
+    },
+  });
 
-  const handleUpdateStatus = useCallback((offerId: string, status: 'shortlisted' | 'accepted') => {
-    updateOfferMutation.mutate({ offerId, status })
-  }, [updateOfferMutation])
+  const handleUpdateStatus = useCallback(
+    (offerId: string, status: "shortlisted" | "accepted") => {
+      updateOfferMutation.mutate({ offerId, status });
+    },
+    [updateOfferMutation]
+  );
 
   // Import optimized realtime hook
   useOptimizedOffersRealtime({
     userId: user?.id,
     propertyId,
-    enabled: !!user?.id
-  })
+    enabled: !!user?.id,
+  });
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="w-6 h-6 animate-spin text-primary" />
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -144,29 +163,33 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
       <Card>
         <CardContent className="text-center py-8">
           <p className="text-red-600 mb-4">Error loading offers</p>
-          <button 
-            onClick={() => refetch()} 
+          <button
+            onClick={() => refetch()}
             className="px-4 py-2 bg-primary text-white rounded"
           >
             Retry
           </button>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   if (offers.length === 0) {
     return (
       <Card>
         <CardContent className="text-center py-8">
-          <Home className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No offers yet</h3>
+          <Home className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No offers yet
+          </h3>
           <p className="text-gray-500">
-            {propertyId ? 'This property hasn\'t received any offers yet.' : 'None of your properties have received offers yet.'}
+            {propertyId
+              ? "This property hasn't received any offers yet."
+              : "None of your properties have received offers yet."}
           </p>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
@@ -174,7 +197,9 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
       <CardHeader>
         <CardTitle>Property Offers ({offers.length})</CardTitle>
         <CardDescription>
-          {propertyId ? 'Manage offers for this property' : 'Manage all offers across your properties'}
+          {propertyId
+            ? "Manage offers for this property"
+            : "Manage all offers across your properties"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -191,5 +216,5 @@ export const OptimizedOffersManager: React.FC<OptimizedOffersManagerProps> = ({
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};

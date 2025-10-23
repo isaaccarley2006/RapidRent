@@ -33,7 +33,7 @@ export default function PropertyListings() {
   ];
 
   return (
-    <section className=" py-20 px-4">
+    <section className=" py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="flex items-center justify-between mb-12"
@@ -46,7 +46,7 @@ export default function PropertyListings() {
             <h2 className="text-4xl font-semibold pb-2 font-plus-jakarta-sans text-gray-900">
               Latest property listings
             </h2>
-            <p className="text-gray-400 text-sm">
+            <p className="text-slate-500 font-inter text-sm">
               Discover the newest additions to our exclusive real estate
               portfolio.
             </p>
@@ -95,12 +95,12 @@ export default function PropertyListings() {
                   $350k
                 </Button>
               </div>
-              <div className="py-6 flex flex-col gap-3">
+              <div className="py-6 flex flex-col gap-4">
                 <h3 className="text-xl font-plus-jakarta-sans font-semibold text-gray-900 ">
                   {property.title}
                 </h3>
 
-                <p className="text-gray-600 leading-5  font-poppins text-xs">
+                <p className="text-slate-500 leading-6 font-inter text-sm">
                   {property.description}
                 </p>
                 <div className=" flex gap-4 text-gray-500 font-plus-jakarta-sans">

@@ -5,6 +5,7 @@ import type React from "react";
 import { ErrorMessage, useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
 
 export default function OnboardingStep3() {
   const formik = useFormikContext();
@@ -42,18 +43,16 @@ export default function OnboardingStep3() {
   const codeDigits = formik.values.verificationCode.split("");
 
   return (
-    <div className="w-full max-w-2xl bg-white rounded-lg shadow p-12">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">
-          <span className="text-black">Rapid</span>
-          <span className="text-orange-500">Rent</span>
-        </h1>
-      </div>
-
-      <div className="flex flex-col items-center justify-center py-12">
-        <h2 className="text-3xl font-medium mb-12  font-poppins text-center text-black">
-          Verify your email
-        </h2>
+    <OnboardingLayout>
+      <div className="max-w-md w-full mx-auto">
+        <div className=" flex flex-col mb-8 items-center ">
+          <h2 className="text-3xl font-semibold pb-2 font-plus-jakarta-sans text-gray-900">
+            Verify your email
+          </h2>
+          <p className="text-slate-500 font-inter text-sm">
+            Enter the code we sent to your email to continue.
+          </p>
+        </div>
         <div className="w-full">
           <div className="flex gap-4 mb-8 justify-center">
             {[0, 1, 2, 3].map((index) => (
@@ -67,7 +66,7 @@ export default function OnboardingStep3() {
                 onChange={(e) => handleDigitChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 placeholder="0"
-                className={`w-16 h-16 text-center md:text-xl  font-plus-jakarta-sans border rounded-lg ${
+                className={`w-14 h-14 text-center md:text-xl  font-inter  border rounded-lg ${
                   codeDigits[index]
                     ? "border-orange-500 bg-orange-50 "
                     : "border-gray-300 "
@@ -92,6 +91,6 @@ export default function OnboardingStep3() {
           </div>
         </div>
       </div>
-    </div>
+    </OnboardingLayout>
   );
 }

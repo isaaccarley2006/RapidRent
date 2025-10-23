@@ -21,7 +21,7 @@ export const HeroSection: React.FC = () => {
   };
   return (
     <section
-      className="relative h-[70vh] bg-cover  -top-16   bg-center"
+      className="relative h-[80vh] bg-cover  -top-16   bg-center"
       style={{
         backgroundImage: `url(${homeHero})`,
       }}
@@ -52,11 +52,11 @@ const Search = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
-      className="w-full -mt-10 max-w-7xl mx-auto"
+      className="w-full -mt-10 max-w-7xl mx-auto px-4"
     >
       <div className="flex gap-4   z-10 relative  shadow shadow-gray-100   items-center bg-white rounded-3xl p-4">
         <div className="flex gap-4 border-r flex-1 items-center">
-          <MdOutlineHomeWork className=" text-gray-400" />
+          <MdOutlineHomeWork className=" text-gray-500" />
           <input
             type="text"
             placeholder="Enter an address, neighborhood, city, or  postcode"
@@ -69,7 +69,7 @@ const Search = () => {
           variant="ghost"
           className="hover:bg-gray-50 hover:text-black"
         >
-          <MdOutlineHomeWork className="text-gray-400" />
+          <MdOutlineHomeWork className="text-gray-500" />
         </Button>
         <Button size="lg" className="rounded-xl font-plus-jakarta-sans">
           Search Property

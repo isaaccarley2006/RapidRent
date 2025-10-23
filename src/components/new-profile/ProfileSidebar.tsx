@@ -2,6 +2,8 @@ import IDVerificationModal from "@/components/new-profile/IdVerificationModal";
 import { Settings, FileText, Shield, Bell, Sliders, Icon } from "lucide-react";
 import { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { MdOutlineLocalOffer } from "react-icons/md";
+import { PiBuildingOfficeLight } from "react-icons/pi";
 interface SidebarProps {
   activeMenu: string;
   setActiveMenu: (menu: string) => void;
@@ -19,7 +21,7 @@ export default function ProfileSidebar({
       icon: Settings,
       onClick: () => setIdVerificationsModal(false),
     },
-    { id: "my-contracts", label: "My Contracts", icon: FileText },
+    { id: "my-offers", label: "My Offers", icon: MdOutlineLocalOffer },
     { id: "verification-center", label: "Verification Center", icon: Shield },
   ];
 
@@ -43,7 +45,7 @@ export default function ProfileSidebar({
     <div className="w-64 space-y-2 bg-white border rounded-xl border-gray-200 p-4 sticky mt-6 self-start">
       {routes?.map((route, index) => (
         <div key={index} className="space-y-2">
-          <h3 className="text-sm font-poppins text-gray-400 px-4">
+          <h3 className="text-sm font-poppins text-gray-500 px-4">
             {route.title}
           </h3>
           <div className="space-y-2">
@@ -69,10 +71,10 @@ const NavItem = ({ item, setActiveMenu, activeMenu }) => {
       <button
         key={item.id}
         onClick={() => setActiveMenu(item.id)}
-        className={`w-full flex items-center font-poppins justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
           activeMenu === item.id
-            ? "bg-gray-100 text-gray-900"
-            : "text-[#727272] hover:bg-gray-50"
+            ? "bg-accent text-white"
+            : "text-[#727272] hover:bg-gray-100 "
         }`}
       >
         <div className="flex items-center gap-3">
@@ -80,9 +82,7 @@ const NavItem = ({ item, setActiveMenu, activeMenu }) => {
           <span>{item.label}</span>
         </div>
 
-        {activeMenu === item.id && (
-          <IoIosArrowForward className="text-gray-900" />
-        )}
+        {activeMenu === item.id && <IoIosArrowForward className="text-white" />}
       </button>
     </>
   );

@@ -1,85 +1,88 @@
-import React, { useState, useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { Button } from '@/components/ui/button'
-import { X, Upload, Image as ImageIcon } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
-import { useToast } from '@/hooks/use-toast'
+import React, { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { Button } from "@/components/ui/button";
+import { X, Upload, Image as ImageIcon } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 interface ImageUploadProps {
-  images: string[]
-  onImagesChange: (images: string[]) => void
-  maxImages?: number
+  images: string[];
+  onImagesChange: (images: string[]) => void;
+  maxImages?: number;
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
   images,
   onImagesChange,
-  maxImages = 10
+  maxImages = 10,
 }) => {
-  const [uploading, setUploading] = useState(false)
-  const { toast } = useToast()
+  const [uploading, setUploading] = useState(false);
+  const { toast } = useToast();
 
   const uploadImage = async (file: File): Promise<string | null> => {
     try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `property-images/${fileName}`
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `property-images/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('property-images')
-        .upload(filePath, file)
+        .from("property-images")
+        .upload(filePath, file);
 
       if (uploadError) {
-        throw uploadError
+        throw uploadError;
       }
 
       const { data } = supabase.storage
-        .from('property-images')
-        .getPublicUrl(filePath)
+        .from("property-images")
+        .getPublicUrl(filePath);
 
-      return data.publicUrl
+      return data.publicUrl;
     } catch (error) {
-      console.error('Error uploading image:', error)
+      console.error("Error uploading image:", error);
       toast({
         title: "Upload failed",
         description: "Failed to upload image. Please try again.",
-        variant: "destructive"
-      })
-      return null
+        variant: "destructive",
+      });
+      return null;
     }
-  }
+  };
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    if (images.length + acceptedFiles.length > maxImages) {
-      toast({
-        title: "Too many images",
-        description: `Maximum ${maxImages} images allowed.`,
-        variant: "destructive"
-      })
-      return
-    }
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      if (images.length + acceptedFiles.length > maxImages) {
+        toast({
+          title: "Too many images",
+          description: `Maximum ${maxImages} images allowed.`,
+          variant: "destructive",
+        });
+        return;
+      }
 
-    setUploading(true)
-    const uploadPromises = acceptedFiles.map(uploadImage)
-    const uploadedUrls = await Promise.all(uploadPromises)
-    const validUrls = uploadedUrls.filter(url => url !== null) as string[]
-    
-    onImagesChange([...images, ...validUrls])
-    setUploading(false)
-  }, [images, maxImages, onImagesChange, toast])
+      setUploading(true);
+      const uploadPromises = acceptedFiles.map(uploadImage);
+      const uploadedUrls = await Promise.all(uploadPromises);
+      const validUrls = uploadedUrls.filter((url) => url !== null) as string[];
+
+      onImagesChange([...images, ...validUrls]);
+      setUploading(false);
+    },
+    [images, maxImages, onImagesChange, toast]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp']
+      "image/*": [".jpeg", ".jpg", ".png", ".webp"],
     },
-    multiple: true
-  })
+    multiple: true,
+  });
 
   const removeImage = (index: number) => {
-    const newImages = images.filter((_, i) => i !== index)
-    onImagesChange(newImages)
-  }
+    const newImages = images.filter((_, i) => i !== index);
+    onImagesChange(newImages);
+  };
 
   return (
     <div className="space-y-4">
@@ -87,12 +90,12 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         {...getRootProps()}
         className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
           isDragActive
-            ? 'border-primary bg-primary/5'
-            : 'border-gray-300 hover:border-gray-400'
+            ? "border-primary bg-primary/5"
+            : "border-gray-300 hover:border-gray-400"
         }`}
       >
         <input {...getInputProps()} />
-        <Upload className="w-8 h-8 mx-auto mb-4 text-gray-400" />
+        <Upload className="w-8 h-8 mx-auto mb-4 text-gray-500" />
         {isDragActive ? (
           <p className="text-primary">Drop the images here...</p>
         ) : (
@@ -100,7 +103,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             <p className="text-gray-600 mb-2">
               Drag & drop images here, or click to select
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-500">
               Maximum {maxImages} images, JPEG/PNG/WebP
             </p>
           </div>
@@ -136,5 +139,5 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

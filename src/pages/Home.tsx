@@ -1,15 +1,14 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { HeroSection } from "@/components/home";
-import ValueProposition from "@/components/home/ValueProposition";
+
 import PropertyListings from "@/components/home/PropertyListings";
-import WhyChooseUs from "@/components/home/WhyChooseUs";
-import Benefits from "@/components/home/Benefits";
 import Experience from "@/components/home/Experience";
-import Facts from "@/components/home/facts";
-import Services from "@/components/home/Services";
+
 import Partners from "@/components/home/Partners";
 import LocationMarquee from "@/components/home/LocationMarquee";
+import RapidRentSteps from "@/components/home/RapidRentSteps";
+import Logos from "@/components/home/Logos";
 
 const Home: React.FC = () => {
   return (
@@ -34,15 +33,13 @@ const Home: React.FC = () => {
       {/* max-w-7xl */}
       <div className="min-h-screen bg-white  font-sans">
         <HeroSection />
-        <ValueProposition />
+        <RapidRentSteps />
+        <Logos />
         <PropertyListings />
-        <WhyChooseUs />
-        <Benefits />
         <Experience />
-        <Facts />
+
         <LocationMarquee />
-        <Services />
-        <Partners />
+        {/* <Partners /> */}
       </div>
     </>
   );

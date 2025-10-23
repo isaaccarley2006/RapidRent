@@ -17,7 +17,7 @@ export default function LocationMarquee() {
   ];
 
   return (
-    <section className="bg-white py-20 px-4 overflow-hidden">
+    <section className="bg-white py-16 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* First Marquee Row */}
         <div className="relative mb-8">
@@ -32,7 +32,7 @@ export default function LocationMarquee() {
                   className="flex items-center gap-8 text-4xl font-semibold font-plus-jakarta-sans text-gray-900"
                 >
                   <span>{location}</span>
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-500">•</span>
                 </div>
               ))}
               {locations.slice(0, 5).map((location, index) => (
@@ -41,7 +41,7 @@ export default function LocationMarquee() {
                   className="flex items-center gap-8 text-4xl font-semibold font-plus-jakarta-sans text-gray-900"
                 >
                   <span>{location}</span>
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-500">•</span>
                 </div>
               ))}
             </div>
@@ -61,7 +61,7 @@ export default function LocationMarquee() {
                   className="flex items-center gap-8 text-4xl font-semibold font-plus-jakarta-sans text-gray-900"
                 >
                   <span>{location}</span>
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-500">•</span>
                 </div>
               ))}
               {locations.slice(5).map((location, index) => (
@@ -70,7 +70,7 @@ export default function LocationMarquee() {
                   className="flex items-center gap-8 text-4xl font-semibold font-plus-jakarta-sans text-gray-900"
                 >
                   <span>{location}</span>
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-500">•</span>
                 </div>
               ))}
             </div>

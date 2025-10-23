@@ -26,7 +26,7 @@ export default function Facts() {
   ];
 
   return (
-    <section className=" py-20 px-4">
+    <section className=" py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <h6 className=" uppercase font-plus-jakarta-sans text-gray-500 mb-6 text-sm">
           facts
@@ -49,7 +49,7 @@ export default function Facts() {
                   {stat.number}
                 </div>
               </div>
-              <p className="text-gray-400 flex-1 text-sm font-poppins">
+              <p className="text-gray-500 flex-1 text-sm font-poppins">
                 {stat.label}
               </p>
             </div>
