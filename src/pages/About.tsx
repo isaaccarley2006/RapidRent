@@ -1,5 +1,5 @@
 import Benefits from "@/components/about/Benefits";
-import Facts from "@/components/about/facts";
+import Facts from "@/components/about/Facts";
 import Services from "@/components/about/Services";
 import ValueProposition from "@/components/about/ValueProposition";
 import WhyChooseUs from "@/components/about/WhyChooseUs";
