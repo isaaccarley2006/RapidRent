@@ -1,14 +1,28 @@
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuthLogin } from "@/hooks/useAuth";
+import { setAuth } from "@/store/authSlice";
+import { useAppDispatch } from "@/store/hook";
 import { ErrorMessage, Form, Formik, useFormikContext } from "formik";
 import React from "react";
 import { IoLogoGoogle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import * as Yup from "yup";
+
+const loginValidationSchema = Yup.object({
+  email: Yup.string()
+    .email("Please enter a valid email address")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
-
+  const { mutateAsync: authLogin } = useAuthLogin();
+  const dispatch = useAppDispatch();
   // useEffect(() => {
   //   // Redirect to tenant auth as default
   //   navigate("/auth/tenant", { replace: true });
@@ -26,7 +40,33 @@ const Auth: React.FC = () => {
           </p>
         </div>
 
-        <Formik initialValues={{}} onSubmit={() => {}}>
+        <Formik
+          validationSchema={loginValidationSchema}
+          initialValues={{
+            email: "thernloven16578@outlook.com",
+            password: "password123",
+          }}
+          onSubmit={async (values) => {
+            try {
+              const userData: any = await authLogin(values);
+
+              const data = {
+                token: userData.data.token,
+                user: userData.data.user,
+              };
+
+              console.log(userData.data, "userData.data.");
+              localStorage.setItem("token", data.token);
+              // Store token and user in redux
+              dispatch(setAuth({ token: data.token, user: data.user }));
+
+              toast.success("Logged in successfully!");
+              navigate("/listings");
+            } catch (error: any) {
+              toast.error(error.message || "Login failed");
+            }
+          }}
+        >
           {() => (
             <Form>
               <LoginForm />
@@ -89,7 +129,7 @@ const LoginForm = () => {
             type="password"
             placeholder="Your password"
             {...formik.getFieldProps("password")}
-            className={`w-full  ${
+            className={`w-full ${
               formik.touched.password && formik.errors.password
                 ? "border-red-500"
                 : ""
@@ -105,6 +145,7 @@ const LoginForm = () => {
 
         <Button
           onClick={() => formik.handleSubmit()}
+          disabled={formik.isSubmitting}
           className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
         >
           Continue

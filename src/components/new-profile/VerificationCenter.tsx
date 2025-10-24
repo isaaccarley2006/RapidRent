@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import IDVerificationModal from "@/components/new-profile/IdVerificationModal";
+import { IMAGES } from "@/assets";
 
 interface VerificationCard {
   id: string;
@@ -11,7 +12,7 @@ interface VerificationCard {
   description: string;
   status: "not-started" | "verified";
   icon: React.ReactNode;
-  poweredBy: string;
+  poweredByImg: string;
   buttonText: string;
   onClick?: () => void;
 }
@@ -25,8 +26,9 @@ export default function VerificationCenter() {
       description: "Financial verification",
       status: "not-started",
       icon: <FolderOpen className="w-8 h-8 text-orange-500" />,
-      poweredBy: "Experian",
+      poweredByImg: IMAGES.EXPERIAN_LOGO,
       buttonText: "Verify Credit",
+
       onClick: () => setIdVerificationsModal(true),
     },
     {
@@ -35,7 +37,7 @@ export default function VerificationCenter() {
       description: "Employment & earnings",
       status: "not-started",
       icon: <TrendingUp className="w-8 h-8 text-orange-500" />,
-      poweredBy: "PLAID",
+      poweredByImg: IMAGES.PLAID_LOGO,
       buttonText: "Verify Income",
     },
     {
@@ -44,7 +46,7 @@ export default function VerificationCenter() {
       description: "Legal status verification",
       status: "not-started",
       icon: <Shield className="w-8 h-8 text-orange-500" />,
-      poweredBy: "Onfido",
+      poweredByImg: IMAGES.IDNOW_LOGO,
       buttonText: "Verify Right to Rent",
     },
     {
@@ -53,7 +55,7 @@ export default function VerificationCenter() {
       description: "Photo ID verification",
       status: "verified",
       icon: <User className="w-8 h-8 text-orange-500" />,
-      poweredBy: "Onfido",
+      poweredByImg: IMAGES.IDNOW_LOGO,
       buttonText: "Verified",
     },
   ];
@@ -105,8 +107,13 @@ hover:shadow-md transition-all duration-500 ease-in-out"
             </div>
 
             {/* Powered by */}
-            <p className="text-xs text-center  text-slate-500 mb-4">
-              Powered by {verification.poweredBy}
+            <p className="text-xs text-center items-center flex gap-2 justify-center  text-slate-500 mb-4">
+              <span> Powered by </span>
+              <img
+                src={verification.poweredByImg}
+                alt="Experian"
+                className="h-4 object-contain"
+              />
             </p>
 
             {/* Button */}

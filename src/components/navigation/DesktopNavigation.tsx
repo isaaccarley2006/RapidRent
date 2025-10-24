@@ -18,7 +18,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
-
+  console.log(user, "user");
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
@@ -102,7 +102,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
           <Button
             onClick={handleSignOut}
             variant="outline"
-            className="border-muted text-text-primary hover:bg-surface rounded-xl"
+            // className="border-muted text-text-primary hover:bg-surface rounded-xl"
           >
             Sign Out
           </Button>
@@ -148,10 +148,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
             );
           })}
 
-          <Button
-            onClick={() => navigate("/onboarding")}
-            className=" rounded-xl"
-          >
+          <Button onClick={() => navigate("/auth")} className=" rounded-xl">
             Log In
           </Button>
         </>

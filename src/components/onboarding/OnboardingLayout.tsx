@@ -56,7 +56,7 @@ function OnboardingLayout({ children }) {
           <div className="flex items-center justify-center  flex-wrap gap-10 mx-auto ">
             <img
               className="w-10 h-10 aspect-square object-contain"
-              src="https://webobjects2.cdw.com/is/image/CDW/aws1?$transparent$"
+              src={IMAGES.AWS}
             />
 
             <img className="w-20 object-contain" src={IMAGES.HOUSING_HAND} />

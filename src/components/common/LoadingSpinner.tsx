@@ -1,5 +1,4 @@
-
-import React from 'react'
+import React from "react";
 
 export const LoadingSpinner: React.FC = () => {
   return (
@@ -9,5 +8,5 @@ export const LoadingSpinner: React.FC = () => {
         <p className="text-muted text-sm">Loading...</p>
       </div>
     </div>
-  )
-}
+  );
+};

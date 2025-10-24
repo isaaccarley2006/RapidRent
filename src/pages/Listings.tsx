@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import useListings from "@/hooks/useListings";
+import clsx from "clsx";
 
 interface Property {
   id: string;
@@ -37,6 +38,7 @@ interface Filters {
 
 const Listings: React.FC = () => {
   const navigate = useNavigate();
+  const [listingView, setListingView] = useState<"list" | "grid">("grid");
   const location = useLocation();
   const { user } = useAuth();
 
@@ -64,6 +66,9 @@ const Listings: React.FC = () => {
 
   const handleFiltersChange = (newFilters: Filters) => {
     setFilters(newFilters);
+  };
+  const handleListingView = (listingView: "list" | "grid") => {
+    setListingView(listingView);
   };
 
   const handleSearchChange = (query: string) => {
@@ -97,9 +102,11 @@ const Listings: React.FC = () => {
 
         <SearchFilters
           filters={filters}
+          listingView={listingView}
           searchQuery={searchQuery}
           onFiltersChange={handleFiltersChange}
           onSearchChange={handleSearchChange}
+          onListingViewChange={handleListingView}
         />
 
         {error && (
@@ -145,9 +152,16 @@ const Listings: React.FC = () => {
 
         {listings?.data?.data?.listings &&
           listings?.data?.data?.listings?.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              className={clsx(
+                "grid  gap-6",
+                listingView === "grid" &&
+                  "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              )}
+            >
               {listings?.data?.data?.listings?.map((property) => (
                 <PropertyCard
+                  listingView={listingView}
                   key={property.id}
                   property={property}
                   showLandlordActions={user?.id === property.landlord_id}

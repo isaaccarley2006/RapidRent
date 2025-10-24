@@ -13,11 +13,16 @@ import LOGO_WHITE from "./logo-white.png";
 import HOUSING_HAND from "./icons/housing-hand.png";
 import EXPERIAN_LOGO from "./experian-logo.png";
 import GOV_UK from "./gov-uk.png";
-
+import PLAID_LOGO from "./plaid-logo.png";
+import IDNOW_LOGO from "./idnow.png";
+import AWS from "./aws.png";
 export const IMAGES = {
   HMRC,
+  AWS,
   HOUSING_HAND,
   EXPERIAN_LOGO,
+  IDNOW_LOGO,
+  PLAID_LOGO,
   GOV_UK,
   LOGO_BLACK,
   LOGO_PRIMARY,

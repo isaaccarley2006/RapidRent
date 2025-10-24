@@ -1,5 +1,8 @@
 // context/AuthContext.tsx
+import { clearAuth } from "@/store/authSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hook";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 // import { useNavigate } from "react-router-dom";
 
@@ -24,8 +27,11 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<any | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const { user, token } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  // const [user, setUser] = useState<any | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Initialize user from localStorage if token exists
@@ -68,10 +74,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = () => {
-    setUser(null);
-    setToken(null);
+    // setUser(null);
+    // setToken(null);
+    dispatch(clearAuth());
     localStorage.removeItem("token");
-    // navigate("/login");
+    navigate("/auth");
   };
 
   const value = {

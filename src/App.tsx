@@ -60,10 +60,10 @@ const queryClient = new QueryClient({
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <Provider store={store}>
-            <BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <TooltipProvider>
+            <AuthProvider>
               <Routes>
                 <Route
                   path="/"
@@ -297,11 +297,11 @@ const App = () => (
                   }
                 />
               </Routes>
-            </BrowserRouter>
-          </Provider>
-          <Toaster />
-        </AuthProvider>
-      </TooltipProvider>
+              <Toaster />
+            </AuthProvider>
+          </TooltipProvider>
+        </BrowserRouter>
+      </Provider>
     </QueryClientProvider>
   </HelmetProvider>
 );

@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -54,108 +55,38 @@ const Logos: React.FC<Props> = ({
 
 const logos = [
   {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "mozilla",
-    name: "mozilla",
+    image: IMAGES.HOUSING_HAND,
+    alt: "HOUSING_HAND",
+    name: "HOUSING HAND",
   },
   {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "github",
-    name: "github",
+    image: IMAGES.EXPERIAN_LOGO,
+    alt: "EXPERIAN_LOGO",
+    name: "EXPERIAN",
   },
   {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "1password",
-    name: "1password",
+    image: IMAGES.GOV_UK,
+    alt: "GOV_UK",
+    name: "GOV UK",
   },
   {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "pwc",
-    name: "pwc",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "pika",
-    name: "pika",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "humata",
-    name: "humata",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "mozilla",
-    name: "mozilla",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "github",
-    name: "github",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "1password",
-    name: "1password",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "pwc",
-    name: "pwc",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "pika",
-    name: "pika",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "humata",
-    name: "humata",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "mozilla",
-    name: "mozilla",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "github",
-    name: "github",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "1password",
-    name: "1password",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "pwc",
-    name: "pwc",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "pika",
-    name: "pika",
-  },
-  {
-    image: `https://supabase.com/images/logos/publicity/mozilla.svg`,
-    alt: "humata",
-    name: "humata",
+    image: IMAGES.AWS,
+    alt: "AWS",
+    name: "AWS",
   },
 ];
 
 const LogosRow: React.FC<{ className?: string }> = ({ className }) => (
   <div className={cn(className)} suppressHydrationWarning>
-    {logos.map((logo) => (
+    {[...logos, ...logos, ...logos].map((logo) => (
       <div
         key={`logos-group-${logo.name}`}
-        className="h-12 lg:h-12 w-max !inline-block"
+        className="h-12 lg:h-8 w-max !inline-block"
       >
         <img
           src={logo.image}
           alt={logo.alt}
-          className={"h-12 lg:h-12 !min-h-12 lg:!min-h-12 w-auto block"}
+          className={"h-8 lg:h-8 !min-h-8 lg:!min-h-8 w-auto block"}
           draggable={false}
         />
       </div>

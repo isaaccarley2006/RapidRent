@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { Select } from "@/components/ui/select";
+import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 
 interface Filters {
   location: string;
@@ -14,15 +15,19 @@ interface Filters {
 interface SearchFiltersProps {
   filters: Filters;
   searchQuery: string;
+  listingView: "grid" | "list";
   onFiltersChange: (filters: Filters) => void;
   onSearchChange: (query: string) => void;
+  onListingViewChange: (listingView: "grid" | "list") => void;
 }
 
 export const SearchFilters: React.FC<SearchFiltersProps> = ({
   filters,
   searchQuery,
+  listingView,
   onFiltersChange,
   onSearchChange,
+  onListingViewChange,
 }) => {
   const handleFilterChange = (key: keyof Filters, value: string) => {
     onFiltersChange({
@@ -45,7 +50,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
     <div className="bg-white rounded-2xl  mb-8">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Search Input */}
-        <div className="flex-1">
+        <div className="flex-1 flex items-center gap-4">
           <div className="relative w-72">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4" />
             <Input
@@ -55,6 +60,23 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               onChange={(e) => onSearchChange(e.target.value)}
               className="pl-10"
             />
+          </div>
+          <div className="bg-gray-50 inline-flex p-0.5 gap-1 rounded-xl">
+            <Button
+              size="icon"
+              onClick={() => onListingViewChange("list")}
+              variant={listingView === "list" ? "default" : "ghost"}
+            >
+              <CiGrid2H />
+            </Button>
+            <Button
+              size="icon"
+              onClick={() => onListingViewChange("grid")}
+              variant={listingView === "grid" ? "default" : "ghost"}
+              className=""
+            >
+              <CiGrid41 />
+            </Button>
           </div>
         </div>
 
@@ -99,11 +121,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           </div>
 
           {/* Clear Filters Button */}
-          <Button
-            onClick={clearFilters}
-            className="rounded-xl"
-            // className="lg:w-auto border-muted hover:border-primary hover:text-primary"
-          >
+          <Button onClick={clearFilters} className="rounded-xl">
             Clear
           </Button>
         </div>
