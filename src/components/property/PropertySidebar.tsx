@@ -127,7 +127,7 @@ export const PropertySidebar: React.FC<PropertySidebarProps> = ({
           ) : (
             <Button
               onClick={onMakeOffer}
-              className="w-full bg-primary hover:bg-primary-dark text-white py-3 text-lg rounded-xl shadow hover:shadow-xl transition-shadow"
+              className="w-full"
               disabled={property.status !== "listed"}
             >
               {user ? "Make an Offer" : "Sign in to Make an Offer"}

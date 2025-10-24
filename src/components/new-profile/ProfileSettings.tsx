@@ -9,6 +9,7 @@ import { MdClose, MdWarning } from "react-icons/md";
 import { PiWarningCircle } from "react-icons/pi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Validation schema
 const profileValidationSchema = Yup.object().shape({
@@ -32,6 +33,8 @@ const passwordValidationSchema = Yup.object().shape({
 });
 
 export default function ProfileSettings() {
+  const { user } = useAuth();
+  console.log(user, "useruser");
   return (
     <div className="flex-1 p-6 pr-0 ">
       {/* Warning Banner */}
@@ -48,35 +51,20 @@ export default function ProfileSettings() {
 
       {/* Account Section */}
       <div className="bg-white font-poppins rounded-xl border border-gray-200 p-6">
-        {/* <h2 className="text-2xl text-gray-900 font-medium font-poppins">
-          Account
-        </h2>
-        <p className="text-slate-500 font-inter text-sm mb-8">
-          Real-time information and activities of your property.
-        </p> */}
-
         {/* Profile Card */}
-        <ProfileCard />
-        <ProfileTabs />
-
-        {/* <div className="bg-[#FAFAFA] p-4 border border-gray-200 rounded-xl">
-       
-
-         
-
-          
-        </div> */}
+        <ProfileCard user={user} />
+        <ProfileTabs user={user} />
       </div>
     </div>
   );
 }
 
-const ProfileTabs = () => {
+const ProfileTabs = ({ user }) => {
   const tabs = [
     {
       label: "Personal Information",
       value: "personal-information",
-      component: <PersonalInfo />,
+      component: <PersonalInfo user={user} />,
     },
     {
       label: "Password",
@@ -111,7 +99,7 @@ const ProfileTabs = () => {
   );
 };
 
-const ProfileCard = () => {
+const ProfileCard = ({ user }) => {
   const [profileImage, setProfileImage] = useState(
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn9zilY2Yu2hc19pDZFxgWDTUDy5DId7ITqA&s"
   );
@@ -129,7 +117,7 @@ const ProfileCard = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between pb-4  border-gray-200">
+      <div className="flex items-center flex-wrap gap-4 justify-between pb-4  border-gray-200">
         <div className="flex items-center gap-4">
           <img
             src={profileImage || "/placeholder.svg"}
@@ -138,11 +126,9 @@ const ProfileCard = () => {
           />
           <div>
             <h3 className="text-lg font-medium text-gray-900">
-              Sophia Williams
+              {user?.firstName}
             </h3>
-            <p className="text-slate-500 font-inter">
-              sophiawilliams@gmail.com
-            </p>
+            <p className="text-slate-500 font-inter">{user?.email}</p>
           </div>
         </div>
         <div className="flex gap-3">
@@ -168,15 +154,16 @@ const ProfileCard = () => {
     </>
   );
 };
-const PersonalInfo = () => {
+const PersonalInfo = ({ user }) => {
   return (
     <Formik
       initialValues={{
-        firstName: "Sophia",
-        lastName: "Williams",
-        email: "sophiawilliams@gmail.com",
+        firstName: user?.firstname,
+        lastName: "",
+        email: user?.email,
         phone: "247-00 24574",
       }}
+      enableReinitialize
       validationSchema={profileValidationSchema}
       onSubmit={(values) => {
         console.log("Profile updated:", values);

@@ -1,36 +1,35 @@
-
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export const Navigation: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <header className="border-b border-muted bg-white">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <button 
-            onClick={() => navigate('/')}
+          <button
+            onClick={() => navigate("/")}
             className="text-2xl font-bold text-text-primary hover:opacity-80 transition-opacity cursor-pointer"
           >
             Rapid<span className="text-primary">Rent</span>
           </button>
           <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={() => navigate('/listings')}
+            <button
+              onClick={() => navigate("/listings")}
               className="text-text-muted hover:text-text-primary transition-colors"
             >
-              Properties
+              Listings
             </button>
-            <button 
-              onClick={() => navigate('/auth/tenant')}
+            <button
+              onClick={() => navigate("/auth/tenant")}
               className="text-text-muted hover:text-text-primary transition-colors"
             >
               Sign In
             </button>
-            <Button 
-              onClick={() => navigate('/auth/tenant')}
+            <Button
+              onClick={() => navigate("/auth/tenant")}
               className="bg-primary hover:bg-primary-dark text-white rounded-xl"
             >
               Get Started
@@ -39,5 +38,5 @@ export const Navigation: React.FC = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};

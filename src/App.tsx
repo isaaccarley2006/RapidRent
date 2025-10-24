@@ -171,10 +171,10 @@ const App = () => (
                   element={<Navigate to="/dashboard" replace />}
                 />
                 <Route
-                  path="/new-profile"
+                  path="/old-profile"
                   element={
                     <AppLayout>
-                      <NewProfile />
+                      <Profile />
                     </AppLayout>
                   }
                 />
@@ -182,7 +182,7 @@ const App = () => (
                   path="/profile"
                   element={
                     <AppLayout>
-                      <Profile />
+                      <NewProfile />
                     </AppLayout>
                   }
                 />

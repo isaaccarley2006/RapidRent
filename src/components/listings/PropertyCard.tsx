@@ -17,6 +17,8 @@ import {
 import { StatusBadge } from "@/components/property/StatusBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatLocationDisplay } from "@/utils/locationFormatter";
+import { PiClockLight } from "react-icons/pi";
+import clsx from "clsx";
 
 interface Property {
   id: string;
@@ -49,6 +51,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   const navigate = useNavigate();
   const { user } = useAuth();
   const isOwner = user?.id === property.landlord_id;
+  const isUserHave = Boolean(user?.id);
 
   const handleViewDetails = () => {
     navigate(`/properties/${property.id}`);
@@ -70,6 +73,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         showLandlordActions={showLandlordActions}
         handleViewDetails={handleViewDetails}
         isOwner={isOwner}
+        isUserHave={isUserHave}
         handleViewOffers={handleViewOffers}
       />
     );
@@ -81,6 +85,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       showLandlordActions={showLandlordActions}
       handleViewDetails={handleViewDetails}
       isOwner={isOwner}
+      isUserHave={isUserHave}
       handleViewOffers={handleViewOffers}
     />
   );
@@ -93,21 +98,14 @@ const GridCard = ({
   handleViewDetails,
   isOwner,
   handleViewOffers,
+  isUserHave,
 }) => {
   return (
-    <Card className="hover:shadow transition-shadow duration-200 cursor-pointer bg-white">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <CardTitle className="text-lg font-semibold text-text-primary min-h-[3.5rem] leading-relaxed">
-            {property.title.length > 30
-              ? `${property.title.substring(0, 30)}...`
-              : property.title}
-          </CardTitle>
+    <Card className="hover:shadow relative transition-shadow duration-200 rounded-2xl cursor-pointer bg-white">
+      <CardContent className="space-y-4 p-4 pt-0">
+        <div className=" absolute top-6 z-10 right-6   bottom-0">
           <StatusBadge status={"listed"} />
         </div>
-      </CardHeader>
-
-      <CardContent className="space-y-4">
         {/* Property Image with Popup */}
         <Dialog>
           <DialogTrigger asChild>
@@ -141,6 +139,11 @@ const GridCard = ({
           </DialogContent>
         </Dialog>
 
+        <CardTitle className="text-xl font-semibold text-text-primary">
+          {property.title.length > 30
+            ? `${property.title.substring(0, 30)}...`
+            : property.title}
+        </CardTitle>
         {/* Location */}
         <div className="flex items-center text-text-muted">
           <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -165,6 +168,7 @@ const GridCard = ({
           isOwner={isOwner}
           handleEdit={handleEdit}
           handleViewOffers={handleViewOffers}
+          isUserHave={isUserHave}
           handleViewDetails={handleViewDetails}
         />
       </CardContent>
@@ -179,55 +183,63 @@ const HorizontalCard = ({
   handleViewDetails,
   isOwner,
   handleViewOffers,
+  isUserHave,
 }) => {
   return (
-    <Card className="hover:shadow flex gap-4 transition-shadow duration-200 p-2 rounded-xl cursor-pointer bg-white">
+    <Card className="hover:shadow relative grid grid-cols-2 gap-8 transition-shadow duration-200 p-4 rounded-2xl cursor-pointer bg-white">
       <div className="space-y-4">
-        <div className="relative h-64 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
+        <div className="relative h-full  bg-gray-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
           <img
             src={property.images?.[0] || ""}
             alt={property.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full absolute top-0 right-0 left-0 bottom-0 object-cover"
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all" />
         </div>
       </div>
-      <div className="pb-3 flex flex-1">
+      <div className="py-4  flex font-inter">
         <div className="flex flex-1 w-full flex-col items-start">
-          <div>
-            <div>Monthly Price</div>
-            <div className="flex items-center">
-              <PoundSterling className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
-              <span className="text-base font-semibold text-text-primary">
-                {property.monthlyRent
-                  ? `£${Math.round(property.monthlyRent).toLocaleString()}`
-                  : "Price on request"}
-              </span>
+          <div className="w-full flex-1">
+            <div className="mb-2">
+              <div className="text-xs text-text-muted font-inter">
+                Monthly Price
+              </div>
+              <div className="flex items-center">
+                {/* <PoundSterling className="w-4 h-4 mr-2 text-primary flex-shrink-0" /> */}
+                <span className="text-2xl text-text-primary">
+                  {property.monthlyRent
+                    ? `£${Math.round(property.monthlyRent).toLocaleString()}`
+                    : "Price on request"}
+                </span>
+              </div>
             </div>
+            <div className="mb-8">
+              <div className="text-xl font-medium  text-text-primary">
+                {property.title.length > 30
+                  ? `${property.title.substring(0, 30)}...`
+                  : property.title}
+              </div>
+              <div className="flex items-center text-sm  text-text-muted">
+                <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                <span className="truncate">
+                  {formatLocationDisplay(property.location)}
+                </span>
+              </div>
+            </div>
+            <PropertiesDetails property={property} />
           </div>
-          <div>
-            <div className="text-3xl font-medium font-inter text-text-primary leading-relaxed">
-              {property.title.length > 30
-                ? `${property.title.substring(0, 30)}...`
-                : property.title}
-            </div>
-            <div className="flex items-center text-text-muted">
-              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="truncate">
-                {formatLocationDisplay(property.location)}
-              </span>
-            </div>
+          <div className="w-full">
+            <PropertyActionButtons
+              showLandlordActions={showLandlordActions}
+              isOwner={isOwner}
+              handleEdit={handleEdit}
+              isUserHave={isUserHave}
+              handleViewOffers={handleViewOffers}
+              handleViewDetails={handleViewDetails}
+            />
           </div>
-          <PropertiesDetails property={property} />
-          <PropertyActionButtons
-            showLandlordActions={showLandlordActions}
-            isOwner={isOwner}
-            handleEdit={handleEdit}
-            handleViewOffers={handleViewOffers}
-            handleViewDetails={handleViewDetails}
-          />
         </div>
-        <div>
+        <div className="absolute top-4 right-4">
           <StatusBadge status={"listed"} />
         </div>
       </div>
@@ -238,7 +250,7 @@ const HorizontalCard = ({
 const PropertiesDetails = ({ property }) => {
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 w-full text-sm">
+      <div className="grid grid-cols-2 gap-3 mb-4 w-full text-sm">
         <div className="flex items-center">
           <Bed className="w-4 h-4 mr-2 text-primary" />
           <span className="text-text-muted">
@@ -286,9 +298,15 @@ const PropertyActionButtons = ({
   isOwner,
   handleEdit,
   handleViewOffers,
+  isUserHave,
 }) => {
   return (
-    <div className="space-y-2 w-full">
+    <div
+      className={clsx(
+        "w-full gap-2  pt-4 border-t border-gray-100  grid  items-center",
+        isUserHave && "grid-cols-3"
+      )}
+    >
       <Button
         onClick={handleViewDetails}
         className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl"
@@ -296,13 +314,13 @@ const PropertyActionButtons = ({
         View Details
       </Button>
 
-      {showLandlordActions && isOwner && (
-        <div className="grid grid-cols-2 gap-2">
+      {/* isUserHave && showLandlordActions && isOwner && */}
+      {isUserHave && (
+        <>
           <Button
             onClick={handleEdit}
             variant="outline"
-            size="sm"
-            className="flex items-center gap-1"
+            className="flex w-full items-center"
           >
             <Edit2 className="w-3 h-3" />
             Edit
@@ -310,13 +328,12 @@ const PropertyActionButtons = ({
           <Button
             onClick={handleViewOffers}
             variant="outline"
-            size="sm"
-            className="flex items-center gap-1"
+            className="flex w-full items-center"
           >
             <Eye className="w-3 h-3" />
             Offers
           </Button>
-        </div>
+        </>
       )}
     </div>
   );

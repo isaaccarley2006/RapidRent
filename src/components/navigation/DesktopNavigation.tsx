@@ -17,10 +17,10 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   console.log(user, "user");
   const handleSignOut = async () => {
-    await signOut();
+    await logout();
     navigate("/");
   };
 
@@ -59,7 +59,8 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
                 : "text-text-primary hover:text-primary"
             }`}
           >
-            {userType === "landlord" ? "Listings" : "Properties"}
+            Listings
+            {/* {userType === "landlord" ? "Listings" : "Properties"} */}
           </button>
 
           <button
@@ -99,11 +100,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
             </button>
           )}
 
-          <Button
-            onClick={handleSignOut}
-            variant="outline"
-            // className="border-muted text-text-primary hover:bg-surface rounded-xl"
-          >
+          <Button onClick={handleSignOut} variant="outline">
             Sign Out
           </Button>
         </>
@@ -116,10 +113,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
               label: "Home",
               link: "/",
             },
-            {
-              label: "Dashboard",
-              link: "/dashboard",
-            },
+
             {
               label: "About Us",
               link: "/about",

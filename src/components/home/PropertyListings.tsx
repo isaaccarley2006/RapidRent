@@ -51,10 +51,8 @@ export default function PropertyListings() {
               portfolio.
             </p>
           </div>
-          <Button
-            variant="default"
-            className=" rounded-xl bg-slate-200 hover:bg-slate-200/50 text-gray-900"
-          >
+
+          <Button variant="outline">
             View All Listings <MdArrowForward />
           </Button>
         </motion.div>
