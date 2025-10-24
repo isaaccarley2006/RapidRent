@@ -23,13 +23,14 @@ export const Logo: React.FC<LogoProps> = ({
   };
 
   const handleLogoClick = () => {
-    if (user) {
-      // For authenticated users, logo takes them to dashboard
-      navigate(getDashboardPath());
-    } else {
-      // For unauthenticated users, logo takes them to home
-      navigate("/");
-    }
+    navigate("/");
+    // if (user) {
+    //   // For authenticated users, logo takes them to dashboard
+    //   navigate(getDashboardPath());
+    // } else {
+    //   // For unauthenticated users, logo takes them to home
+    //   navigate("/");
+    // }
   };
 
   return (

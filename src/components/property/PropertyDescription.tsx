@@ -1,15 +1,14 @@
-
-import React from 'react'
-import { OverviewCard } from './OverviewCard'
-import { LeaseDetailsCard } from './LeaseDetailsCard'
-import { KeyFeaturesCard } from './KeyFeaturesCard'
+import React from "react";
+import { OverviewCard } from "./OverviewCard";
+import { LeaseDetailsCard } from "./LeaseDetailsCard";
+import { KeyFeaturesCard } from "./KeyFeaturesCard";
 
 interface PropertyDescriptionProps {
-  description: string | null
+  description: string | null;
 }
 
 export const PropertyDescription: React.FC<PropertyDescriptionProps> = ({
-  description
+  description,
 }) => {
   return (
     <div className="space-y-12">
@@ -19,7 +18,7 @@ export const PropertyDescription: React.FC<PropertyDescriptionProps> = ({
             About this property
           </h2>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <OverviewCard />
           <LeaseDetailsCard />
@@ -27,5 +26,5 @@ export const PropertyDescription: React.FC<PropertyDescriptionProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

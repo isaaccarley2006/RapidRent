@@ -3,11 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { PropertyCard } from "@/components/listings/PropertyCard";
 import { SearchFilters } from "@/components/listings/SearchFilters";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { supabase } from "@/lib/supabase";
-import { useQuery } from "@tanstack/react-query";
+
 import { useAuth } from "@/contexts/AuthContext";
 import useListings from "@/hooks/useListings";
 import clsx from "clsx";

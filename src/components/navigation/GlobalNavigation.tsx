@@ -27,18 +27,35 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
     setIsMobileMenuOpen(false);
   };
 
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.scrollY > 0) {
+  //       setScrolled(true);
+  //     } else {
+  //       setScrolled(false);
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
+
   useEffect(() => {
+    // Disable scroll logic entirely for non-transparent routes
+    if (!transparentRoutes.includes(location.pathname)) {
+      setScrolled(true);
+      return;
+    }
+
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      // Trigger after user scrolls past 80vh
+      const threshold = window.innerHeight * 0.7;
+      setScrolled(window.scrollY > threshold);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   return (
     <header
