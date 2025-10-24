@@ -104,6 +104,7 @@ const Listings: React.FC = () => {
           onSearchChange={handleSearchChange}
           onListingViewChange={handleListingView}
         />
+        <AddressMap />
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
@@ -171,3 +172,17 @@ const Listings: React.FC = () => {
 };
 
 export default Listings;
+
+const AddressMap = () => {
+  return (
+    <div className="google-map-code overflow-hidden rounded-xl mb-8">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19801.54672774623!2d-0.1275862!3d51.5072178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+        width="100%"
+        height="250"
+        style={{ border: 0 }}
+        aria-hidden="false"
+      />
+    </div>
+  );
+};

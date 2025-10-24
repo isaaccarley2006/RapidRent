@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { Select } from "@/components/ui/select";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
+import Typewriter from "typewriter-effect";
 
 interface Filters {
   location: string;
@@ -48,19 +48,10 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
 
   return (
     <div className="bg-white rounded-2xl  mb-8">
-      <div className="flex flex-col lg:flex-row gap-4">
+      <div className="flex flex-col items-center lg:flex-row gap-4">
         {/* Search Input */}
+
         <div className="flex-1 flex items-center gap-4">
-          <div className="relative w-72">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4" />
-            <Input
-              type="text"
-              placeholder="Search properties..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10"
-            />
-          </div>
           <div className="bg-gray-50 inline-flex p-0.5 gap-1 rounded-xl">
             <Button
               size="icon"
@@ -78,6 +69,10 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               <CiGrid41 />
             </Button>
           </div>
+          <SearchBox
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
         </div>
 
         <div className="flex-1 flex gap-4">
@@ -126,6 +121,59 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           </Button>
         </div>
       </div>
+    </div>
+  );
+};
+
+export const SearchBox = ({ value, onChange }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const placeholderRef = useRef<HTMLDivElement>(null);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    // optionally resume typing when blurred
+    setIsFocused(false);
+  };
+
+  return (
+    <div className="relative  w-full">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted w-4 h-4" />
+
+      <Input
+        type="text"
+        value={value}
+        onChange={onChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        className="pl-10"
+        placeholder=""
+      />
+
+      {/* Animated placeholder */}
+      {!isFocused && !value && (
+        <div
+          ref={placeholderRef}
+          className="absolute left-10 top-1/2 text-sm transform -translate-y-1/2 text-text-muted pointer-events-none whitespace-nowrap overflow-hidden text-ellipsis w-[calc(100%-2.5rem)]"
+        >
+          <Typewriter
+            options={{
+              strings: [
+                "Three-bedroom house near tube, pet-friendly.",
+                "Pet-friendly three-bed home close to public transport.",
+                "Three-bed rental within walking distance of a tube station, pets allowed.",
+                "Three-bedroom house in London, pets accepted, near underground.",
+              ],
+              autoStart: true,
+              loop: true,
+              delay: 20,
+              deleteSpeed: 40,
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
