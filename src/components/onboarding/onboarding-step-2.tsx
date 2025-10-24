@@ -77,10 +77,7 @@ export default function OnboardingStep2() {
         </div>
         <div className="text-center text-xs text-gray-500 my-4">OR</div>
 
-        <Button
-          variant="outline"
-          className="w-full  bg-slate-100 text-black hover:bg-slate-200 hover:text-black border-none font-semibold rounded-xl py-2  mb-6 "
-        >
+        <Button variant="outline" className="w-full mb-6 ">
           <IoLogoGoogle />
           Continue with Google
         </Button>

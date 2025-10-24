@@ -16,6 +16,11 @@ import GOV_UK from "./gov-uk.png";
 import PLAID_LOGO from "./plaid-logo.png";
 import IDNOW_LOGO from "./idnow.png";
 import AWS from "./aws.png";
+
+import STEP_1 from "./step-1.png";
+import STEP_2 from "./step-2.png";
+import STEP_3 from "./step-3.png";
+
 export const IMAGES = {
   HMRC,
   AWS,
@@ -35,4 +40,8 @@ export const IMAGES = {
   ID_VERIFICATION_5,
   ID_VERIFICATION_6,
   FACIAL_RECOGNITION,
+
+  STEP_1,
+  STEP_2,
+  STEP_3,
 };
