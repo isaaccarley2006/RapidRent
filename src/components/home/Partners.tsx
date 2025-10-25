@@ -16,7 +16,7 @@ export default function Partners() {
                 estate and related industries.
               </p>
 
-              <Button className=" rounded-xl" size="lg">
+              <Button className="" size="lg">
                 Learn More
               </Button>
             </div>

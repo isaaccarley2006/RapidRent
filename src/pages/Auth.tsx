@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
+import OnboardingLayout from "@/components/layouts/OnboardingLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthLogin } from "@/hooks/useAuth";
@@ -146,7 +146,7 @@ const LoginForm = () => {
         <Button
           onClick={() => formik.handleSubmit()}
           disabled={formik.isSubmitting}
-          className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
+          className="w-full bg-accent  text-white font-semibold py-2 mb-4"
         >
           Continue
         </Button>

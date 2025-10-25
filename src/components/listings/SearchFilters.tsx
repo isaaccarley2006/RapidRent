@@ -51,8 +51,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
       <div className="flex flex-col items-center lg:flex-row gap-4">
         {/* Search Input */}
 
-        <div className="flex-1 flex items-center gap-4">
-          <div className="bg-gray-50 inline-flex p-0.5 gap-1 rounded-xl">
+        <div className="flex-1 w-full flex items-center gap-4">
+          <div className="bg-gray-50 inline-flex p-0.5 gap-1 rounded-full">
             <Button
               size="icon"
               onClick={() => onListingViewChange("list")}
@@ -75,7 +75,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           />
         </div>
 
-        <div className="flex-1 flex gap-4">
+        <div className="flex-1 w-full flex gap-4">
           {/* Location Filter */}
           <div className="lg:w-48">
             <Input
@@ -116,9 +116,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           </div>
 
           {/* Clear Filters Button */}
-          <Button onClick={clearFilters} className="rounded-xl">
-            Clear
-          </Button>
+          <Button onClick={clearFilters}>Clear</Button>
         </div>
       </div>
     </div>

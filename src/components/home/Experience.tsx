@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { BiSolidRightArrow } from "react-icons/bi";
 
 export default function Experience() {
@@ -15,15 +16,13 @@ export default function Experience() {
         </div>
         <div className="relative rounded-3xl overflow-hidden h-[70vh]">
           <img
-            src="https://heaven-homes.vercel.app/_next/image?url=%2Fimages%2Fvideo.webp&w=1080&q=75"
+            src={IMAGES.EXPERIENCE_SECTION}
             alt="Experience"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-            <button className="w-24 h-24 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition">
-              <BiSolidRightArrow className="text-accent ml-1" size={26} />
-            </button>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-bl rounded-b-3xl  from-accent/45 via-accent/10  to-white/45"></div>
+          Fine, and instead of this image, we will put our image like if you
+          have some images, so we can put there
         </div>
       </div>
     </section>

@@ -52,12 +52,12 @@ export default function RapidRentSteps() {
 
   return (
     // Get Started in Three Easy Steps
-    <section className="py-16 bg-white  max-w-7xl mx-auto">
+    <section className="py-16  bg-white px-4  max-w-7xl mx-auto">
       <h2 className="text-4xl text-center mb-12 font-semibold pb-2 font-plus-jakarta-sans text-gray-900">
         How it works
       </h2>
 
-      <div className="max-w-7xl mx-auto  px-4 grid md:grid-cols-3 gap-8 text-center">
+      <div className="max-w-7xl mx-auto   grid md:grid-cols-3 gap-8 text-center">
         {steps.map((step, index) => (
           <Card
             key={index}

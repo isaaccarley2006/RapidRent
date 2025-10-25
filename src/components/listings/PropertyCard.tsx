@@ -109,7 +109,7 @@ const GridCard = ({
         {/* Property Image with Popup */}
         <Dialog>
           <DialogTrigger asChild>
-            <div className="relative h-48 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
+            <div className="relative h-64 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
               <img
                 src={property.images?.[0] || ""}
                 alt={property.title}
@@ -157,7 +157,7 @@ const GridCard = ({
           <PoundSterling className="w-4 h-4 mr-2 text-primary flex-shrink-0" />
           <span className="text-base font-semibold text-text-primary">
             {property.monthlyRent
-              ? `£${Math.round(property.monthlyRent).toLocaleString()}/month`
+              ? `${Math.round(property.monthlyRent).toLocaleString()}/month`
               : "Price on request"}
           </span>
         </div>
@@ -309,7 +309,7 @@ const PropertyActionButtons = ({
     >
       <Button
         onClick={handleViewDetails}
-        className="w-full bg-primary hover:bg-primary-dark text-white rounded-xl"
+        className="w-full bg-primary hover:bg-primary-dark text-white"
       >
         View Details
       </Button>
@@ -320,7 +320,7 @@ const PropertyActionButtons = ({
           <Button
             onClick={handleEdit}
             variant="outline"
-            className="flex w-full items-center"
+            className="flex  w-full items-center"
           >
             <Edit2 className="w-3 h-3" />
             Edit

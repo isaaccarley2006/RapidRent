@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import clsx from "clsx";
@@ -18,7 +18,6 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
-  console.log(user, "user");
   const handleSignOut = async () => {
     await logout();
     navigate("/");
@@ -119,30 +118,34 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
               link: "/about",
             },
             {
+              label: "Communities",
+              link: "/communities",
+            },
+            {
               label: "Listings",
               link: "/listings",
             },
           ].map((link, index) => {
             return (
-              <button
+              <Link
+                to={link.link}
                 key={index}
-                onClick={() => navigate(link.link)}
                 className={clsx(
                   `px-3 py-2 text-sm font-medium transition-colors`,
 
                   isActivePath(link.link)
                     ? "text-primary font-semibold"
-                    : isTransparentRoute && !scrolled
-                    ? "text-white"
-                    : "text-text-primary hover:text-primary"
+                    : // : isTransparentRoute && !scrolled
+                      // ? "text-white"
+                      "text-text-primary hover:text-primary"
                 )}
               >
                 {link.label}
-              </button>
+              </Link>
             );
           })}
 
-          <Button onClick={() => navigate("/auth")} className=" rounded-xl">
+          <Button onClick={() => navigate("/auth")} className=" rounded-full">
             Log In
           </Button>
         </>

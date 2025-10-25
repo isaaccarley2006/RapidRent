@@ -50,7 +50,7 @@ export default function ProfileSettings() {
       </div>
 
       {/* Account Section */}
-      <div className="bg-white font-poppins rounded-xl border border-gray-200 p-6">
+      <div className="bg-white font-poppins border border-gray-200 p-6">
         {/* Profile Card */}
         <ProfileCard user={user} />
         <ProfileTabs user={user} />
@@ -132,7 +132,7 @@ const ProfileCard = ({ user }) => {
           </div>
         </div>
         <div className="flex gap-3">
-          <Button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-xl text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors">
+          <Button className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors">
             <Upload className="w-4 h-4" />
             <span className="text-sm font-medium">Upload new picture</span>
             <input
@@ -144,7 +144,7 @@ const ProfileCard = ({ user }) => {
           </Button>
           <Button
             variant="destructive"
-            className="flex items-center gap-2  px-4 py-2 bg-accent/10 text-accent rounded-xl hover:bg-accent/20 transition-colors"
+            className="flex items-center gap-2  px-4 py-2 bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             <span className="text-sm font-medium">Delete Image</span>
@@ -339,14 +339,14 @@ const AccountSecurity = () => {
         <p className="text-slate-500 text-sm">Manage your Account security</p>
       </div>
       <div className="flex gap-3">
-        <Button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-xl text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors">
+        <Button className="flex items-center gap-2 px-4 py-2 border border-gray-300  text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors">
           <LogOut className="w-4 h-4" />
           <span className="text-sm font-medium">Log out</span>
         </Button>
 
         <Button
           variant="destructive"
-          className="flex items-center gap-2  px-4 py-2 bg-accent/10 text-accent rounded-xl hover:bg-accent/20 transition-colors"
+          className="flex items-center gap-2  px-4 py-2 bg-accent/10 text-accent  hover:bg-accent/20 transition-colors"
         >
           <Trash2 className="w-4 h-4" />
           <span className="text-sm font-medium">Delete</span>

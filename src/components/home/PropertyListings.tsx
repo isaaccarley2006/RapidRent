@@ -33,7 +33,7 @@ export default function PropertyListings() {
   ];
 
   return (
-    <section className=" py-16 px-4">
+    <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="flex items-center justify-between mb-12"
@@ -90,7 +90,7 @@ export default function PropertyListings() {
                   size="sm"
                   className="absolute top-4 rounded-xl right-4 text-white  text-xs font-light "
                 >
-                  $350k
+                  £350k
                 </Button>
               </div>
               <div className="py-6 flex flex-col gap-4">

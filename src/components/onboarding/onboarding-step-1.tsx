@@ -1,6 +1,6 @@
 "use client";
 
-import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
+import OnboardingLayout from "@/components/layouts/OnboardingLayout";
 import { useFormikContext } from "formik";
 
 export default function OnboardingStep1() {

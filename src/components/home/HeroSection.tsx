@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import { Input } from "@/components/ui/input";
 import { CiFilter } from "react-icons/ci";
+import { IMAGES } from "@/assets";
 
 export const HeroSection: React.FC = () => {
   const navigate = useNavigate();
@@ -24,24 +25,33 @@ export const HeroSection: React.FC = () => {
   };
   return (
     <section
-      className="relative h-[80vh] bg-cover  -top-16   bg-center"
+      className="relative h-[90vh] bg-cover  -top-24     bg-center"
       style={{
-        backgroundImage: `url(${homeHero})`,
+        backgroundImage: `url(${IMAGES.HERO_SECTION})`,
       }}
     >
-      <div className="absolute inset-0 bg-black/50"></div>
+      {/* <div className="absolute inset-0 bg-black/50"></div> */}
+      <div className="absolute inset-0 bg-gradient-to-bl   from-accent/45 via-accent/10  to-white/45"></div>
 
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
         <motion.h1
-          className="text-5xl md:text-7xl text-white mb-4 font-poppins font-medium"
+          className="text-5xl md:text-7xl capitalize text-white mb-4 font-poppins font-medium"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          Find Your Next
+          The rental journey
           <br />
-          Home Sweet Home
+          simplified
         </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-gray-100 text-xl mt-4 font-inter"
+        >
+          Find your perfect place to call home.
+        </motion.p>
       </div>
 
       <Search />
@@ -55,7 +65,7 @@ const Search = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
-      className="w-full -mt-10 max-w-7xl mx-auto px-4"
+      className="w-full -mt-8 max-w-4xl mx-auto px-4"
     >
       <SearchBar />
     </motion.div>
@@ -75,15 +85,15 @@ const SearchBar = () => {
     setIsFocused(false);
   };
   return (
-    <div className="flex gap-4   z-10 relative  shadow shadow-gray-100   items-center bg-white rounded-3xl p-4">
+    <div className="flex gap-4  z-10 relative  shadow-xl shadow-gray-100   items-center bg-white/80 backdrop-blur rounded-full p-2">
       <div className="flex gap-4 border-r flex-1 items-center">
-        <MdOutlineHomeWork className=" text-gray-500" />
+        <MdOutlineHomeWork className=" text-gray-500 ml-2" />
 
         <div className="relative  w-full">
           <input
             type="text"
             // placeholder="Enter an address, neighborhood, city, or  postcode"
-            className="flex-1 font-plus-jakarta-sans text-sm  outline-none  py-3 rounded-lg text-gray-900"
+            className="flex-1 font-plus-jakarta-sans text-sm bg-transparent  outline-none  py-3 rounded-lg text-gray-900"
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={(e) => setSearch(e.target.value)}
@@ -119,8 +129,8 @@ const SearchBar = () => {
       >
         <CiFilter className="text-gray-500" />
       </Button>
-      <Button size="lg" className="rounded-xl font-plus-jakarta-sans">
-        Search Property
+      <Button size="lg" className="font-plus-jakarta-sans">
+        Search Smarter
       </Button>
     </div>
   );

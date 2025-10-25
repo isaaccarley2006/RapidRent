@@ -4,7 +4,7 @@ import { ErrorMessage, useFormikContext } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
+import OnboardingLayout from "@/components/layouts/OnboardingLayout";
 import {
   Select,
   SelectContent,

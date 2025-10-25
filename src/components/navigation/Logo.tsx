@@ -36,20 +36,20 @@ export const Logo: React.FC<LogoProps> = ({
   return (
     <div
       className={clsx(
-        `text-2xl font-bold  cursor-pointer flex items-center gap-2`,
-        isTransparentRoute && !scrolled ? "text-white" : "text-text-primary"
+        `text-2xl font-bold  ml-4 cursor-pointer flex items-center gap-2`
+        // isTransparentRoute && !scrolled ? "text-white" : "text-text-primary"
       )}
       onClick={handleLogoClick}
     >
       <img
-        className="w-8"
+        className="w-6 -mt-1"
         src={
-          isTransparentRoute && !scrolled
-            ? IMAGES.LOGO_WHITE
-            : IMAGES.LOGO_PRIMARY
+          // isTransparentRoute && !scrolled
+          //   ? IMAGES.LOGO_WHITE
+          IMAGES.LOGO_PRIMARY
         }
       />
-      <div className="mt-2">
+      <div className=" font-semibold">
         Rapid<span className="text-primary">Rent</span>
       </div>
     </div>

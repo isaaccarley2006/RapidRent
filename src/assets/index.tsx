@@ -5,6 +5,7 @@ import ID_VERIFICATION_4 from "./icons/id-verification-4.png";
 import ID_VERIFICATION_5 from "./icons/id-verification-5.png";
 import ID_VERIFICATION_6 from "./icons/id-verification-6.png";
 import HMRC from "./icons/HMRC.png";
+import SIGN_NOW from "./icons/sign-now.png";
 import FACIAL_RECOGNITION from "./facial-recognition.png";
 
 import LOGO_BLACK from "./logo-black.png";
@@ -20,10 +21,16 @@ import AWS from "./aws.png";
 import STEP_1 from "./step-1.png";
 import STEP_2 from "./step-2.png";
 import STEP_3 from "./step-3.png";
+import HERO_SECTION from "./hero-section.png";
+import ABOUT_HERO_SECTION from "./icons/about-hero-section.png";
+import EXPERIENCE_SECTION from "./experience_section.png";
 
 export const IMAGES = {
+  EXPERIENCE_SECTION,
   HMRC,
   AWS,
+  SIGN_NOW,
+  HERO_SECTION,
   HOUSING_HAND,
   EXPERIAN_LOGO,
   IDNOW_LOGO,
@@ -40,7 +47,7 @@ export const IMAGES = {
   ID_VERIFICATION_5,
   ID_VERIFICATION_6,
   FACIAL_RECOGNITION,
-
+  ABOUT_HERO_SECTION,
   STEP_1,
   STEP_2,
   STEP_3,

@@ -60,16 +60,16 @@ export const GlobalNavigation: React.FC<NavigationProps> = ({ userType }) => {
   return (
     <header
       className={clsx(
-        `sticky top-0 z-50 shadow-sm transition-all duration-300`,
-        isTransparentRoute
-          ? scrolled
-            ? "bg-white/10 backdrop-blur"
-            : "bg-transparent"
-          : "bg-white"
+        ` sticky top-10 z-50     transition-all duration-300`
+        // isTransparentRoute
+        //   ? scrolled
+        //     ? "bg-white/10 backdrop-blur shadow-sm"
+        //     : "bg-transparent"
+        //   : "bg-white shadow-sm"
       )}
     >
-      <div className="max-w-7xl mx-auto ">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl p-2 mx-auto bg-white/60 backdrop-blur shadow rounded-full ">
+        <div className="flex items-center justify-between ">
           <Logo
             isTransparentRoute={isTransparentRoute}
             scrolled={scrolled}
