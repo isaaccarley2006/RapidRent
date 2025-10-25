@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IoLogoGoogle } from "react-icons/io";
 
-import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
+import OnboardingLayout from "@/components/layouts/OnboardingLayout";
 import { Link } from "react-router-dom";
 
 export default function OnboardingStep2() {
@@ -70,7 +70,7 @@ export default function OnboardingStep2() {
 
           <Button
             onClick={() => formik.handleSubmit()}
-            className="w-full bg-accent  text-white font-semibold py-2 rounded-xl mb-4"
+            className="w-full bg-accent  text-white font-semibold py-2 mb-4"
           >
             Continue
           </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import OnboardingLayout from "@/components/onboarding/OnboardingLayout";
+import OnboardingLayout from "@/components/layouts/OnboardingLayout";
 import { Button } from "@/components/ui/button";
 import { useFormikContext } from "formik";
 import { Check } from "lucide-react";

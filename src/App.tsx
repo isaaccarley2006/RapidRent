@@ -37,6 +37,7 @@ import { Provider } from "react-redux";
 import { Toaster } from "sonner";
 import NewProfile from "@/pages/NewProfile";
 import About from "@/pages/About";
+import Communities from "@/pages/Communities";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -90,6 +91,15 @@ const App = () => (
                     </AppLayout>
                   }
                 />
+                <Route
+                  path="/communities"
+                  element={
+                    <AppLayout>
+                      <Communities />
+                    </AppLayout>
+                  }
+                />
+
                 <Route
                   path="/properties/:id"
                   element={

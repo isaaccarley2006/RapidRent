@@ -24,7 +24,7 @@ export default function NewProfile() {
   };
 
   return (
-    <div className="min-h-screen relative max-w-7xl mx-auto  overflow-hidden bg-white  flex">
+    <div className="min-h-screen relative top-10 max-w-7xl mx-auto px-4 xl:px-0  overflow-hidden bg-white  flex">
       <ProfileSidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
       <div className="flex-1">{renderContent()}</div>
     </div>

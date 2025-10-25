@@ -29,9 +29,7 @@ export default function Benefits() {
                 </li>
               ))}
             </ul>
-            <Button size="lg" className="rounded-xl">
-              Learn More
-            </Button>
+            <Button size="lg">Learn More</Button>
           </div>
           {/* Image container */}
           <div className="w-full relative overflow-hidden rounded-lg flex">

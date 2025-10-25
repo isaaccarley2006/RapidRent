@@ -2,22 +2,22 @@
 
 export default function LocationMarquee() {
   const locations = [
-    "San Francisco",
-    "London",
-    "Los Angeles",
-    "New York",
-    "San Francisco",
-    "Berlin",
-    "Paris",
-    "Tokyo",
-    "Sydney",
-    "Berlin",
-    "Paris",
-    "Tokyo",
+    "Notting Hill",
+    "Shoreditch",
+    "Camden",
+    "Clapham",
+    "Islington",
+    "Canary Wharf",
+    "Hackney",
+    "Kensington",
+    "Battersea",
+    "Hampstead",
+    // "Paris",
+    // "Tokyo",
   ];
 
   return (
-    <section className="bg-white py-16 px-4 overflow-hidden">
+    <section id="about" className="bg-white py-16 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* First Marquee Row */}
         <div className="relative mb-8">

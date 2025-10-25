@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { HeroSection } from "@/components/home";
 
 import PropertyListings from "@/components/home/PropertyListings";
 import Experience from "@/components/home/Experience";
 
-import Partners from "@/components/home/Partners";
 import LocationMarquee from "@/components/home/LocationMarquee";
 import RapidRentSteps from "@/components/home/RapidRentSteps";
 import Logos from "@/components/home/Logos";
+import { useLocation } from "react-router-dom";
+import Services from "@/components/about/Services";
 
 const Home: React.FC = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const section = document.querySelector(hash);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [hash]);
+
   return (
     <>
       <Helmet>
@@ -39,6 +51,7 @@ const Home: React.FC = () => {
         <Experience />
 
         <LocationMarquee />
+        <Services />
         {/* <Partners /> */}
       </div>
     </>

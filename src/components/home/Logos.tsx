@@ -19,7 +19,9 @@ const Logos: React.FC<Props> = ({
 
   return (
     <div className={cn("py-16", className)} suppressHydrationWarning>
-      <div className="max-w-md md:max-w-lg lg:max-w-2xl mx-auto">
+      <div className="max-w-md md:max-w-lg lg:max-w-2xl mx-auto relative">
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
         <div
           className={cn(
             "relative w-full mx-auto max-w-4xl opacity-90 dark:opacity-70",
@@ -37,7 +39,7 @@ const Logos: React.FC<Props> = ({
               className={cn(
                 gap,
                 "flex flex-nowrap w-fit",
-                "animate-[marquee_90000ms_linear_both_infinite] will-change-transform",
+                "animate-[marquee_40000ms_linear_both_infinite] will-change-transform",
                 "motion-reduce:animate-none motion-reduce:will-change-none"
               )}
             />
@@ -73,6 +75,12 @@ const logos = [
     image: IMAGES.AWS,
     alt: "AWS",
     name: "AWS",
+  },
+
+  {
+    image: IMAGES.SIGN_NOW,
+    alt: "SIGN NOW",
+    name: "SIGN NOW",
   },
 ];
 

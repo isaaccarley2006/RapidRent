@@ -38,7 +38,7 @@ export default function WhyChooseUs() {
                 </li>
               ))}
             </ul>
-            <Button size="lg" className="rounded-xl">
+            <Button size="lg" className="">
               Learn More
             </Button>
           </div>
